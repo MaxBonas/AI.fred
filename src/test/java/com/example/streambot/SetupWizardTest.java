@@ -17,6 +17,10 @@ public class SetupWizardTest {
     public void runCreatesEnvFile(@TempDir Path tmp) throws Exception {
         Path env = Path.of(".env");
         Path backup = tmp.resolve("env.bak");
+        boolean existed = Files.exists(env);
+        if (!existed) {
+            Files.createFile(env);
+        }
         Files.move(env, backup);
         InputStream originalIn = System.in;
         try {
@@ -28,7 +32,11 @@ public class SetupWizardTest {
         } finally {
             System.setIn(originalIn);
             Files.deleteIfExists(env);
-            Files.move(backup, env);
+            if (existed) {
+                Files.move(backup, env);
+            } else {
+                Files.deleteIfExists(backup);
+            }
         }
     }
 }
