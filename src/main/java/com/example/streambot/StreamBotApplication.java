@@ -15,6 +15,7 @@ public class StreamBotApplication {
         bot.start();
     }
 
+    // El test invoca este método por reflexión
     private static Map<String, String> parseArgs(String[] args) {
         Map<String, String> map = new HashMap<>();
         for (int i = 0; i < args.length; i++) {
