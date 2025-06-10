@@ -1,3 +1,6 @@
+package com.example.streambot;
+
+import com.example.streambot.StreamBotApplication;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
