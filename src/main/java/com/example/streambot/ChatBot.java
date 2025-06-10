@@ -17,8 +17,8 @@ public class ChatBot {
 
     public ChatBot() {
         this.dotenv = Dotenv.configure().ignoreIfMissing().load();
-        String token = dotenv.get("TWITCH_OAUTH_TOKEN");
-        String channel = dotenv.get("TWITCH_CHANNEL");
+        String token = getProperty("TWITCH_OAUTH_TOKEN");
+        String channel = getProperty("TWITCH_CHANNEL");
 
         if (token == null || token.isBlank() || channel == null || channel.isBlank()) {
             logger.error("TWITCH_OAUTH_TOKEN or TWITCH_CHANNEL missing; skipping Twitch connection.");
@@ -28,6 +28,8 @@ public class ChatBot {
                     .withEnableChat(true)
                     .withChatAccount(oauthCredential(token))
                     .build();
+
+            logger.info("Conectando a Twitch en el canal {}", channel);
 
             client.getEventManager().onEvent(ChannelMessageEvent.class, event -> {
                 if (event.getChannel().getName().equalsIgnoreCase(channel)) {
@@ -54,7 +56,16 @@ public class ChatBot {
         if (client == null) {
             return;
         }
-        String channel = dotenv.get("TWITCH_CHANNEL");
+        String channel = getProperty("TWITCH_CHANNEL");
+        logger.info("Uni\u00e9ndose al canal {}", channel);
         client.getChat().joinChannel(channel);
+    }
+
+    private String getProperty(String key) {
+        String value = System.getProperty(key);
+        if (value == null || value.isBlank()) {
+            value = dotenv.get(key);
+        }
+        return value;
     }
 }
