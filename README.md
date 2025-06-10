@@ -49,8 +49,17 @@ java -cp target/streambot-1.0-SNAPSHOT.jar com.example.streambot.StreamBotApplic
 
 Este comando generar\u00e1 las respuestas del chat para mostrarlas exclusivamente en OBS.
 
+También es posible sobrescribir las credenciales al iniciar el programa:
+
+```bash
+java -cp target/streambot-1.0-SNAPSHOT.jar com.example.streambot.StreamBotApplication 
+  --openai-key TU_CLAVE --twitch-token oauth:token --channel micanal
+```
+
+
 ## Configuraci\u00f3n de credenciales
-Cree un archivo `.env` en la ra\u00edz con las siguientes variables:
+Si no existe, al iniciar se mostrará un asistente interactivo para generarlo automáticamente.
+También puedes crear el archivo `.env` manualmente en la raíz con las siguientes variables (puede copiar `env.example` y completar los valores):
 
 ```
 OPENAI_API_KEY=su_clave_de_openai

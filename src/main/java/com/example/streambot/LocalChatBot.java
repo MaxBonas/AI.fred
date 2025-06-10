@@ -1,12 +1,15 @@
 package com.example.streambot;
 
 import java.util.Scanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A simple console-based chatbot that interacts with OpenAI directly
  * without connecting to Twitch.
  */
 public class LocalChatBot {
+    private static final Logger logger = LoggerFactory.getLogger(LocalChatBot.class);
     private final OpenAIService aiService;
 
     public LocalChatBot() {
@@ -18,7 +21,7 @@ public class LocalChatBot {
      */
     public void start() {
         try (Scanner scanner = new Scanner(System.in)) {
-            System.out.println("Local ChatBot started. Type 'exit' to quit.");
+            logger.info("Local ChatBot started. Type 'exit' to quit.");
             while (scanner.hasNextLine()) {
                 String input = scanner.nextLine().trim();
                 if (input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("quit")) {
