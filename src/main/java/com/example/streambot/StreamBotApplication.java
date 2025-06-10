@@ -1,6 +1,6 @@
 package com.example.streambot;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import com.example.streambot.EnvUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +13,7 @@ public class StreamBotApplication {
         Map<String, String> cli = parseArgs(args);
         cli.forEach(System::setProperty);
 
-        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-        String useTwitchVal = System.getProperty("USE_TWITCH", dotenv.get("USE_TWITCH", "true"));
+        String useTwitchVal = EnvUtils.get("USE_TWITCH", "true");
         boolean useTwitch = Boolean.parseBoolean(useTwitchVal);
 
         if (useTwitch) {
