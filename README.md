@@ -66,13 +66,15 @@ java -jar target/streambot-1.0-SNAPSHOT-shaded.jar \
 
 
 ## Configuraci\u00f3n de credenciales
-Si no existe, al iniciar se mostrará un asistente interactivo para generarlo automáticamente.
-También puedes crear el archivo `.env` manualmente en la raíz con las siguientes variables (puede copiar `env.example` y completar los valores):
+Si no existe, al iniciar se mostrará un asistente interactivo para generarlo automáticamente. Este asistente solicita ahora `OPENAI_BASE_URL` y `OPENAI_MODEL`; puedes dejar estos campos vacíos para utilizar los valores por defecto.
+También puedes crear el archivo `.env` manualmente en la raíz con las siguientes variables (puedes copiar `env.example` y completar los valores):
 
 ```
 OPENAI_API_KEY=su_clave_de_openai
 TWITCH_OAUTH_TOKEN=oauth:sutoken
 TWITCH_CHANNEL=nombre_del_canal
+OPENAI_BASE_URL=
+OPENAI_MODEL=
 ```
 
 La primera prueba es ejecutar la aplicaci\u00f3n y en el chat de Twitch escribir `!topic` para recibir una pregunta generada por el modelo.
