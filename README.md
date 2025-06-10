@@ -39,6 +39,13 @@ mvn package
 java -cp target/streambot-1.0-SNAPSHOT.jar com.example.streambot.StreamBotApplication
 ```
 
+## Ejecutar pruebas
+Para correr las pruebas unitarias con Maven utilice:
+
+```bash
+mvn test
+```
+
 ### Ejecutar solo para OBS
 
 Cuando el proyecto incluya soporte para este modo se podr\u00e1 iniciar el bot sin conectarse a Twitch utilizando:
