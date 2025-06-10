@@ -33,6 +33,8 @@ public class LocalChatBot {
                 String response = aiService.ask(input);
                 System.out.println("AI: " + response);
             }
+        } finally {
+            aiService.close();
         }
     }
 }
