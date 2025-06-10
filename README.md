@@ -107,7 +107,27 @@ MISTRAL_MODEL_PATH=/ruta/al/modelo
 
 ## Uso con modelos locales
 
-Para obtener un modelo compatible puedes descargarlo previamente y apuntar `MISTRAL_MODEL_PATH` a la carpeta donde se encuentre.
+Para obtener un modelo compatible puedes descargarlo previamente y apuntar
+`MISTRAL_MODEL_PATH` a la carpeta donde se encuentre.
+
+### Ejemplo de modelos locales en Windows
+Si ya tienes modelos descargados en `C:\Users\Max\AppData\Local\nomic.ai\GPT4All`,
+puedes usar cualquiera de los siguientes archivos como valor de
+`MISTRAL_MODEL_PATH`:
+
+```
+C:\Users\Max\AppData\Local\nomic.ai\GPT4All\mistral-7b-instruct-v0.1.Q4_0.gguf
+C:\Users\Max\AppData\Local\nomic.ai\GPT4All\mistral-7b-openorca.gguf2.Q4_0.gguf
+C:\Users\Max\AppData\Local\nomic.ai\GPT4All\nous-hermes-llama2-13b.Q4_0.gguf
+C:\Users\Max\AppData\Local\nomic.ai\GPT4All\Phi-3.5-3.8B-vision-instruct-F16.gguf
+C:\Users\Max\AppData\Local\nomic.ai\GPT4All\qwen2.5-coder-7b-instruct-q4_0.gguf
+C:\Users\Max\AppData\Local\nomic.ai\GPT4All\gpt4all-falcon-newbpe-q4_0.gguf
+C:\Users\Max\AppData\Local\nomic.ai\GPT4All\Llama-3.2-1B-Instruct-Q4_0.gguf
+C:\Users\Max\AppData\Local\nomic.ai\GPT4All\Llama-3.2-3B-Instruct-Q4_0.gguf
+C:\Users\Max\AppData\Local\nomic.ai\GPT4All\Llama-3.2-11B-Vision-Instruct-mmproj.f16.gguf
+C:\Users\Max\AppData\Local\nomic.ai\GPT4All\Meta-Llama-3.1-8B-Instruct-128k-Q4_0.gguf
+C:\Users\Max\AppData\Local\nomic.ai\GPT4All\Meta-Llama-3-8B-Instruct.Q4_0.gguf
+```
 
 ## Licencia
 Este proyecto se distribuye bajo los términos de la [licencia MIT](LICENSE).
