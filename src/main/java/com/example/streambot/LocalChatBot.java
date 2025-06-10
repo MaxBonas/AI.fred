@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
  */
 public class LocalChatBot {
     private static final Logger logger = LoggerFactory.getLogger(LocalChatBot.class);
-    private final MistralService aiService;
+    private final LocalMistralService aiService;
 
     public LocalChatBot() {
-        this.aiService = new MistralService();
+        this.aiService = new LocalMistralService();
     }
 
     /**

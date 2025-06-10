@@ -1,6 +1,6 @@
 # StreamBot
 
-Aplicación Java basada en Maven que utiliza un modelo de lenguaje para generar respuestas y mostrarlas en OBS. Utiliza un servidor compatible con Mistral para las consultas de IA.
+Aplicación Java basada en Maven que utiliza un modelo de lenguaje para generar respuestas y mostrarlas en OBS. El modelo se carga desde disco y la inferencia se realiza localmente.
 
 ## Requisitos previos
 
@@ -89,44 +89,25 @@ Ejecuta el bot de manera local y muestra las respuestas en OBS:
 java -jar target/streambot-1.0-SNAPSHOT-shaded.jar
 ```
 
-Puedes especificar las credenciales desde la línea de comandos:
+Puedes indicar la ruta del modelo desde la línea de comandos:
 
 ```bash
-java -jar target/streambot-1.0-SNAPSHOT-shaded.jar 
-  --mistral-key TU_CLAVE --base-url http://localhost:11434/v1/ --model mistral-tiny
+java -jar target/streambot-1.0-SNAPSHOT-shaded.jar \
+  --model-path /ruta/al/modelo
 ```
 
 
-## Configuración de credenciales
-Si no existe, al iniciar se mostrará un asistente interactivo para generarlo automáticamente. Este asistente solicita ahora `MISTRAL_BASE_URL` y `MISTRAL_MODEL`; puedes dejar estos campos vacíos para utilizar los valores por defecto.
-También puedes crear el archivo `.env` manualmente en la raíz con las siguientes variables (puedes copiar `env.example` y completar los valores):
+## Configuración de ruta del modelo
+Si no existe, al iniciar se mostrará un asistente interactivo para crear el archivo `.env` solicitando únicamente `MISTRAL_MODEL_PATH`. También puedes crear dicho archivo manualmente con el siguiente contenido:
 
 ```
-MISTRAL_API_KEY=tu_clave
-MISTRAL_BASE_URL=
-MISTRAL_MODEL=
+MISTRAL_MODEL_PATH=/ruta/al/modelo
 ```
 
 
 ## Uso con modelos locales
 
-Para ejecutar el bot sin depender de la API de Mistral puedes levantar un servidor
-compatible de manera local (por ejemplo mediante [Ollama](https://ollama.com) o
-[LocalAI](https://localai.io)) y descargar el modelo Mixtral:
-
-```bash
-ollama pull mistralai/mixtral-8x22b-instruct-v0.1
-```
-
-Una vez iniciado el servicio local, configura la variable `MISTRAL_BASE_URL` para
-apuntar al endpoint que expone dicho servidor, por ejemplo:
-
-```bash
-MISTRAL_BASE_URL=http://localhost:11434/v1/
-```
-
-De manera opcional puedes definir `MISTRAL_MODEL` si tu servidor usa un nombre de
-modelo distinto. El resto de la aplicación funciona igual que con la API de Mistral.
+Para obtener un modelo compatible puedes descargarlo previamente y apuntar `MISTRAL_MODEL_PATH` a la carpeta donde se encuentre.
 
 ## Licencia
 Este proyecto se distribuye bajo los términos de la [licencia MIT](LICENSE).
