@@ -27,11 +27,17 @@ public class SetupWizard {
             String token = scanner.nextLine().trim();
             System.out.print("TWITCH_CHANNEL: ");
             String channel = scanner.nextLine().trim();
+            System.out.print("OPENAI_BASE_URL (opcional): ");
+            String baseUrl = scanner.nextLine().trim();
+            System.out.print("OPENAI_MODEL (opcional): ");
+            String model = scanner.nextLine().trim();
 
             try (PrintWriter out = new PrintWriter(new FileWriter(env))) {
                 out.println("OPENAI_API_KEY=" + apiKey);
                 out.println("TWITCH_OAUTH_TOKEN=" + token);
                 out.println("TWITCH_CHANNEL=" + channel);
+                out.println("OPENAI_BASE_URL=" + baseUrl);
+                out.println("OPENAI_MODEL=" + model);
             }
             System.out.println("Archivo .env creado.\n");
         } catch (IOException e) {
