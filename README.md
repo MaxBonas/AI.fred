@@ -34,9 +34,10 @@ mvn -v
 2. IntelliJ detectar\u00e1 el `pom.xml` y configur\u00e1 autom\u00e1ticamente las dependencias.
 
 ## Compilar y ejecutar
+Al compilar con Maven se generar\u00e1 el archivo `target/streambot-1.0-SNAPSHOT-shaded.jar`.
 ```bash
 mvn package
-java -cp target/streambot-1.0-SNAPSHOT.jar com.example.streambot.StreamBotApplication
+java -jar target/streambot-1.0-SNAPSHOT-shaded.jar
 ```
 
 ## Ejecutar pruebas
@@ -51,7 +52,7 @@ mvn test
 Cuando el proyecto incluya soporte para este modo se podr\u00e1 iniciar el bot sin conectarse a Twitch utilizando:
 
 ```bash
-java -cp target/streambot-1.0-SNAPSHOT.jar com.example.streambot.StreamBotApplication --obs-only
+java -jar target/streambot-1.0-SNAPSHOT-shaded.jar --obs-only
 ```
 
 Este comando generar\u00e1 las respuestas del chat para mostrarlas exclusivamente en OBS.
@@ -59,7 +60,7 @@ Este comando generar\u00e1 las respuestas del chat para mostrarlas exclusivament
 También es posible sobrescribir las credenciales al iniciar el programa:
 
 ```bash
-java -cp target/streambot-1.0-SNAPSHOT.jar com.example.streambot.StreamBotApplication 
+java -jar target/streambot-1.0-SNAPSHOT-shaded.jar \
   --openai-key TU_CLAVE --twitch-token oauth:token --channel micanal
 ```
 
