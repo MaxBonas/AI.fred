@@ -18,32 +18,8 @@ public class StreamBotApplicationTest {
     }
 
     @Test
-    public void parsesMistralKeyFlag() throws Exception {
-        Map<String, String> result = invokeParseArgs("--mistral-key", "abc");
-        assertEquals("abc", result.get("MISTRAL_API_KEY"));
-    }
-
-    @Test
-    public void parsesBaseUrlFlag() throws Exception {
-        Map<String, String> result = invokeParseArgs("--base-url", "http://x");
-        assertEquals("http://x", result.get("MISTRAL_BASE_URL"));
-    }
-
-    @Test
-    public void parsesModelFlag() throws Exception {
-        Map<String, String> result = invokeParseArgs("--model", "mixtral");
-        assertEquals("mixtral", result.get("MISTRAL_MODEL"));
-    }
-
-    @Test
-    public void parsesAllFlagsTogether() throws Exception {
-        Map<String, String> result = invokeParseArgs(
-                "--mistral-key", "k",
-                "--base-url", "u",
-                "--model", "m"
-        );
-        assertEquals("k", result.get("MISTRAL_API_KEY"));
-        assertEquals("u", result.get("MISTRAL_BASE_URL"));
-        assertEquals("m", result.get("MISTRAL_MODEL"));
+    public void parsesModelPathFlag() throws Exception {
+        Map<String, String> result = invokeParseArgs("--model-path", "/x");
+        assertEquals("/x", result.get("MISTRAL_MODEL_PATH"));
     }
 }
