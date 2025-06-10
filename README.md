@@ -1,6 +1,6 @@
 # StreamBot
 
-Aplicaci\u00f3n Java basada en Maven que utiliza un modelo de lenguaje y Twitch4J para interactuar con el p\u00fablico de un stream. Incluye ejemplos b\u00e1sicos para conectar con Twitch y generar preguntas usando la API de OpenAI.
+Aplicación Java basada en Maven que utiliza un modelo de lenguaje para generar respuestas y mostrarlas en OBS. Utiliza un servidor compatible con Mistral para las consultas de IA.
 
 ## Requisitos previos
 
@@ -81,63 +81,36 @@ Para correr las pruebas unitarias con Maven utilice:
 mvn test
 ```
 
-### Ejecutar solo para OBS
+### Uso básico
 
-Cuando el proyecto incluya soporte para este modo se podr\u00e1 iniciar el bot sin conectarse a Twitch utilizando:
-
-```bash
-java -jar target/streambot-1.0-SNAPSHOT-shaded.jar --obs-only
-```
-
-Este comando generar\u00e1 las respuestas del chat para mostrarlas exclusivamente en OBS.
-
-También es posible sobrescribir las credenciales al iniciar el programa:
+Ejecuta el bot de manera local y muestra las respuestas en OBS:
 
 ```bash
-java -jar target/streambot-1.0-SNAPSHOT-shaded.jar \
-  --openai-key TU_CLAVE --twitch-token oauth:token --channel micanal
+java -jar target/streambot-1.0-SNAPSHOT-shaded.jar
+```
+
+Puedes especificar las credenciales desde la línea de comandos:
+
+```bash
+java -jar target/streambot-1.0-SNAPSHOT-shaded.jar 
+  --mistral-key TU_CLAVE --base-url http://localhost:11434/v1/ --model mistral-tiny
 ```
 
 
-## Configuraci\u00f3n de credenciales
-Si no existe, al iniciar se mostrará un asistente interactivo para generarlo automáticamente. Este asistente solicita ahora `OPENAI_BASE_URL` y `OPENAI_MODEL`; puedes dejar estos campos vacíos para utilizar los valores por defecto.
+## Configuración de credenciales
+Si no existe, al iniciar se mostrará un asistente interactivo para generarlo automáticamente. Este asistente solicita ahora `MISTRAL_BASE_URL` y `MISTRAL_MODEL`; puedes dejar estos campos vacíos para utilizar los valores por defecto.
 También puedes crear el archivo `.env` manualmente en la raíz con las siguientes variables (puedes copiar `env.example` y completar los valores):
 
 ```
-OPENAI_API_KEY=su_clave_de_openai
-TWITCH_OAUTH_TOKEN=oauth:sutoken
-TWITCH_CHANNEL=nombre_del_canal
-OPENAI_BASE_URL=
-OPENAI_MODEL=
+MISTRAL_API_KEY=tu_clave
+MISTRAL_BASE_URL=
+MISTRAL_MODEL=
 ```
 
-### Variable `USE_TWITCH`
-
-Por defecto el bot intenta conectarse a Twitch (`USE_TWITCH=true`). Si se establece `USE_TWITCH=false` la aplicación funcionará únicamente de manera local mostrando las respuestas en consola u OBS.
-
-En el archivo `.env` puede indicarse así:
-
-```
-USE_TWITCH=false
-```
-
-También es posible pasarlo desde la línea de comandos (sobrescribe al valor del `.env`):
-
-```bash
-java -DUSE_TWITCH=false -cp target/streambot-1.0-SNAPSHOT.jar \
-  com.example.streambot.StreamBotApplication
-```
-
-La opción abreviada `--obs-only` tiene el mismo efecto:
-
-```bash
-java -cp target/streambot-1.0-SNAPSHOT.jar com.example.streambot.StreamBotApplication --obs-only
-```
-La primera prueba es ejecutar la aplicaci\u00f3n y en el chat de Twitch escribir `!topic` para recibir una pregunta generada por el modelo.
 
 ## Uso con modelos locales
 
-Para ejecutar el bot sin depender de la API de OpenAI puedes levantar un servidor
+Para ejecutar el bot sin depender de la API de Mistral puedes levantar un servidor
 compatible de manera local (por ejemplo mediante [Ollama](https://ollama.com) o
 [LocalAI](https://localai.io)) y descargar el modelo Mixtral:
 
@@ -145,16 +118,15 @@ compatible de manera local (por ejemplo mediante [Ollama](https://ollama.com) o
 ollama pull mistralai/mixtral-8x22b-instruct-v0.1
 ```
 
-Una vez iniciado el servicio local, configura la variable `OPENAI_BASE_URL` para
+Una vez iniciado el servicio local, configura la variable `MISTRAL_BASE_URL` para
 apuntar al endpoint que expone dicho servidor, por ejemplo:
 
 ```bash
-OPENAI_BASE_URL=http://localhost:11434/v1/
+MISTRAL_BASE_URL=http://localhost:11434/v1/
 ```
 
-De manera opcional puedes definir `OPENAI_MODEL` si tu servidor usa un nombre de
-modelo distinto. El resto de la aplicaci\u00f3n funciona igual que con la API de
-OpenAI.
+De manera opcional puedes definir `MISTRAL_MODEL` si tu servidor usa un nombre de
+modelo distinto. El resto de la aplicación funciona igual que con la API de Mistral.
 
 ## Licencia
 Este proyecto se distribuye bajo los terminos de la [licencia MIT](LICENSE).

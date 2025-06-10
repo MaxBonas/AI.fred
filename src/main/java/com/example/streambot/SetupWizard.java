@@ -21,23 +21,17 @@ public class SetupWizard {
 
         try (Scanner scanner = new Scanner(System.in)) {
             System.out.println("Configuraci\u00f3n inicial de StreamBot:");
-            System.out.print("OPENAI_API_KEY: ");
+            System.out.print("MISTRAL_API_KEY: ");
             String apiKey = scanner.nextLine().trim();
-            System.out.print("TWITCH_OAUTH_TOKEN: ");
-            String token = scanner.nextLine().trim();
-            System.out.print("TWITCH_CHANNEL: ");
-            String channel = scanner.nextLine().trim();
-            System.out.print("OPENAI_BASE_URL (opcional): ");
+            System.out.print("MISTRAL_BASE_URL (opcional): ");
             String baseUrl = scanner.nextLine().trim();
-            System.out.print("OPENAI_MODEL (opcional): ");
+            System.out.print("MISTRAL_MODEL (opcional): ");
             String model = scanner.nextLine().trim();
 
             try (PrintWriter out = new PrintWriter(new FileWriter(env))) {
-                out.println("OPENAI_API_KEY=" + apiKey);
-                out.println("TWITCH_OAUTH_TOKEN=" + token);
-                out.println("TWITCH_CHANNEL=" + channel);
-                out.println("OPENAI_BASE_URL=" + baseUrl);
-                out.println("OPENAI_MODEL=" + model);
+                out.println("MISTRAL_API_KEY=" + apiKey);
+                out.println("MISTRAL_BASE_URL=" + baseUrl);
+                out.println("MISTRAL_MODEL=" + model);
             }
             System.out.println("Archivo .env creado.\n");
         } catch (IOException e) {

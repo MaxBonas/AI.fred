@@ -15,40 +15,32 @@ public class StreamBotApplicationTest {
     }
 
     @Test
-    public void parsesOpenAIKeyFlag() throws Exception {
-        Map<String, String> result = invokeParseArgs("--openai-key", "abc");
-        assertEquals("abc", result.get("OPENAI_API_KEY"));
+    public void parsesMistralKeyFlag() throws Exception {
+        Map<String, String> result = invokeParseArgs("--mistral-key", "abc");
+        assertEquals("abc", result.get("MISTRAL_API_KEY"));
     }
 
     @Test
-    public void parsesTwitchTokenFlag() throws Exception {
-        Map<String, String> result = invokeParseArgs("--twitch-token", "oauth:xyz");
-        assertEquals("oauth:xyz", result.get("TWITCH_OAUTH_TOKEN"));
+    public void parsesBaseUrlFlag() throws Exception {
+        Map<String, String> result = invokeParseArgs("--base-url", "http://x");
+        assertEquals("http://x", result.get("MISTRAL_BASE_URL"));
     }
 
     @Test
-    public void parsesChannelFlag() throws Exception {
-        Map<String, String> result = invokeParseArgs("--channel", "mychan");
-        assertEquals("mychan", result.get("TWITCH_CHANNEL"));
-    }
-
-    @Test
-    public void parsesObsOnlyFlag() throws Exception {
-        Map<String, String> result = invokeParseArgs("--obs-only");
-        assertEquals("false", result.get("USE_TWITCH"));
+    public void parsesModelFlag() throws Exception {
+        Map<String, String> result = invokeParseArgs("--model", "mixtral");
+        assertEquals("mixtral", result.get("MISTRAL_MODEL"));
     }
 
     @Test
     public void parsesAllFlagsTogether() throws Exception {
         Map<String, String> result = invokeParseArgs(
-                "--openai-key", "k",
-                "--twitch-token", "t",
-                "--channel", "c",
-                "--obs-only"
+                "--mistral-key", "k",
+                "--base-url", "u",
+                "--model", "m"
         );
-        assertEquals("k", result.get("OPENAI_API_KEY"));
-        assertEquals("t", result.get("TWITCH_OAUTH_TOKEN"));
-        assertEquals("c", result.get("TWITCH_CHANNEL"));
-        assertEquals("false", result.get("USE_TWITCH"));
+        assertEquals("k", result.get("MISTRAL_API_KEY"));
+        assertEquals("u", result.get("MISTRAL_BASE_URL"));
+        assertEquals("m", result.get("MISTRAL_MODEL"));
     }
 }
