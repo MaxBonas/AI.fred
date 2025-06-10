@@ -89,3 +89,7 @@ OPENAI_BASE_URL=http://localhost:11434/v1/
 De manera opcional puedes definir `OPENAI_MODEL` si tu servidor usa un nombre de
 modelo distinto. El resto de la aplicaci\u00f3n funciona igual que con la API de
 OpenAI.
+
+## Licencia
+Este proyecto se distribuye bajo los terminos de la [licencia MIT](LICENSE).
+
