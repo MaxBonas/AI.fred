@@ -111,6 +111,28 @@ OPENAI_BASE_URL=
 OPENAI_MODEL=
 ```
 
+### Variable `USE_TWITCH`
+
+Por defecto el bot intenta conectarse a Twitch (`USE_TWITCH=true`). Si se establece `USE_TWITCH=false` la aplicación funcionará únicamente de manera local mostrando las respuestas en consola u OBS.
+
+En el archivo `.env` puede indicarse así:
+
+```
+USE_TWITCH=false
+```
+
+También es posible pasarlo desde la línea de comandos (sobrescribe al valor del `.env`):
+
+```bash
+java -DUSE_TWITCH=false -cp target/streambot-1.0-SNAPSHOT.jar \
+  com.example.streambot.StreamBotApplication
+```
+
+La opción abreviada `--obs-only` tiene el mismo efecto:
+
+```bash
+java -cp target/streambot-1.0-SNAPSHOT.jar com.example.streambot.StreamBotApplication --obs-only
+```
 La primera prueba es ejecutar la aplicaci\u00f3n y en el chat de Twitch escribir `!topic` para recibir una pregunta generada por el modelo.
 
 ## Uso con modelos locales
