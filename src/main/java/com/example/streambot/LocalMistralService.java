@@ -29,14 +29,22 @@ public class LocalMistralService {
             Translator<String, String> translator = new Translator<>() {
                 @Override
                 public NDList processInput(TranslatorContext ctx, String input) {
-                    // Tokenization for the model should be implemented here
-                    return new NDList();
+                    // Basic tokenization: convert characters to their code points
+                    int[] tokens = input.chars().toArray();
+                    return new NDList(ctx.getNDManager().create(tokens));
                 }
 
                 @Override
                 public String processOutput(TranslatorContext ctx, NDList list) {
-                    // Convert the model output into text
-                    return list.isEmpty() ? "" : list.get(0).toDebugString();
+                    if (list.isEmpty()) {
+                        return "";
+                    }
+                    int[] tokens = list.get(0).toIntArray();
+                    StringBuilder sb = new StringBuilder(tokens.length);
+                    for (int t : tokens) {
+                        sb.append((char) t);
+                    }
+                    return sb.toString();
                 }
             };
 
