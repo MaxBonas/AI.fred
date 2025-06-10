@@ -98,7 +98,7 @@ java -jar target/streambot-1.0-SNAPSHOT-shaded.jar \
 
 
 ## Configuración de ruta del modelo
-Si no existe, al iniciar se mostrará un asistente interactivo para crear el archivo `.env` solicitando únicamente `MISTRAL_MODEL_PATH`. También puedes crear dicho archivo manualmente con el siguiente contenido:
+Si no existe `.env`, la primera vez que ejecutes la aplicación se abrirá automáticamente `SetupWizard`, un asistente interactivo que crea dicho archivo pidiendo solo `MISTRAL_MODEL_PATH`. También puedes utilizar `env.example` como plantilla o crear el archivo manualmente con el siguiente contenido:
 
 ```
 MISTRAL_MODEL_PATH=/ruta/al/modelo
