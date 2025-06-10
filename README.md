@@ -59,3 +59,24 @@ TWITCH_CHANNEL=nombre_del_canal
 ```
 
 La primera prueba es ejecutar la aplicaci\u00f3n y en el chat de Twitch escribir `!topic` para recibir una pregunta generada por el modelo.
+
+## Uso con modelos locales
+
+Para ejecutar el bot sin depender de la API de OpenAI puedes levantar un servidor
+compatible de manera local (por ejemplo mediante [Ollama](https://ollama.com) o
+[LocalAI](https://localai.io)) y descargar el modelo Mixtral:
+
+```bash
+ollama pull mistralai/mixtral-8x22b-instruct-v0.1
+```
+
+Una vez iniciado el servicio local, configura la variable `OPENAI_BASE_URL` para
+apuntar al endpoint que expone dicho servidor, por ejemplo:
+
+```bash
+OPENAI_BASE_URL=http://localhost:11434/v1/
+```
+
+De manera opcional puedes definir `OPENAI_MODEL` si tu servidor usa un nombre de
+modelo distinto. El resto de la aplicaci\u00f3n funciona igual que con la API de
+OpenAI.
