@@ -65,7 +65,7 @@ mvn -v
 
 ## Importar en IntelliJ
 1. Desde IntelliJ seleccione **File \u2192 Open** y elija la carpeta del proyecto.
-2. IntelliJ detectar\u00e1 el `pom.xml` y configur\u00e1 autom\u00e1ticamente las dependencias.
+2. IntelliJ detectará el `pom.xml` y configurará automáticamente las dependencias.
 
 ## Compilar y ejecutar
 Al compilar con Maven se generar\u00e1 el archivo `target/streambot-1.0-SNAPSHOT-shaded.jar`.
@@ -129,5 +129,5 @@ De manera opcional puedes definir `MISTRAL_MODEL` si tu servidor usa un nombre d
 modelo distinto. El resto de la aplicación funciona igual que con la API de Mistral.
 
 ## Licencia
-Este proyecto se distribuye bajo los terminos de la [licencia MIT](LICENSE).
+Este proyecto se distribuye bajo los términos de la [licencia MIT](LICENSE).
 
