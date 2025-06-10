@@ -21,6 +21,7 @@ import java.nio.file.Paths;
 public class LocalMistralService {
     private static final Logger logger = LoggerFactory.getLogger(LocalMistralService.class);
     private Predictor<String, String> predictor;
+    private ZooModel<String, String> model;
 
     public LocalMistralService() {
         String modelPath = EnvUtils.get("MISTRAL_MODEL_PATH", "model");
@@ -45,7 +46,7 @@ public class LocalMistralService {
                     .optEngine("PyTorch")
                     .optTranslator(translator)
                     .build();
-            ZooModel<String, String> model = ModelZoo.loadModel(criteria);
+            model = ModelZoo.loadModel(criteria);
             predictor = model.newPredictor();
         } catch (Exception e) {
             logger.error("Error loading local model", e);
@@ -64,6 +65,20 @@ public class LocalMistralService {
         } catch (TranslateException e) {
             logger.error("Inference error", e);
             return "";
+        }
+    }
+
+    /**
+     * Release loaded resources.
+     */
+    public void close() {
+        if (predictor != null) {
+            predictor.close();
+            predictor = null;
+        }
+        if (model != null) {
+            model.close();
+            model = null;
         }
     }
 }
