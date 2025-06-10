@@ -2,6 +2,40 @@
 
 Aplicaci\u00f3n Java basada en Maven que utiliza un modelo de lenguaje y Twitch4J para interactuar con el p\u00fablico de un stream. Incluye ejemplos b\u00e1sicos para conectar con Twitch y generar preguntas usando la API de OpenAI.
 
+## Requisitos previos
+
+- Java 17 (JDK 17)
+- Maven
+
+Instale primero JDK 17 y luego proceda con la instalaci\u00f3n de Maven.
+
+## Instalaci\u00f3n de JDK 17
+
+Si a\u00fan no tiene Java instalado, puede hacerlo de la siguiente manera:
+
+### Ubuntu/Debian
+
+```bash
+sudo apt-get update
+sudo apt-get install openjdk-17-jdk
+```
+
+### macOS con Homebrew
+
+```bash
+brew install openjdk@17
+```
+
+### Windows
+
+Descargue el instalador desde [la p\u00e1gina de OpenJDK](https://adoptium.net) y siga los pasos.
+
+Para verificar la instalaci\u00f3n ejecute:
+
+```bash
+java -version
+```
+
 ## Instalaci\u00f3n de Maven
 
 Si Maven no est\u00e1 instalado en su sistema puede hacerlo siguiendo alguno de estos m\u00e9todos:
