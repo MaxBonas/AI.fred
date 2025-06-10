@@ -13,11 +13,14 @@ import java.time.Duration;
 
 public class OpenAIService {
     private final OpenAiService service;
+    private final String model;
+    private final Dotenv dotenv;
 
     public OpenAIService() {
-        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+        this.dotenv = Dotenv.configure().ignoreIfMissing().load();
         String apiKey = dotenv.get("OPENAI_API_KEY");
         String baseUrl = dotenv.get("OPENAI_BASE_URL", "https://api.openai.com/");
+        this.model = dotenv.get("OPENAI_MODEL", "text-davinci-003");
 
         OkHttpClient client = OpenAiService.defaultClient(apiKey, Duration.ofSeconds(60));
         ObjectMapper mapper = OpenAiService.defaultObjectMapper();
@@ -32,12 +35,9 @@ public class OpenAIService {
     }
 
     public String ask(String prompt) {
-        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-        String model = dotenv.get("OPENAI_MODEL", "text-davinci-003");
-
         CompletionRequest request = CompletionRequest.builder()
                 .prompt(prompt)
-                .model(model)
+                .model(this.model)
                 .maxTokens(50)
                 .build();
         return service.createCompletion(request)
