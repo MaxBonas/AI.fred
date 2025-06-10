@@ -3,7 +3,8 @@ package com.example.streambot;
 import com.theokanning.openai.service.OpenAiService;
 import com.theokanning.openai.client.OpenAiApi;
 import com.theokanning.openai.completion.CompletionRequest;
-import io.github.cdimascio.dotenv.Dotenv;
+
+import com.example.streambot.EnvUtils;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -18,9 +19,8 @@ public class OpenAIService {
     private final OpenAiService service;
 
     public OpenAIService() {
-        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-        String apiKey = getProperty("OPENAI_API_KEY", dotenv);
-        String baseUrl = getProperty("OPENAI_BASE_URL", dotenv, "https://api.openai.com/");
+        String apiKey = EnvUtils.get("OPENAI_API_KEY");
+        String baseUrl = EnvUtils.get("OPENAI_BASE_URL", "https://api.openai.com/");
 
         OkHttpClient client = OpenAiService.defaultClient(apiKey, Duration.ofSeconds(60));
         ObjectMapper mapper = OpenAiService.defaultObjectMapper();
@@ -36,8 +36,7 @@ public class OpenAIService {
     }
 
     public String ask(String prompt) {
-        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-        String model = getProperty("OPENAI_MODEL", dotenv, "text-davinci-003");
+        String model = EnvUtils.get("OPENAI_MODEL", "text-davinci-003");
 
         CompletionRequest request = CompletionRequest.builder()
                 .prompt(prompt)
@@ -50,16 +49,5 @@ public class OpenAIService {
                 .getText();
     }
 
-    private String getProperty(String key, Dotenv dotenv) {
-        String val = System.getProperty(key);
-        if (val == null || val.isBlank()) {
-            val = dotenv.get(key);
-        }
-        return val;
-    }
 
-    private String getProperty(String key, Dotenv dotenv, String def) {
-        String val = getProperty(key, dotenv);
-        return val != null ? val : def;
-    }
 }

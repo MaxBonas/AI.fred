@@ -4,21 +4,19 @@ import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import com.github.twitch4j.auth.providers.OAuth2Credential;
-import io.github.cdimascio.dotenv.Dotenv;
+import com.example.streambot.EnvUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ChatBot {
     private static final Logger logger = LoggerFactory.getLogger(ChatBot.class);
 
-    private final Dotenv dotenv;
     private final TwitchClient client;
     private final OpenAIService aiService;
 
     public ChatBot() {
-        this.dotenv = Dotenv.configure().ignoreIfMissing().load();
-        String token = getProperty("TWITCH_OAUTH_TOKEN");
-        String channel = getProperty("TWITCH_CHANNEL");
+        String token = EnvUtils.get("TWITCH_OAUTH_TOKEN");
+        String channel = EnvUtils.get("TWITCH_CHANNEL");
 
         if (token == null || token.isBlank() || channel == null || channel.isBlank()) {
             logger.error("TWITCH_OAUTH_TOKEN or TWITCH_CHANNEL missing; skipping Twitch connection.");
@@ -56,16 +54,8 @@ public class ChatBot {
         if (client == null) {
             return;
         }
-        String channel = getProperty("TWITCH_CHANNEL");
+        String channel = EnvUtils.get("TWITCH_CHANNEL");
         logger.info("Uni\u00e9ndose al canal {}", channel);
         client.getChat().joinChannel(channel);
-    }
-
-    private String getProperty(String key) {
-        String value = System.getProperty(key);
-        if (value == null || value.isBlank()) {
-            value = dotenv.get(key);
-        }
-        return value;
     }
 }
