@@ -41,8 +41,9 @@ public class ChatBot {
     }
 
     public void start() {
-        // join channel defined in .env
-        String channel = Dotenv.load().get("TWITCH_CHANNEL");
+        // join channel defined in .env (ignore if file is missing)
+        String channel = Dotenv.configure().ignoreIfMissing().load()
+                .get("TWITCH_CHANNEL");
         client.getChat().joinChannel(channel);
     }
 }
