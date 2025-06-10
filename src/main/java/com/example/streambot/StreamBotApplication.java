@@ -33,6 +33,12 @@ public class StreamBotApplication {
                 case "--openai-key" -> {
                     if (i + 1 < args.length) map.put("OPENAI_API_KEY", args[++i]);
                 }
+                case "--openai-base-url" -> {
+                    if (i + 1 < args.length) map.put("OPENAI_BASE_URL", args[++i]);
+                }
+                case "--openai-model" -> {
+                    if (i + 1 < args.length) map.put("OPENAI_MODEL", args[++i]);
+                }
                 case "--twitch-token" -> {
                     if (i + 1 < args.length) map.put("TWITCH_OAUTH_TOKEN", args[++i]);
                 }

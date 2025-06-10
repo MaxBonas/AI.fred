@@ -52,8 +52,9 @@ Este comando generar\u00e1 las respuestas del chat para mostrarlas exclusivament
 También es posible sobrescribir las credenciales al iniciar el programa:
 
 ```bash
-java -cp target/streambot-1.0-SNAPSHOT.jar com.example.streambot.StreamBotApplication 
-  --openai-key TU_CLAVE --twitch-token oauth:token --channel micanal
+java -cp target/streambot-1.0-SNAPSHOT.jar com.example.streambot.StreamBotApplication
+  --openai-key TU_CLAVE --twitch-token oauth:token --channel micanal \
+  --openai-base-url http://localhost:11434/v1/ --openai-model mixtral
 ```
 
 
@@ -89,3 +90,4 @@ OPENAI_BASE_URL=http://localhost:11434/v1/
 De manera opcional puedes definir `OPENAI_MODEL` si tu servidor usa un nombre de
 modelo distinto. El resto de la aplicaci\u00f3n funciona igual que con la API de
 OpenAI.
+También puedes pasar estas opciones por línea de comandos usando `--openai-base-url` y `--openai-model`.
