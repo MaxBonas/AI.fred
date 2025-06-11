@@ -4,6 +4,7 @@
 # IDE files
 /.idea/
 *.iml
+dependency-reduced-pom.xml
 
 # environment variables
 .env
