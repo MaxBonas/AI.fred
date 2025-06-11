@@ -26,7 +26,17 @@ public class LocalMistralService {
     private LLModel ggufModel;
 
     public LocalMistralService() {
-        String modelPath = EnvUtils.get("MISTRAL_MODEL_PATH", "model");
+        String modelPath = EnvUtils.get("MISTRAL_MODEL_PATH");
+        if (modelPath == null || modelPath.isBlank()) {
+            String home = System.getProperty("user.home");
+            String defaultWin = home + "\\AppData\\Local\\nomic.ai\\GPT4All\\Meta-Llama-3-8B-Instruct.Q4_0.gguf";
+            if (System.getProperty("os.name", "").startsWith("Windows") &&
+                    java.nio.file.Files.exists(java.nio.file.Paths.get(defaultWin))) {
+                modelPath = defaultWin;
+            } else {
+                modelPath = "model";
+            }
+        }
         try {
             if (modelPath.endsWith(".gguf") || modelPath.endsWith(".bin")) {
                 ggufModel = new LLModel(Paths.get(modelPath));
