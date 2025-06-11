@@ -28,7 +28,7 @@ public class SetupWizardTest {
             SetupWizard.run();
             assertTrue(Files.exists(env), ".env should be created");
             String content = Files.readString(env);
-            assertEquals("MISTRAL_MODEL_PATH=bar\n", content);
+            assertEquals("OPENAI_API_KEY=bar\n", content);
         } finally {
             System.setIn(originalIn);
             Files.deleteIfExists(env);

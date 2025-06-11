@@ -89,19 +89,12 @@ Ejecuta el bot de manera local y muestra las respuestas en OBS:
 java -jar target/streambot-1.0-SNAPSHOT-shaded.jar
 ```
 
-Puedes indicar la ruta del modelo desde la línea de comandos:
 
-```bash
-java -jar target/streambot-1.0-SNAPSHOT-shaded.jar \
-  --model-path /ruta/al/modelo
-```
-
-
-## Configuración de ruta del modelo
-Si no existe `.env`, la primera vez que ejecutes la aplicación se abrirá automáticamente `SetupWizard`, un asistente interactivo que crea dicho archivo pidiendo solo `MISTRAL_MODEL_PATH`. También puedes utilizar `env.example` como plantilla o crear el archivo manualmente con el siguiente contenido:
+## Configuración de la API de OpenAI
+Si no existe `.env`, la primera vez que ejecutes la aplicación se abrirá automáticamente `SetupWizard`, un asistente interactivo que solicitará tu clave de OpenAI y escribirá `OPENAI_API_KEY` en el archivo. También puedes utilizar `env.example` como plantilla o crear el archivo manualmente con el siguiente contenido:
 
 ```
-MISTRAL_MODEL_PATH=/ruta/al/modelo
+OPENAI_API_KEY=sk-...
 ```
 
 La aplicación admite modelos en formato PyTorch (`.pt`/`.zip`) y también
@@ -121,8 +114,8 @@ proyecto.
 
 ## Uso con modelos locales
 
-Para obtener un modelo compatible puedes descargarlo previamente y apuntar
-`MISTRAL_MODEL_PATH` a la carpeta donde se encuentre.
+Si quieres trabajar con modelos almacenados localmente, define manualmente la
+variable `MISTRAL_MODEL_PATH` y apunta a la carpeta donde se encuentre el modelo.
 
 ### Ejemplo de modelos locales en Windows
 Si ya tienes modelos descargados en `C:\Users\Max\AppData\Local\nomic.ai\GPT4All`,
