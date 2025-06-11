@@ -108,9 +108,6 @@ La aplicación admite modelos en formato PyTorch (`.pt`/`.zip`) y también
 modelos `.gguf` gracias a la biblioteca **gpt4all-java-binding** incluida en el
 proyecto.
 
-Si no se define `MISTRAL_MODEL_PATH`, en Windows se intentará cargar
-`Meta-Llama-3-8B-Instruct.Q4_0.gguf` desde
-`C:\Users\<usuario>\AppData\Local\nomic.ai\GPT4All` si ese archivo existe.
 
 
 ## Uso con modelos locales
