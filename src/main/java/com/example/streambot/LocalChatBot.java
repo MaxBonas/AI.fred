@@ -5,21 +5,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A simple console-based chatbot that interacts with a Mistral server
+ * A simple console-based chatbot that interacts with the OpenAI API
  * without connecting to external chat services.
  */
 public class LocalChatBot {
     private static final Logger logger = LoggerFactory.getLogger(LocalChatBot.class);
-    private final LocalMistralService aiService;
+    private final OpenAIService aiService;
 
     public LocalChatBot() {
-        this(new LocalMistralService());
+        this(new OpenAIService());
     }
 
     /**
      * Create a bot with the given service. Primarily used for testing.
      */
-    public LocalChatBot(LocalMistralService service) {
+    public LocalChatBot(OpenAIService service) {
         this.aiService = service;
     }
 

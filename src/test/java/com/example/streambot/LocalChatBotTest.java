@@ -1,6 +1,5 @@
 package com.example.streambot;
 
-import ai.djl.inference.Predictor;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -30,13 +29,11 @@ public class LocalChatBotTest {
         assertEquals(List.of("hi"), svc.received);
     }
 
-    static class DummyService extends LocalMistralService {
+    static class DummyService extends OpenAIService {
         List<String> received = new ArrayList<>();
         boolean closed = false;
 
-        DummyService() {
-            super((Predictor<String, String>) null);
-        }
+        DummyService() {}
 
         @Override
         public String ask(String prompt) {
