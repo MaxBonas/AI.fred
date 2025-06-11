@@ -9,6 +9,7 @@ import ai.djl.repository.zoo.ZooModel;
 import ai.djl.translate.TranslateException;
 import ai.djl.translate.Translator;
 import ai.djl.translate.TranslatorContext;
+import com.hexadevlabs.gpt4all.LLModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,10 +23,15 @@ public class LocalMistralService {
     private static final Logger logger = LoggerFactory.getLogger(LocalMistralService.class);
     private Predictor<String, String> predictor;
     private ZooModel<String, String> model;
+    private LLModel ggufModel;
 
     public LocalMistralService() {
         String modelPath = EnvUtils.get("MISTRAL_MODEL_PATH", "model");
         try {
+            if (modelPath.endsWith(".gguf") || modelPath.endsWith(".bin")) {
+                ggufModel = new LLModel(Paths.get(modelPath));
+                return;
+            }
             Translator<String, String> translator = new Translator<>() {
                 @Override
                 public NDList processInput(TranslatorContext ctx, String input) {
@@ -65,6 +71,9 @@ public class LocalMistralService {
      * Executes inference with the loaded model.
      */
     public String ask(String prompt) {
+        if (ggufModel != null) {
+            return ggufModel.generate(prompt, LLModel.config().build());
+        }
         if (predictor == null) {
             return "";
         }
@@ -80,6 +89,14 @@ public class LocalMistralService {
      * Release loaded resources.
      */
     public void close() {
+        if (ggufModel != null) {
+            try {
+                ggufModel.close();
+            } catch (Exception e) {
+                logger.error("Error closing gguf model", e);
+            }
+            ggufModel = null;
+        }
         if (predictor != null) {
             predictor.close();
             predictor = null;

@@ -1,6 +1,6 @@
 # StreamBot
 
-Aplicación Java basada en Maven que utiliza un modelo de lenguaje para generar respuestas y mostrarlas en OBS. El modelo se carga desde disco y la inferencia se realiza localmente.
+Aplicación Java basada en Maven que utiliza un modelo de lenguaje para generar respuestas y mostrarlas en OBS. El modelo se carga desde disco y la inferencia se realiza localmente. Puede trabajar con modelos PyTorch mediante **DJL** o con archivos `.gguf` gracias a **gpt4all-java-binding**.
 
 ## Requisitos previos
 
@@ -103,6 +103,10 @@ Si no existe `.env`, la primera vez que ejecutes la aplicación se abrirá autom
 ```
 MISTRAL_MODEL_PATH=/ruta/al/modelo
 ```
+
+La aplicación admite modelos en formato PyTorch (`.pt`/`.zip`) y también
+modelos `.gguf` gracias a la biblioteca **gpt4all-java-binding** incluida en el
+proyecto.
 
 
 ## Uso con modelos locales
