@@ -1,6 +1,5 @@
 package com.example.streambot;
 
-import ai.djl.Model;
 import ai.djl.inference.Predictor;
 import ai.djl.ndarray.NDList;
 import ai.djl.repository.zoo.Criteria;
@@ -13,7 +12,11 @@ import com.hexadevlabs.gpt4all.LLModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Minimal service that loads a Mistral model from disk and performs inference
@@ -38,14 +41,6 @@ public class LocalMistralService {
             }
         }
         try {
-            if (modelPath.endsWith(".gguf") || modelPath.endsWith(".bin")) {
-                try {
-                    ggufModel = new LLModel(Paths.get(modelPath));
-                    return;
-                } catch (IllegalStateException e) {
-                    logger.warn("Unsupported GGUF model format");
-                }
-            }
             // The following translator performs a very naive tokenization
             // that simply converts each character to its Unicode code point.
             // It is intended only as a minimal placeholder for demos and is
@@ -71,15 +66,42 @@ public class LocalMistralService {
                     return sb.toString();
                 }
             };
+            List<Path> candidates = new ArrayList<>();
+            Path base = Paths.get(modelPath);
+            if (Files.isDirectory(base)) {
+                try (var stream = Files.list(base)) {
+                    stream.filter(Files::isRegularFile)
+                            .forEach(candidates::add);
+                }
+            } else {
+                candidates.add(base);
+            }
+            List<String> tried = new ArrayList<>();
 
-            Criteria<String, String> criteria = Criteria.builder()
-                    .setTypes(String.class, String.class)
-                    .optModelPath(Paths.get(modelPath))
-                    .optEngine("PyTorch")
-                    .optTranslator(translator)
-                    .build();
-            model = ModelZoo.loadModel(criteria);
-            predictor = model.newPredictor();
+            for (Path p : candidates) {
+                if (loadModel(p, translator)) {
+                    return;
+                }
+                tried.add(p.toString());
+            }
+
+            // If a single file was provided and it failed, try siblings in the same directory
+            if (Files.isRegularFile(base)) {
+                Path parent = base.getParent();
+                if (parent != null && Files.isDirectory(parent)) {
+                    try (var stream = Files.list(parent)) {
+                        for (Path p : stream.filter(Files::isRegularFile).toList()) {
+                            if (!p.equals(base) && loadModel(p, translator)) {
+                                logger.info("Loaded alternative model {}", p);
+                                return;
+                            }
+                            tried.add(p.toString());
+                        }
+                    }
+                }
+            }
+
+            logger.error("Failed to load any model from {}. Tried: {}", modelPath, String.join(", ", tried));
         } catch (Exception e) {
             logger.error("Error loading local model", e);
         }
@@ -127,6 +149,34 @@ public class LocalMistralService {
         if (model != null) {
             model.close();
             model = null;
+        }
+    }
+
+    private boolean loadModel(Path path, Translator<String, String> translator) {
+        try {
+            if (path.toString().endsWith(".gguf") || path.toString().endsWith(".bin")) {
+                try {
+                    ggufModel = new LLModel(path);
+                    return true;
+                } catch (IllegalStateException e) {
+                    logger.warn("Unsupported GGUF model format");
+                    return false;
+                }
+            }
+
+            Criteria<String, String> criteria = Criteria.builder()
+                    .setTypes(String.class, String.class)
+                    .optModelPath(path)
+                    .optEngine("PyTorch")
+                    .optTranslator(translator)
+                    .build();
+            model = ModelZoo.loadModel(criteria);
+            predictor = model.newPredictor();
+            return true;
+        } catch (Exception e) {
+            logger.warn("Failed to load model {}", path, e);
+            close();
+            return false;
         }
     }
 }
