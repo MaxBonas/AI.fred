@@ -46,10 +46,14 @@ public class LocalMistralService {
                     logger.warn("Unsupported GGUF model format");
                 }
             }
+            // The following translator performs a very naive tokenization
+            // that simply converts each character to its Unicode code point.
+            // It is intended only as a minimal placeholder for demos and is
+            // not suitable for real production models. Integrate a tokenizer
+            // compatible with your LLM (e.g. SentencePiece) for full support.
             Translator<String, String> translator = new Translator<>() {
                 @Override
                 public NDList processInput(TranslatorContext ctx, String input) {
-                    // Basic tokenization: convert characters to their code points
                     int[] tokens = input.chars().toArray();
                     return new NDList(ctx.getNDManager().create(tokens));
                 }
