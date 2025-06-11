@@ -82,6 +82,22 @@ public class LocalMistralService {
                     return;
                 }
             }
+
+            // If a single file was provided and it failed, try siblings in the same directory
+            if (Files.isRegularFile(base)) {
+                Path parent = base.getParent();
+                if (parent != null && Files.isDirectory(parent)) {
+                    try (var stream = Files.list(parent)) {
+                        for (Path p : stream.filter(Files::isRegularFile).toList()) {
+                            if (!p.equals(base) && loadModel(p, translator)) {
+                                logger.info("Loaded alternative model {}", p);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+
             logger.error("Failed to load any model from {}", modelPath);
         } catch (Exception e) {
             logger.error("Error loading local model", e);

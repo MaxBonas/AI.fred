@@ -111,6 +111,8 @@ proyecto.
 Si `MISTRAL_MODEL_PATH` apunta a una carpeta, la aplicación intentará cargar
 cada archivo de dicha carpeta hasta que encuentre un modelo válido. Esto permite
 probar varios modelos descargados sin cambiar la configuración entre ejecuciones.
+Si se especifica un archivo y no puede cargarse, se explorará la misma carpeta
+en busca de alternativas.
 
 > **Nota**: solo pueden cargarse modelos `.gguf` compatibles con
 > [gpt4all-java-binding](https://github.com/nomic-ai/gpt4all/tree/main/gpt4all-bindings/java).
