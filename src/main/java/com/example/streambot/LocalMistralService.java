@@ -74,6 +74,9 @@ public class LocalMistralService {
         this.predictor = predictor;
     }
 
+    /**
+     * Executes inference with the loaded model.
+     */
     public String ask(String prompt) {
         if (ggufModel != null) {
             return ggufModel.generate(prompt, LLModel.config().build());
@@ -89,6 +92,9 @@ public class LocalMistralService {
         }
     }
 
+    /**
+     * Release loaded resources.
+     */
     public void close() {
         if (ggufModel != null) {
             try {
@@ -129,7 +135,4 @@ public class LocalMistralService {
             return false;
         }
     }
-}
-
-
 }
