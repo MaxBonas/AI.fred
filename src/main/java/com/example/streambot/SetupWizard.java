@@ -21,11 +21,11 @@ public class SetupWizard {
 
         try (Scanner scanner = new Scanner(System.in)) {
             System.out.println("Configuraci\u00f3n inicial de StreamBot:");
-            System.out.print("MISTRAL_MODEL_PATH (opcional): ");
-            String path = scanner.nextLine().trim();
+            System.out.print("OPENAI_API_KEY: ");
+            String key = scanner.nextLine().trim();
 
             try (PrintWriter out = new PrintWriter(new FileWriter(env))) {
-                out.println("MISTRAL_MODEL_PATH=" + path);
+                out.println("OPENAI_API_KEY=" + key);
             }
             System.out.println("Archivo .env creado.\n");
         } catch (IOException e) {
