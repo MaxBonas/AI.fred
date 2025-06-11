@@ -142,6 +142,13 @@ C:\Users\Max\AppData\Local\nomic.ai\GPT4All\Meta-Llama-3.1-8B-Instruct-128k-Q4_0
 C:\Users\Max\AppData\Local\nomic.ai\GPT4All\Meta-Llama-3-8B-Instruct.Q4_0.gguf
 ```
 
+## Limitaciones del traductor
+La clase `LocalMistralService` utiliza un traductor muy b\u00e1sico que simplemente
+convierte cada car\u00e1cter en su c\u00f3digo Unicode. Este enfoque solo sirve como
+marcador de posici\u00f3n y no es adecuado para modelos de producci\u00f3n. Para una
+compatibilidad completa con modelos de lenguaje, integra un *tokenizer* real
+(por ejemplo SentencePiece o el que requiera tu modelo).
+
 ## Licencia
 Este proyecto se distribuye bajo los términos de la [licencia MIT](LICENSE).
 
