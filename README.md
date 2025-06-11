@@ -108,6 +108,14 @@ La aplicación admite modelos en formato PyTorch (`.pt`/`.zip`) y también
 modelos `.gguf` gracias a la biblioteca **gpt4all-java-binding** incluida en el
 proyecto.
 
+> **Nota**: solo pueden cargarse modelos `.gguf` compatibles con
+> [gpt4all-java-binding](https://github.com/nomic-ai/gpt4all/tree/main/gpt4all-bindings/java).
+> Algunos archivos, como `Meta-Llama-3-8B-Instruct.Q4_0.gguf`, pueden no funcionar con el
+> backend incluido. Si ocurre un error, consulte la [documentación oficial](https://docs.gpt4all.io/)
+> para verificar los formatos soportados. Algunos modelos requieren bibliotecas
+> nativas adicionales que se pueden obtener desde las
+> [releases de gpt4all](https://github.com/nomic-ai/gpt4all/releases).
+
 
 
 ## Uso con modelos locales
