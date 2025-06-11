@@ -12,6 +12,7 @@ import com.hexadevlabs.gpt4all.LLModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -66,23 +67,13 @@ public class LocalMistralService {
                     return sb.toString();
                 }
             };
-            List<Path> candidates = new ArrayList<>();
-            Path base = Paths.get(modelPath);
-            if (Files.isDirectory(base)) {
-                try (var stream = Files.list(base)) {
-                    stream.filter(Files::isRegularFile)
-                            .forEach(candidates::add);
-                }
-            } else {
-                candidates.add(base);
-            }
+
 
             for (Path p : candidates) {
                 if (loadModel(p, translator)) {
                     return;
                 }
-            }
-            logger.error("Failed to load any model from {}", modelPath);
+
         } catch (Exception e) {
             logger.error("Error loading local model", e);
         }
@@ -160,4 +151,5 @@ public class LocalMistralService {
             return false;
         }
     }
+
 }

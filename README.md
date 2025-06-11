@@ -108,9 +108,6 @@ La aplicación admite modelos en formato PyTorch (`.pt`/`.zip`) y también
 modelos `.gguf` gracias a la biblioteca **gpt4all-java-binding** incluida en el
 proyecto.
 
-Si `MISTRAL_MODEL_PATH` apunta a una carpeta, la aplicación intentará cargar
-cada archivo de dicha carpeta hasta que encuentre un modelo válido. Esto permite
-probar varios modelos descargados sin cambiar la configuración entre ejecuciones.
 
 > **Nota**: solo pueden cargarse modelos `.gguf` compatibles con
 > [gpt4all-java-binding](https://github.com/nomic-ai/gpt4all/tree/main/gpt4all-bindings/java).
