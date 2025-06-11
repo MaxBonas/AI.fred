@@ -38,8 +38,13 @@ public class LocalMistralService {
             }
         }
         try {
+            java.nio.file.Path path = java.nio.file.Paths.get(modelPath);
+            if (!java.nio.file.Files.exists(path)) {
+                logger.error("Model file not found: {}", modelPath);
+                return;
+            }
             if (modelPath.endsWith(".gguf") || modelPath.endsWith(".bin")) {
-                ggufModel = new LLModel(Paths.get(modelPath));
+                ggufModel = new LLModel(path);
                 return;
             }
             Translator<String, String> translator = new Translator<>() {

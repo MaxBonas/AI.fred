@@ -108,6 +108,9 @@ La aplicación admite modelos en formato PyTorch (`.pt`/`.zip`) y también
 modelos `.gguf` gracias a la biblioteca **gpt4all-java-binding** incluida en el
 proyecto.
 
+En caso contrario se usará la ruta por defecto `model`. Si el archivo
+indicado no se encuentra, la aplicación registrará un mensaje de error y
+continuará sin inicializar el modelo.
 
 
 ## Uso con modelos locales
