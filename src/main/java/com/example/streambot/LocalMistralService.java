@@ -12,7 +12,7 @@ import com.hexadevlabs.gpt4all.LLModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -67,33 +67,13 @@ public class LocalMistralService {
                     return sb.toString();
                 }
             };
-            Path base = Paths.get(modelPath);
-            List<Path> candidates = collectCandidates(base);
-            List<String> tried = new ArrayList<>();
+
 
             for (Path p : candidates) {
                 if (loadModel(p, translator)) {
                     return;
                 }
-                tried.add(p.toString());
-            }
 
-
-            // Search the parent directory as a fallback when the provided path was a file
-            if (Files.isRegularFile(base)) {
-                Path parent = base.getParent();
-                if (parent != null) {
-                    for (Path p : collectCandidates(parent)) {
-                        if (!p.equals(base) && loadModel(p, translator)) {
-                            logger.info("Loaded alternative model {}", p);
-                            return;
-                        }
-                        tried.add(p.toString());
-                    }
-                }
-            }
-
-            logger.error("Failed to load any model from {}. Tried: {}", modelPath, String.join(", ", tried));
         } catch (Exception e) {
             logger.error("Error loading local model", e);
         }
@@ -172,15 +152,4 @@ public class LocalMistralService {
         }
     }
 
-    private List<Path> collectCandidates(Path base) throws IOException {
-        List<Path> files = new ArrayList<>();
-        if (Files.isDirectory(base)) {
-            try (var stream = Files.walk(base)) {
-                stream.filter(Files::isRegularFile).forEach(files::add);
-            }
-        } else {
-            files.add(base);
-        }
-        return files;
-    }
 }
