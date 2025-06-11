@@ -85,6 +85,11 @@ public class LocalMistralService {
         }
     }
 
+    // Package-private constructor for injecting a predictor, used mainly in tests
+    LocalMistralService(Predictor<String, String> predictor) {
+        this.predictor = predictor;
+    }
+
     /**
      * Executes inference with the loaded model.
      */

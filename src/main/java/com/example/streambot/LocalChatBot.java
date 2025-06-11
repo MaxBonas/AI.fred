@@ -13,7 +13,14 @@ public class LocalChatBot {
     private final LocalMistralService aiService;
 
     public LocalChatBot() {
-        this.aiService = new LocalMistralService();
+        this(new LocalMistralService());
+    }
+
+    /**
+     * Create a bot with the given service. Primarily used for testing.
+     */
+    public LocalChatBot(LocalMistralService service) {
+        this.aiService = service;
     }
 
     /**
