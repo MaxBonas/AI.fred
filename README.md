@@ -109,6 +109,7 @@ modelos `.gguf` gracias a la biblioteca **gpt4all-java-binding** incluida en el
 proyecto.
 
 
+
 ## Uso con modelos locales
 
 Para obtener un modelo compatible puedes descargarlo previamente y apuntar
