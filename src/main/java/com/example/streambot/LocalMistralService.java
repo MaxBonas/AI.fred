@@ -12,17 +12,12 @@ import com.hexadevlabs.gpt4all.LLModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Minimal service that loads a Mistral model from disk and performs inference
- * locally using DJL.
- */
 public class LocalMistralService {
     private static final Logger logger = LoggerFactory.getLogger(LocalMistralService.class);
     private Predictor<String, String> predictor;
@@ -30,23 +25,23 @@ public class LocalMistralService {
     private LLModel ggufModel;
 
     public LocalMistralService() {
-        String modelPath = EnvUtils.get("MISTRAL_MODEL_PATH");
-        if (modelPath == null || modelPath.isBlank()) {
-            String home = System.getProperty("user.home");
-            String defaultWin = home + "\\AppData\\Local\\nomic.ai\\GPT4All\\Meta-Llama-3-8B-Instruct.Q4_0.gguf";
-            if (System.getProperty("os.name", "").startsWith("Windows") &&
-                    java.nio.file.Files.exists(java.nio.file.Paths.get(defaultWin))) {
-                modelPath = defaultWin;
-            } else {
-                modelPath = "model";
-            }
+        String modelPathProp = EnvUtils.get("MISTRAL_MODEL_PATH");
+        List<Path> candidates = new ArrayList<>();
+
+        if (modelPathProp != null && !modelPathProp.isBlank()) {
+            candidates.add(Paths.get(modelPathProp));
         }
+
+        String home = System.getProperty("user.home");
+        String defaultWin = home + "\\AppData\\Local\\nomic.ai\\GPT4All\\Meta-Llama-3-8B-Instruct.Q4_0.gguf";
+        if (System.getProperty("os.name", "").startsWith("Windows") &&
+                Files.exists(Paths.get(defaultWin))) {
+            candidates.add(Paths.get(defaultWin));
+        }
+
+        candidates.add(Paths.get("model"));
+
         try {
-            // The following translator performs a very naive tokenization
-            // that simply converts each character to its Unicode code point.
-            // It is intended only as a minimal placeholder for demos and is
-            // not suitable for real production models. Integrate a tokenizer
-            // compatible with your LLM (e.g. SentencePiece) for full support.
             Translator<String, String> translator = new Translator<>() {
                 @Override
                 public NDList processInput(TranslatorContext ctx, String input) {
@@ -56,37 +51,29 @@ public class LocalMistralService {
 
                 @Override
                 public String processOutput(TranslatorContext ctx, NDList list) {
-                    if (list.isEmpty()) {
-                        return "";
-                    }
+                    if (list.isEmpty()) return "";
                     int[] tokens = list.get(0).toIntArray();
                     StringBuilder sb = new StringBuilder(tokens.length);
-                    for (int t : tokens) {
-                        sb.append((char) t);
-                    }
+                    for (int t : tokens) sb.append((char) t);
                     return sb.toString();
                 }
             };
-
 
             for (Path p : candidates) {
                 if (loadModel(p, translator)) {
                     return;
                 }
-
+            }
         } catch (Exception e) {
             logger.error("Error loading local model", e);
         }
     }
 
-    // Package-private constructor for injecting a predictor, used mainly in tests
+    // Package-private constructor for injecting a predictor in tests
     LocalMistralService(Predictor<String, String> predictor) {
         this.predictor = predictor;
     }
 
-    /**
-     * Executes inference with the loaded model.
-     */
     public String ask(String prompt) {
         if (ggufModel != null) {
             return ggufModel.generate(prompt, LLModel.config().build());
@@ -102,9 +89,6 @@ public class LocalMistralService {
         }
     }
 
-    /**
-     * Release loaded resources.
-     */
     public void close() {
         if (ggufModel != null) {
             try {
@@ -127,15 +111,9 @@ public class LocalMistralService {
     private boolean loadModel(Path path, Translator<String, String> translator) {
         try {
             if (path.toString().endsWith(".gguf") || path.toString().endsWith(".bin")) {
-                try {
-                    ggufModel = new LLModel(path);
-                    return true;
-                } catch (IllegalStateException e) {
-                    logger.warn("Unsupported GGUF model format");
-                    return false;
-                }
+                ggufModel = new LLModel(path);
+                return true;
             }
-
             Criteria<String, String> criteria = Criteria.builder()
                     .setTypes(String.class, String.class)
                     .optModelPath(path)
@@ -151,5 +129,7 @@ public class LocalMistralService {
             return false;
         }
     }
+}
+
 
 }
