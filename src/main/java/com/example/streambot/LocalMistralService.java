@@ -39,8 +39,12 @@ public class LocalMistralService {
         }
         try {
             if (modelPath.endsWith(".gguf") || modelPath.endsWith(".bin")) {
-                ggufModel = new LLModel(Paths.get(modelPath));
-                return;
+                try {
+                    ggufModel = new LLModel(Paths.get(modelPath));
+                    return;
+                } catch (IllegalStateException e) {
+                    logger.warn("Unsupported GGUF model format");
+                }
             }
             Translator<String, String> translator = new Translator<>() {
                 @Override
