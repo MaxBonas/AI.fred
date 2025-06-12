@@ -39,10 +39,47 @@ public class SetupWizard {
             System.out.print("OPENAI_API_KEY: ");
             String key = scanner.nextLine().trim();
 
+            System.out.print("OPENAI_MODEL: ");
+            String model = scanner.nextLine().trim();
+
+            System.out.print("OPENAI_TEMPERATURE: ");
+            String temp = scanner.nextLine().trim();
+
+            System.out.print("OPENAI_TOP_P: ");
+            String topP = scanner.nextLine().trim();
+
+            System.out.print("OPENAI_MAX_TOKENS: ");
+            String maxTokens = scanner.nextLine().trim();
+
+            System.out.print("CONVERSATION_STYLE: ");
+            String style = scanner.nextLine().trim();
+
+            System.out.print("PREFERRED_TOPICS: ");
+            String topics = scanner.nextLine().trim();
+
+            System.out.print("SILENCE_TIMEOUT: ");
+            String timeout = scanner.nextLine().trim();
+
             try (PrintWriter out = new PrintWriter(new FileWriter(env))) {
                 out.println("OPENAI_API_KEY=" + key);
+                out.println("OPENAI_MODEL=" + model);
+                out.println("OPENAI_TEMPERATURE=" + temp);
+                out.println("OPENAI_TOP_P=" + topP);
+                out.println("OPENAI_MAX_TOKENS=" + maxTokens);
+                out.println("CONVERSATION_STYLE=" + style);
+                out.println("PREFERRED_TOPICS=" + topics);
+                out.println("SILENCE_TIMEOUT=" + timeout);
             }
+
             System.setProperty("OPENAI_API_KEY", key);
+            System.setProperty("OPENAI_MODEL", model);
+            System.setProperty("OPENAI_TEMPERATURE", temp);
+            System.setProperty("OPENAI_TOP_P", topP);
+            System.setProperty("OPENAI_MAX_TOKENS", maxTokens);
+            System.setProperty("CONVERSATION_STYLE", style);
+            System.setProperty("PREFERRED_TOPICS", topics);
+            System.setProperty("SILENCE_TIMEOUT", timeout);
+
             System.out.println("Archivo .env creado.\n");
             logger.info(".env file created");
         } catch (IOException e) {
