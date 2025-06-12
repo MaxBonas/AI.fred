@@ -63,11 +63,32 @@ public class StreamBotApplicationTest {
         System.clearProperty("OPENAI_API_KEY");
         InputStream orig = System.in;
         try {
-            System.setIn(new ByteArrayInputStream("bar\nexit\n".getBytes(StandardCharsets.UTF_8)));
+            String userInput = String.join("\n",
+                    "bar",
+                    "model",
+                    "0.7",
+                    "0.9",
+                    "2048",
+                    "casual",
+                    "science,tech",
+                    "30",
+                    "exit",
+                    "");
+            System.setIn(new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8)));
             StreamBotApplication.main(new String[]{});
             assertTrue(Files.exists(env), ".env should be created");
             String content = Files.readString(env);
-            assertEquals("OPENAI_API_KEY=bar\n", content);
+            String expected = String.join("\n",
+                    "OPENAI_API_KEY=bar",
+                    "OPENAI_MODEL=model",
+                    "OPENAI_TEMPERATURE=0.7",
+                    "OPENAI_TOP_P=0.9",
+                    "OPENAI_MAX_TOKENS=2048",
+                    "CONVERSATION_STYLE=casual",
+                    "PREFERRED_TOPICS=science,tech",
+                    "SILENCE_TIMEOUT=30",
+                    "");
+            assertEquals(expected, content);
         } finally {
             System.setIn(orig);
             Files.deleteIfExists(env);

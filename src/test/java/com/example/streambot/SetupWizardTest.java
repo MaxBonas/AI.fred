@@ -24,15 +24,49 @@ public class SetupWizardTest {
         Files.move(env, backup);
         InputStream originalIn = System.in;
         try {
-            System.setIn(new ByteArrayInputStream("bar\n".getBytes(StandardCharsets.UTF_8)));
+            String userInput = String.join("\n",
+                    "bar",
+                    "model",
+                    "0.7",
+                    "0.9",
+                    "2048",
+                    "casual",
+                    "science,tech",
+                    "30",
+                    "");
+            System.setIn(new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8)));
             SetupWizard.run();
             assertEquals("bar", System.getProperty("OPENAI_API_KEY"));
+            assertEquals("model", System.getProperty("OPENAI_MODEL"));
+            assertEquals("0.7", System.getProperty("OPENAI_TEMPERATURE"));
+            assertEquals("0.9", System.getProperty("OPENAI_TOP_P"));
+            assertEquals("2048", System.getProperty("OPENAI_MAX_TOKENS"));
+            assertEquals("casual", System.getProperty("CONVERSATION_STYLE"));
+            assertEquals("science,tech", System.getProperty("PREFERRED_TOPICS"));
+            assertEquals("30", System.getProperty("SILENCE_TIMEOUT"));
             assertTrue(Files.exists(env), ".env should be created");
             String content = Files.readString(env);
-            assertEquals("OPENAI_API_KEY=bar\n", content);
+            String expected = String.join("\n",
+                    "OPENAI_API_KEY=bar",
+                    "OPENAI_MODEL=model",
+                    "OPENAI_TEMPERATURE=0.7",
+                    "OPENAI_TOP_P=0.9",
+                    "OPENAI_MAX_TOKENS=2048",
+                    "CONVERSATION_STYLE=casual",
+                    "PREFERRED_TOPICS=science,tech",
+                    "SILENCE_TIMEOUT=30",
+                    "");
+            assertEquals(expected, content);
         } finally {
             System.setIn(originalIn);
             System.clearProperty("OPENAI_API_KEY");
+            System.clearProperty("OPENAI_MODEL");
+            System.clearProperty("OPENAI_TEMPERATURE");
+            System.clearProperty("OPENAI_TOP_P");
+            System.clearProperty("OPENAI_MAX_TOKENS");
+            System.clearProperty("CONVERSATION_STYLE");
+            System.clearProperty("PREFERRED_TOPICS");
+            System.clearProperty("SILENCE_TIMEOUT");
             Files.deleteIfExists(env);
             if (existed) {
                 Files.move(backup, env);
@@ -56,6 +90,13 @@ public class SetupWizardTest {
             assertFalse(Files.exists(env), ".env should not be created");
         } finally {
             System.clearProperty("OPENAI_API_KEY");
+            System.clearProperty("OPENAI_MODEL");
+            System.clearProperty("OPENAI_TEMPERATURE");
+            System.clearProperty("OPENAI_TOP_P");
+            System.clearProperty("OPENAI_MAX_TOKENS");
+            System.clearProperty("CONVERSATION_STYLE");
+            System.clearProperty("PREFERRED_TOPICS");
+            System.clearProperty("SILENCE_TIMEOUT");
             Files.deleteIfExists(env);
             if (existed) {
                 Files.move(backup, env);
