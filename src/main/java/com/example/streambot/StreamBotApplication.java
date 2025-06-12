@@ -42,6 +42,12 @@ public class StreamBotApplication {
             } else if ("--model".equals(args[i]) && i + 1 < args.length) {
                 map.put("OPENAI_MODEL", args[++i]);
                 logger.debug("Parsed model from CLI: {}", map.get("OPENAI_MODEL"));
+            } else if ("--tts-enabled".equals(args[i]) && i + 1 < args.length) {
+                map.put("TTS_ENABLED", args[++i]);
+                logger.debug("Parsed TTS_ENABLED from CLI: {}", map.get("TTS_ENABLED"));
+            } else if ("--tts-voice".equals(args[i]) && i + 1 < args.length) {
+                map.put("TTS_VOICE", args[++i]);
+                logger.debug("Parsed TTS_VOICE from CLI: {}", map.get("TTS_VOICE"));
             }
         }
         return map;

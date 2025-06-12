@@ -28,6 +28,18 @@ public class StreamBotApplicationTest {
     }
 
     @Test
+    public void parsesTtsEnabledFlag() {
+        Map<String, String> result = StreamBotApplication.parseArgs(new String[]{"--tts-enabled", "true"});
+        assertEquals("true", result.get("TTS_ENABLED"));
+    }
+
+    @Test
+    public void parsesTtsVoiceFlag() {
+        Map<String, String> result = StreamBotApplication.parseArgs(new String[]{"--tts-voice", "nova"});
+        assertEquals("nova", result.get("TTS_VOICE"));
+    }
+
+    @Test
     public void mainSkipsWizardIfApiKeyProvided(@TempDir Path tmp) throws Exception {
         Path env = Path.of(".env");
         Path backup = tmp.resolve("env.bak");
