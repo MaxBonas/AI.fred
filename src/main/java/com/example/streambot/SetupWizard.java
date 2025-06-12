@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,12 @@ import com.example.streambot.EnvUtils;
  */
 public class SetupWizard {
     private static final Logger logger = LoggerFactory.getLogger(SetupWizard.class);
+    /** List of models that the application supports. */
+    public static final List<String> SUPPORTED_MODELS = List.of(
+            "gpt-3.5-turbo",
+            "gpt-3.5-turbo-16k",
+            "gpt-4",
+            "gpt-4-32k");
     /**
      * Run the wizard to create or update the {@code .env} file.
      * Existing values are overwritten and system properties are updated.
@@ -30,7 +37,7 @@ public class SetupWizard {
             System.out.print("OPENAI_API_KEY: ");
             String key = scanner.nextLine().trim();
 
-            System.out.print("OPENAI_MODEL: ");
+            System.out.print("OPENAI_MODEL " + SUPPORTED_MODELS + ": ");
             String model = scanner.nextLine().trim();
 
             System.out.print("OPENAI_TEMPERATURE: ");
