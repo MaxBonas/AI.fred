@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
+
+// Use a dummy service to avoid hitting the real OpenAI API
+import com.example.streambot.DummyOpenAIService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,7 +16,7 @@ public class LocalChatBotTest {
 
     @Test
     public void replExitsOnExit() throws Exception {
-        DummyService svc = new DummyService();
+        DummyOpenAIService svc = new DummyOpenAIService();
         LocalChatBot bot = new LocalChatBot(svc);
 
         InputStream origIn = System.in;
@@ -29,21 +31,4 @@ public class LocalChatBotTest {
         assertEquals(List.of("hi"), svc.received);
     }
 
-    static class DummyService extends OpenAIService {
-        List<String> received = new ArrayList<>();
-        boolean closed = false;
-
-        DummyService() {}
-
-        @Override
-        public String ask(String prompt) {
-            received.add(prompt);
-            return "ok";
-        }
-
-        @Override
-        public void close() {
-            closed = true;
-        }
-    }
 }
