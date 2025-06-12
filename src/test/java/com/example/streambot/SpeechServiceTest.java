@@ -80,7 +80,7 @@ public class SpeechServiceTest {
     }
 
     @Test
-    public void speakSendsPayloadAndPlaysAudio() {
+    public void speakSendsPayloadAndPlaysAudio() throws Exception {
         System.setProperty("OPENAI_API_KEY", "key");
         System.setProperty("TTS_ENABLED", "true");
         System.setProperty("TTS_VOICE", "nova");
