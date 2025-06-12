@@ -16,8 +16,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Simple service that sends prompts to the OpenAI Chat Completions API.
  */
 public class OpenAIService {
-    private final HttpClient client = HttpClient.newHttpClient();
+    private final HttpClient client;
     private final String apiKey = EnvUtils.get("OPENAI_API_KEY");
+
+    /** Default constructor using a new HttpClient. */
+    public OpenAIService() {
+        this(HttpClient.newHttpClient());
+    }
+
+    /**
+     * Package-private constructor allowing a custom {@link HttpClient}.
+     * Primarily used for tests.
+     */
+    OpenAIService(HttpClient client) {
+        this.client = client;
+    }
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
