@@ -91,10 +91,11 @@ java -jar target/streambot-1.0-SNAPSHOT-shaded.jar
 
 
 ## Configuración de la API de OpenAI
-Si no existe `.env`, la primera vez que ejecutes la aplicación se abrirá automáticamente `SetupWizard`, un asistente interactivo que solicitará tu clave de OpenAI y escribirá `OPENAI_API_KEY` en el archivo. También puedes utilizar `env.example` como plantilla o crear el archivo manualmente con el siguiente contenido:
+Si no existe `.env`, la primera vez que ejecutes la aplicación se abrirá automáticamente `SetupWizard`, un asistente interactivo que solicitará tu clave de OpenAI y escribirá `OPENAI_API_KEY` en el archivo. También puedes utilizar `env.example` como plantilla o crear el archivo manualmente con el siguiente contenido. La variable `OPENAI_API_KEY` almacena tu clave de API:
 
 ```
-OPENAI_API_KEY=sk-...
+# Example configuration for StreamBot
+OPENAI_API_KEY=
 ```
 
 La aplicación admite modelos en formato PyTorch (`.pt`/`.zip`) y también
