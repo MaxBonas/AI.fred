@@ -85,18 +85,28 @@ public class SetupWizardTest {
     }
 
     @Test
-    public void runSkippedWhenKeyPresent(@TempDir Path tmp) throws Exception {
+    public void runOverwritesExistingEnv(@TempDir Path tmp) throws Exception {
         Path env = Path.of(".env");
         Path backup = tmp.resolve("env.bak");
         boolean existed = Files.exists(env);
         if (existed) {
             Files.move(env, backup);
         }
+        Files.writeString(env, "OPENAI_API_KEY=old\n");
         System.setProperty("OPENAI_API_KEY", "foo");
+        InputStream originalIn = System.in;
         try {
+            String userInput = String.join("\n",
+                    "new", "model", "0.5", "0.9", "100", "formal",
+                    "science", "10", "false", "alloy", "");
+            System.setIn(new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8)));
             SetupWizard.run();
-            assertFalse(Files.exists(env), ".env should not be created");
+            assertEquals("new", System.getProperty("OPENAI_API_KEY"));
+            assertTrue(Files.exists(env), ".env should exist");
+            String firstLine = Files.readAllLines(env).get(0);
+            assertEquals("OPENAI_API_KEY=new", firstLine);
         } finally {
+            System.setIn(originalIn);
             System.clearProperty("OPENAI_API_KEY");
             System.clearProperty("OPENAI_MODEL");
             System.clearProperty("OPENAI_TEMPERATURE");

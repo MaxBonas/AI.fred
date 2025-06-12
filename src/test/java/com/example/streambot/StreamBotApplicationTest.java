@@ -40,6 +40,12 @@ public class StreamBotApplicationTest {
     }
 
     @Test
+    public void parsesSetupFlag() {
+        Map<String, String> result = StreamBotApplication.parseArgs(new String[]{"--setup"});
+        assertEquals("true", result.get("SETUP"));
+    }
+
+    @Test
     public void mainSkipsWizardIfApiKeyProvided(@TempDir Path tmp) throws Exception {
         Path env = Path.of(".env");
         Path backup = tmp.resolve("env.bak");
@@ -105,6 +111,45 @@ public class StreamBotApplicationTest {
                     "TTS_VOICE=nova",
                     "");
             assertEquals(expected, content);
+        } finally {
+            System.setIn(orig);
+            Files.deleteIfExists(env);
+            if (existed) {
+                Files.move(backup, env);
+            } else {
+                Files.deleteIfExists(backup);
+            }
+        }
+    }
+
+    @Test
+    public void mainRunsWizardWhenSetupFlag(@TempDir Path tmp) throws Exception {
+        Path env = Path.of(".env");
+        Path backup = tmp.resolve("env.bak");
+        boolean existed = Files.exists(env);
+        if (existed) {
+            Files.move(env, backup);
+        }
+        InputStream orig = System.in;
+        try {
+            String userInput = String.join("\n",
+                    "baz",
+                    "model",
+                    "0.7",
+                    "0.9",
+                    "2048",
+                    "casual",
+                    "science,tech",
+                    "30",
+                    "true",
+                    "nova",
+                    "exit",
+                    "");
+            System.setIn(new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8)));
+            StreamBotApplication.main(new String[]{"--api-key", "foo", "--setup"});
+            assertTrue(Files.exists(env), ".env should be created");
+            String firstLine = Files.readAllLines(env).get(0);
+            assertEquals("OPENAI_API_KEY=baz", firstLine);
         } finally {
             System.setIn(orig);
             Files.deleteIfExists(env);
