@@ -5,7 +5,7 @@ Aplicación Java basada en Maven que utiliza la API de OpenAI para generar respu
 ## Requisitos previos
 
 - Java 17 (JDK 17)
-- Maven
+- Maven (opcional, se puede usar el wrapper `./mvnw` incluido)
 
 Instale primero JDK 17 y luego proceda con la instalaci\u00f3n de Maven.
 
@@ -38,7 +38,11 @@ java -version
 
 ## Instalaci\u00f3n de Maven
 
-Si Maven no est\u00e1 instalado en su sistema puede hacerlo siguiendo alguno de estos m\u00e9todos:
+Este proyecto incluye un *Maven Wrapper* (`./mvnw`) que descarga
+automáticamente Maven al ejecutarse. Puedes omitir esta sección si
+prefieres usar el wrapper. Si deseas instalar Maven manualmente sigue
+alguno de estos métodos:
+
 
 ### Ubuntu/Debian
 
@@ -70,7 +74,7 @@ mvn -v
 ## Compilar y ejecutar
 Al compilar con Maven se generar\u00e1 el archivo `target/streambot-1.0-SNAPSHOT-shaded.jar`.
 ```bash
-mvn package
+./mvnw package
 java -jar target/streambot-1.0-SNAPSHOT-shaded.jar
 ```
 Antes de ejecutar asegúrate de que las variables `OPENAI_API_KEY` y `OPENAI_MODEL` estén disponibles en tu entorno o definidas en `.env`. También puedes pasarlas al iniciar la aplicación con los argumentos `--api-key` y `--model`. De forma predeterminada se usa `gpt-3.5-turbo` como modelo. Además es posible habilitar la síntesis de voz con `--tts-enabled true` y seleccionar la voz mediante `--tts-voice`.
@@ -79,7 +83,7 @@ Antes de ejecutar asegúrate de que las variables `OPENAI_API_KEY` y `OPENAI_MOD
 Para correr las pruebas unitarias con Maven utilice:
 
 ```bash
-mvn test
+./mvnw test
 ```
 
 ### Uso básico
