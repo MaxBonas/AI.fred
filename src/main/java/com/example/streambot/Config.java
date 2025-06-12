@@ -72,6 +72,7 @@ public class Config {
      * Defaults are used when a property is not present or cannot be parsed.
      */
     public static Config load() {
+        EnvUtils.reload();
         String model = EnvUtils.get("OPENAI_MODEL", "gpt-3.5-turbo");
         double temperature = parseDouble(EnvUtils.get("OPENAI_TEMPERATURE"), 0.7);
         double topP = parseDouble(EnvUtils.get("OPENAI_TOP_P"), 0.9);

@@ -13,25 +13,16 @@ import org.slf4j.LoggerFactory;
 import com.example.streambot.EnvUtils;
 
 /**
- * Simple interactive wizard to create the .env file if it does not exist.
+ * Simple interactive wizard to create or update the {@code .env} file.
  */
 public class SetupWizard {
     private static final Logger logger = LoggerFactory.getLogger(SetupWizard.class);
     /**
-     * Run the wizard if .env is missing.
+     * Run the wizard to create or update the {@code .env} file.
+     * Existing values are overwritten and system properties are updated.
      */
     public static void run() {
-        String existing = EnvUtils.get("OPENAI_API_KEY");
-        if (existing != null && !existing.isBlank()) {
-            logger.debug("API key already present; skipping wizard");
-            return;
-        }
-
         File env = new File(".env");
-        if (env.exists()) {
-            logger.debug(".env file already exists; skipping wizard");
-            return;
-        }
 
         try (Scanner scanner = new Scanner(System.in)) {
             logger.info("Starting setup wizard");
@@ -90,8 +81,10 @@ public class SetupWizard {
             System.setProperty("TTS_ENABLED", ttsEnabled);
             System.setProperty("TTS_VOICE", ttsVoice);
 
-            System.out.println("Archivo .env creado.\n");
-            logger.info(".env file created");
+            EnvUtils.reload();
+
+            System.out.println("Archivo .env creado o actualizado.\n");
+            logger.info(".env file created or updated");
         } catch (IOException e) {
             logger.error("Error al crear .env", e);
             System.err.println("Error al crear .env: " + e.getMessage());

@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class EnvUtils {
     private static final Logger logger = LoggerFactory.getLogger(EnvUtils.class);
-    private static final Dotenv DOTENV = Dotenv.configure().ignoreIfMissing().load();
+    private static Dotenv DOTENV = Dotenv.configure().ignoreIfMissing().load();
 
     private EnvUtils() {
         // Utility class
@@ -39,5 +39,10 @@ public final class EnvUtils {
         }
         logger.debug("Resolved {} present? {}", key, value != null && !value.isBlank());
         return value;
+    }
+
+    /** Reload the {@code .env} file into memory. */
+    public static void reload() {
+        DOTENV = Dotenv.configure().ignoreIfMissing().load();
     }
 }

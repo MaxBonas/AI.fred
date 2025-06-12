@@ -22,8 +22,11 @@ public class StreamBotApplication {
         logger.debug("Parsed CLI arguments: {}", cli);
         cli.forEach(System::setProperty);
 
-        if (EnvUtils.get("OPENAI_API_KEY") == null || EnvUtils.get("OPENAI_API_KEY").isBlank()) {
-            logger.info("OPENAI_API_KEY not found. Running setup wizard.");
+        EnvUtils.reload();
+        boolean forceSetup = Boolean.parseBoolean(cli.getOrDefault("SETUP", "false"));
+        boolean keyMissing = EnvUtils.get("OPENAI_API_KEY") == null || EnvUtils.get("OPENAI_API_KEY").isBlank();
+        if (forceSetup || keyMissing) {
+            logger.info("Running setup wizard.");
             SetupWizard.run();
         }
 
@@ -48,6 +51,9 @@ public class StreamBotApplication {
             } else if ("--tts-voice".equals(args[i]) && i + 1 < args.length) {
                 map.put("TTS_VOICE", args[++i]);
                 logger.debug("Parsed TTS_VOICE from CLI: {}", map.get("TTS_VOICE"));
+            } else if ("--setup".equals(args[i])) {
+                map.put("SETUP", "true");
+                logger.debug("Parsed setup flag");
             }
         }
         return map;
