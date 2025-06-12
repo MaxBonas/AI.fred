@@ -92,12 +92,12 @@ java -jar target/streambot-1.0-SNAPSHOT-shaded.jar
 
 
 ## Configuración de la API de OpenAI
-Regístrate en [OpenAI](https://platform.openai.com/) y crea una nueva *API key*. Copia esa clave en el archivo `.env` como valor de `OPENAI_API_KEY`. Puedes indicar el modelo con `OPENAI_MODEL` (por ejemplo `gpt-4`). Si `.env` no existe, al ejecutar la aplicación se iniciará `SetupWizard`, un asistente interactivo que solicitará los valores y generará el archivo automáticamente. La clave ingresada quedará también disponible como propiedad del sistema para usarla de inmediato. Otra opción es pasar estos valores con los argumentos `--api-key` y `--model`. También puedes habilitar la síntesis con `--tts-enabled` y elegir la voz con `--tts-voice`. Usa `--setup` si deseas volver a ejecutar el asistente y sobrescribir la configuración actual. Puedes usar `env.example` como plantilla.
+Regístrate en [OpenAI](https://platform.openai.com/) y crea una nueva *API key*. Copia esa clave en el archivo `.env` como valor de `OPENAI_API_KEY`. Puedes indicar el modelo con `OPENAI_MODEL`. Los modelos soportados son `gpt-3.5-turbo`, `gpt-3.5-turbo-16k`, `gpt-4` y `gpt-4-32k` (estos valores se mostrarán cuando `SetupWizard` pregunte por `OPENAI_MODEL`). Si `.env` no existe, al ejecutar la aplicación se iniciará `SetupWizard`, un asistente interactivo que solicitará los valores y generará el archivo automáticamente. La clave ingresada quedará también disponible como propiedad del sistema para usarla de inmediato. Otra opción es pasar estos valores con los argumentos `--api-key` y `--model`. También puedes habilitar la síntesis con `--tts-enabled` y elegir la voz con `--tts-voice`. Usa `--setup` si deseas volver a ejecutar el asistente y sobrescribir la configuración actual. Puedes usar `env.example` como plantilla.
 
 Las principales variables de configuración son:
 
 - `OPENAI_API_KEY`: clave de autenticación para la API de OpenAI.
-- `OPENAI_MODEL`: modelo a utilizar.
+- `OPENAI_MODEL`: modelo a utilizar. Los valores admitidos son `gpt-3.5-turbo`, `gpt-3.5-turbo-16k`, `gpt-4` y `gpt-4-32k`.
 - `OPENAI_TEMPERATURE`: grado de aleatoriedad (0–2).
 - `OPENAI_TOP_P`: umbral de muestreo *top p*.
 - `OPENAI_MAX_TOKENS`: límite de tokens por respuesta.
