@@ -30,6 +30,8 @@ public class StreamBotApplication {
         for (int i = 0; i < args.length; i++) {
             if ("--api-key".equals(args[i]) && i + 1 < args.length) {
                 map.put("OPENAI_API_KEY", args[++i]);
+            } else if ("--model".equals(args[i]) && i + 1 < args.length) {
+                map.put("OPENAI_MODEL", args[++i]);
             }
         }
         return map;

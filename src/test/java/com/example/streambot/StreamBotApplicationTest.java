@@ -22,6 +22,12 @@ public class StreamBotApplicationTest {
     }
 
     @Test
+    public void parsesModelFlag() {
+        Map<String, String> result = StreamBotApplication.parseArgs(new String[]{"--model", "bar"});
+        assertEquals("bar", result.get("OPENAI_MODEL"));
+    }
+
+    @Test
     public void mainSkipsWizardIfApiKeyProvided(@TempDir Path tmp) throws Exception {
         Path env = Path.of(".env");
         Path backup = tmp.resolve("env.bak");

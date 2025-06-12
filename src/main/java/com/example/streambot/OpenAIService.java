@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class OpenAIService {
     private final HttpClient client;
     private final String apiKey = EnvUtils.get("OPENAI_API_KEY");
+    private final String model = EnvUtils.get("OPENAI_MODEL", "gpt-3.5-turbo");
 
     /** Default constructor using a new HttpClient. */
     public OpenAIService() {
@@ -48,7 +49,7 @@ public class OpenAIService {
                     "content", prompt
             );
             Map<String, Object> payloadMap = Map.of(
-                    "model", "gpt-3.5-turbo",
+                    "model", model,
                     "messages", List.of(message)
             );
             String payload = MAPPER.writeValueAsString(payloadMap);
