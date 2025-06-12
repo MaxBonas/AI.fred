@@ -112,6 +112,16 @@ public class OpenAIServiceTest {
     }
 
     @Test
+    public void threadNotInterruptedOnIOException() {
+        System.setProperty("OPENAI_API_KEY", "key");
+        Config cfg = Config.load();
+        OpenAIService svc = new OpenAIService(new StubHttpClient(new IOException("fail")), cfg);
+        assertFalse(Thread.currentThread().isInterrupted());
+        svc.ask("hi");
+        assertFalse(Thread.currentThread().isInterrupted());
+    }
+
+    @Test
     public void usesModelFromEnv() throws Exception {
         System.setProperty("OPENAI_API_KEY", "key");
         System.setProperty("OPENAI_MODEL", "gpt-test");

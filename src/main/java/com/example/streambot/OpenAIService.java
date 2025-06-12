@@ -103,8 +103,11 @@ public class OpenAIService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             logger.debug("Received response with status {}", response.statusCode());
             return parseContent(response.body());
-        } catch (InterruptedException | IOException e) {
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            logger.error("Error communicating with OpenAI", e);
+            return "";
+        } catch (IOException e) {
             logger.error("Error communicating with OpenAI", e);
             return "";
         }
