@@ -39,6 +39,12 @@ public class SetupWizard {
 
             System.out.print("OPENAI_MODEL " + SUPPORTED_MODELS + ": ");
             String model = scanner.nextLine().trim();
+            if (!SUPPORTED_MODELS.contains(model)) {
+                String def = SUPPORTED_MODELS.get(0);
+                System.out.println("Modelo no válido, se usará " + def);
+                logger.warn("Unsupported model '{}', defaulting to {}", model, def);
+                model = def;
+            }
 
             System.out.print("OPENAI_TEMPERATURE: ");
             String temp = scanner.nextLine().trim();

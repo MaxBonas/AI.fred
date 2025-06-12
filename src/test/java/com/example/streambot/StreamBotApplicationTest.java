@@ -83,7 +83,7 @@ public class StreamBotApplicationTest {
         try {
             String userInput = String.join("\n",
                     "bar",
-                    "model",
+                    "gpt-4",
                     "0.7",
                     "0.9",
                     "2048",
@@ -100,7 +100,7 @@ public class StreamBotApplicationTest {
             String content = Files.readString(env);
             String expected = String.join("\n",
                     "OPENAI_API_KEY=bar",
-                    "OPENAI_MODEL=model",
+                    "OPENAI_MODEL=gpt-4",
                     "OPENAI_TEMPERATURE=0.7",
                     "OPENAI_TOP_P=0.9",
                     "OPENAI_MAX_TOKENS=2048",
@@ -134,7 +134,7 @@ public class StreamBotApplicationTest {
         try {
             String userInput = String.join("\n",
                     "baz",
-                    "model",
+                    "gpt-3.5-turbo",
                     "0.7",
                     "0.9",
                     "2048",
