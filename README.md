@@ -1,6 +1,6 @@
 # StreamBot
 
-Aplicación Java basada en Maven que utiliza la API de OpenAI para generar respuestas y mostrarlas en OBS.
+Aplicación Java basada en Maven que utiliza la API de OpenAI para generar respuestas y mostrarlas en la consola.
 
 ## Requisitos previos
 
@@ -84,7 +84,7 @@ mvn test
 
 ### Uso básico
 
-Ejecuta el bot en consola y muestra las respuestas en OBS:
+Ejecuta el bot y muestra las respuestas en la consola:
 
 ```bash
 java -jar target/streambot-1.0-SNAPSHOT-shaded.jar
