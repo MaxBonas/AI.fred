@@ -150,4 +150,25 @@ public class OpenAIServiceTest {
         assertTrue(body.contains("\"top_p\":0.8"));
         assertTrue(body.contains("\"max_tokens\":123"));
     }
+
+    private String invokeParse(String json) throws Exception {
+        var m = OpenAIService.class.getDeclaredMethod("parseContent", String.class);
+        m.setAccessible(true);
+        return (String) m.invoke(null, json);
+    }
+
+    @Test
+    public void parseReturnsEmptyWhenChoicesMissing() throws Exception {
+        assertEquals("", invokeParse("{}"));
+    }
+
+    @Test
+    public void parseReturnsEmptyWhenMessageContentMissing() throws Exception {
+        assertEquals("", invokeParse("{\"choices\":[{\"message\":{}}]}"));
+    }
+
+    @Test
+    public void parseReturnsContentNormally() throws Exception {
+        assertEquals("hi", invokeParse("{\"choices\":[{\"message\":{\"content\":\"hi\"}}]}"));
+    }
 }
