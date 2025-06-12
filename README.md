@@ -92,12 +92,31 @@ java -jar target/streambot-1.0-SNAPSHOT-shaded.jar
 
 
 ## Configuración de la API de OpenAI
-Regístrate en [OpenAI](https://platform.openai.com/) y crea una nueva *API key*. Copia esa clave en el archivo `.env` como valor de `OPENAI_API_KEY`. Puedes indicar el modelo con `OPENAI_MODEL` (por ejemplo `gpt-4`). Si `.env` no existe, al ejecutar la aplicación se iniciará `SetupWizard` para solicitar la clave automáticamente. La clave ingresada quedará también disponible como propiedad del sistema para usarla de inmediato. Otra opción es pasar estos valores con los argumentos `--api-key` y `--model`. También puedes usar `env.example` como plantilla. El archivo debe contener lo siguiente:
+Regístrate en [OpenAI](https://platform.openai.com/) y crea una nueva *API key*. Copia esa clave en el archivo `.env` como valor de `OPENAI_API_KEY`. Puedes indicar el modelo con `OPENAI_MODEL` (por ejemplo `gpt-4`). Si `.env` no existe, al ejecutar la aplicación se iniciará `SetupWizard`, un asistente interactivo que solicitará los valores y generará el archivo automáticamente. La clave ingresada quedará también disponible como propiedad del sistema para usarla de inmediato. Otra opción es pasar estos valores con los argumentos `--api-key` y `--model`. También puedes usar `env.example` como plantilla.
+
+Las principales variables de configuración son:
+
+- `OPENAI_API_KEY`: clave de autenticación para la API de OpenAI.
+- `OPENAI_MODEL`: modelo a utilizar.
+- `OPENAI_TEMPERATURE`: grado de aleatoriedad (0–2).
+- `OPENAI_TOP_P`: umbral de muestreo *top p*.
+- `OPENAI_MAX_TOKENS`: límite de tokens por respuesta.
+- `CONVERSATION_STYLE`: tono para las sugerencias de conversación.
+- `PREFERRED_TOPICS`: lista de temas preferidos separados por comas.
+- `SILENCE_TIMEOUT`: segundos de espera antes de proponer un nuevo tema.
+
+Usa `env.example` como guía para crear tu propio `.env`:
 
 ```
 # Example configuration for StreamBot
 OPENAI_API_KEY=
 OPENAI_MODEL=
+OPENAI_TEMPERATURE=
+OPENAI_TOP_P=
+OPENAI_MAX_TOKENS=
+CONVERSATION_STYLE=
+PREFERRED_TOPICS=
+SILENCE_TIMEOUT=
 ```
 
 ## Licencia
