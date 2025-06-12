@@ -3,6 +3,9 @@ package com.example.streambot;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import com.example.streambot.Config;
+import com.example.streambot.TestUtils;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -42,6 +45,8 @@ public class OpenAIServiceTest {
         private final HttpClient delegate = HttpClient.newHttpClient();
         private final HttpResponse<String> response;
         private final IOException exception;
+        HttpRequest lastRequest;
+        String body;
         StubHttpClient(HttpResponse<String> response) {
             this.response = response;
             this.exception = null;
@@ -61,6 +66,10 @@ public class OpenAIServiceTest {
         @Override public Optional<Executor> executor() { return delegate.executor(); }
         @Override
         public <T> HttpResponse<T> send(HttpRequest request, HttpResponse.BodyHandler<T> handler) throws IOException {
+            lastRequest = request;
+            body = request.bodyPublisher()
+                    .map(bp -> TestUtils.publisherToString(bp))
+                    .orElse(null);
             if (exception != null) {
                 throw exception;
             }
@@ -87,7 +96,8 @@ public class OpenAIServiceTest {
         String json = "{\"choices\":[{\"message\":{\"content\":\"hello\"}}]}";
         System.setProperty("OPENAI_API_KEY", "key");
         HttpResponse<String> resp = new SimpleResponse(json);
-        OpenAIService svc = new OpenAIService(new StubHttpClient(resp));
+        Config cfg = Config.load();
+        OpenAIService svc = new OpenAIService(new StubHttpClient(resp), cfg);
         String reply = svc.ask("hi");
         assertEquals("hello", reply);
     }
@@ -95,7 +105,8 @@ public class OpenAIServiceTest {
     @Test
     public void askReturnsEmptyOnException() {
         System.setProperty("OPENAI_API_KEY", "key");
-        OpenAIService svc = new OpenAIService(new StubHttpClient(new IOException("boom")));
+        Config cfg = Config.load();
+        OpenAIService svc = new OpenAIService(new StubHttpClient(new IOException("boom")), cfg);
         String reply = svc.ask("hi");
         assertEquals("", reply);
     }
@@ -105,10 +116,28 @@ public class OpenAIServiceTest {
         System.setProperty("OPENAI_API_KEY", "key");
         System.setProperty("OPENAI_MODEL", "gpt-test");
         HttpResponse<String> resp = new SimpleResponse("{\"choices\":[{\"message\":{\"content\":\"ok\"}}]}");
-        OpenAIService svc = new OpenAIService(new StubHttpClient(resp));
+        Config cfg = Config.load();
+        OpenAIService svc = new OpenAIService(new StubHttpClient(resp), cfg);
         svc.ask("hi");
         var field = OpenAIService.class.getDeclaredField("model");
         field.setAccessible(true);
         assertEquals("gpt-test", field.get(svc));
+    }
+
+    @Test
+    public void payloadIncludesConfigValues() throws Exception {
+        System.setProperty("OPENAI_API_KEY", "key");
+        System.setProperty("OPENAI_TEMPERATURE", "0.6");
+        System.setProperty("OPENAI_TOP_P", "0.8");
+        System.setProperty("OPENAI_MAX_TOKENS", "123");
+        HttpResponse<String> resp = new SimpleResponse("{\"choices\":[{\"message\":{\"content\":\"ok\"}}]}");
+        StubHttpClient client = new StubHttpClient(resp);
+        Config cfg = Config.load();
+        OpenAIService svc = new OpenAIService(client, cfg);
+        svc.ask("hi");
+        String body = client.body;
+        assertTrue(body.contains("\"temperature\":0.6"));
+        assertTrue(body.contains("\"top_p\":0.8"));
+        assertTrue(body.contains("\"max_tokens\":123"));
     }
 }

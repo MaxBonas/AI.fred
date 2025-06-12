@@ -23,10 +23,13 @@ public class OpenAIService {
     private final HttpClient client;
     private final String apiKey;
     private final String model;
+    private final double temperature;
+    private final double topP;
+    private final int maxTokens;
 
-    /** Default constructor using a new HttpClient. */
+    /** Default constructor using a new HttpClient and {@link Config#load()}. */
     public OpenAIService() {
-        this(HttpClient.newHttpClient(), null);
+        this(HttpClient.newHttpClient(), Config.load());
     }
 
     /**
@@ -41,17 +44,21 @@ public class OpenAIService {
      * Primarily used for tests.
      */
     OpenAIService(HttpClient client) {
-        this(client, null);
+        this(client, Config.load());
     }
 
     OpenAIService(HttpClient client, Config config) {
+        Config cfg = config != null ? config : Config.load();
         this.client = client;
         this.apiKey = EnvUtils.get("OPENAI_API_KEY");
-        if (config != null && config.getModel() != null && !config.getModel().isBlank()) {
-            this.model = config.getModel();
+        if (cfg.getModel() != null && !cfg.getModel().isBlank()) {
+            this.model = cfg.getModel();
         } else {
             this.model = EnvUtils.get("OPENAI_MODEL", "gpt-3.5-turbo");
         }
+        this.temperature = cfg.getTemperature();
+        this.topP = cfg.getTopP();
+        this.maxTokens = cfg.getMaxTokens();
         if (apiKey == null || apiKey.isBlank()) {
             logger.warn("OPENAI_API_KEY not configured");
         } else {
@@ -78,7 +85,10 @@ public class OpenAIService {
             );
             Map<String, Object> payloadMap = Map.of(
                     "model", model,
-                    "messages", List.of(message)
+                    "messages", List.of(message),
+                    "temperature", temperature,
+                    "top_p", topP,
+                    "max_tokens", maxTokens
             );
             String payload = MAPPER.writeValueAsString(payloadMap);
 
