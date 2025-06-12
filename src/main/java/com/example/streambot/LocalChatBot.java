@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.streambot.MicrophoneMonitor;
 import com.example.streambot.SpeechService;
 
 /**
@@ -21,6 +22,11 @@ public class LocalChatBot {
     private final OpenAIService aiService;
     private final Config config;
     private final SpeechService speechService;
+    
+    /** Factory method for creating microphone monitors. */
+    protected MicrophoneMonitor createMonitor(Runnable callback) {
+        return new MicrophoneMonitor(callback);
+    }
 
     public LocalChatBot() {
         this(Config.load());
@@ -56,6 +62,7 @@ public class LocalChatBot {
         long timeoutMillis = config.getSilenceTimeout() * 1000L;
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         AtomicLong lastInput = new AtomicLong(System.currentTimeMillis());
+        MicrophoneMonitor monitor = null;
         Runnable silenceCheck = () -> {
             long now = System.currentTimeMillis();
             if (now - lastInput.get() >= timeoutMillis) {
@@ -69,6 +76,10 @@ public class LocalChatBot {
             }
         };
         scheduler.scheduleAtFixedRate(silenceCheck, timeoutMillis, timeoutMillis, TimeUnit.MILLISECONDS);
+        if (config.isUseMicrophone()) {
+            monitor = createMonitor(() -> lastInput.set(System.currentTimeMillis()));
+            monitor.start();
+        }
         try (Scanner scanner = new Scanner(System.in)) {
             logger.info("ChatBot iniciado. Escribe 'exit' para salir.");
             while (scanner.hasNextLine()) {
@@ -87,6 +98,9 @@ public class LocalChatBot {
                 speechService.speak(response);
             }
         } finally {
+            if (monitor != null) {
+                monitor.stop();
+            }
             scheduler.shutdownNow();
             aiService.close();
             logger.debug("ChatBot service closed");

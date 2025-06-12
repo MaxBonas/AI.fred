@@ -11,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.List;
 
 import com.example.streambot.Config;
+import com.example.streambot.MicrophoneMonitor;
+import com.example.streambot.OpenAIService;
 
 // Use a dummy service to avoid hitting the real OpenAI API
 import com.example.streambot.DummyOpenAIService;
@@ -18,6 +20,28 @@ import com.example.streambot.DummyOpenAIService;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LocalChatBotTest {
+
+    private static class StubMonitor extends MicrophoneMonitor {
+        private Runnable cb;
+        StubMonitor() { super(() -> {}); }
+        void setCallback(Runnable r) { this.cb = r; }
+        @Override public void start() { }
+        @Override public void stop() { }
+        void trigger() { if (cb != null) cb.run(); }
+    }
+
+    private static class BotWithStubMic extends LocalChatBot {
+        final StubMonitor stub;
+        BotWithStubMic(OpenAIService svc, Config cfg, StubMonitor stub) {
+            super(svc, cfg);
+            this.stub = stub;
+        }
+        @Override
+        protected MicrophoneMonitor createMonitor(Runnable cb) {
+            stub.setCallback(cb);
+            return stub;
+        }
+    }
 
     @Test
     public void replExitsOnExit() throws Exception {
@@ -66,6 +90,39 @@ public class LocalChatBotTest {
 
         assertTrue(svc.closed, "service closed");
         assertEquals(List.of("Sugiere un tema de conversación casual sobre science."), svc.received);
+    }
+
+    @Test
+    public void microphoneActivityPreventsSuggestion() throws Exception {
+        System.setProperty("SILENCE_TIMEOUT", "1");
+        System.setProperty("USE_MICROPHONE", "true");
+        Config cfg = Config.load();
+        DummyOpenAIService svc = new DummyOpenAIService();
+        StubMonitor stub = new StubMonitor();
+        BotWithStubMic bot = new BotWithStubMic(svc, cfg, stub);
+
+        PipedOutputStream pos = new PipedOutputStream();
+        PipedInputStream pis = new PipedInputStream(pos);
+        InputStream orig = System.in;
+        System.setIn(pis);
+        Thread t = new Thread(bot::start);
+        t.start();
+
+        try {
+            TimeUnit.MILLISECONDS.sleep(500);
+            stub.trigger();
+            TimeUnit.MILLISECONDS.sleep(700);
+            pos.write("exit\n".getBytes(StandardCharsets.UTF_8));
+            pos.flush();
+            t.join(2000);
+        } finally {
+            System.setIn(orig);
+            System.clearProperty("SILENCE_TIMEOUT");
+            System.clearProperty("USE_MICROPHONE");
+        }
+
+        assertTrue(svc.closed, "service closed");
+        assertTrue(svc.received.isEmpty(), "no prompt sent");
     }
 
 }

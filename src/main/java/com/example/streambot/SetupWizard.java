@@ -70,6 +70,9 @@ public class SetupWizard {
             System.out.print("TTS_VOICE: ");
             String ttsVoice = scanner.nextLine().trim();
 
+            System.out.print("USE_MICROPHONE: ");
+            String useMic = scanner.nextLine().trim();
+
             try (PrintWriter out = new PrintWriter(new FileWriter(env))) {
                 out.println("OPENAI_API_KEY=" + key);
                 out.println("OPENAI_MODEL=" + model);
@@ -81,6 +84,7 @@ public class SetupWizard {
                 out.println("SILENCE_TIMEOUT=" + timeout);
                 out.println("TTS_ENABLED=" + ttsEnabled);
                 out.println("TTS_VOICE=" + ttsVoice);
+                out.println("USE_MICROPHONE=" + useMic);
             }
 
             System.setProperty("OPENAI_API_KEY", key);
@@ -93,6 +97,7 @@ public class SetupWizard {
             System.setProperty("SILENCE_TIMEOUT", timeout);
             System.setProperty("TTS_ENABLED", ttsEnabled);
             System.setProperty("TTS_VOICE", ttsVoice);
+            System.setProperty("USE_MICROPHONE", useMic);
 
             EnvUtils.reload();
 

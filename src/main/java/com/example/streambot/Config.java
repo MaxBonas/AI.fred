@@ -20,10 +20,12 @@ public class Config {
     private final int silenceTimeout;
     private final boolean ttsEnabled;
     private final String ttsVoice;
+    private final boolean useMicrophone;
 
     private Config(String model, double temperature, double topP, int maxTokens,
                     List<String> topics, String conversationStyle,
-                    int silenceTimeout, boolean ttsEnabled, String ttsVoice) {
+                    int silenceTimeout, boolean ttsEnabled, String ttsVoice,
+                    boolean useMicrophone) {
         this.model = model;
         this.temperature = temperature;
         this.topP = topP;
@@ -33,6 +35,7 @@ public class Config {
         this.silenceTimeout = silenceTimeout;
         this.ttsEnabled = ttsEnabled;
         this.ttsVoice = ttsVoice;
+        this.useMicrophone = useMicrophone;
     }
 
     public String getModel() {
@@ -71,6 +74,10 @@ public class Config {
         return ttsVoice;
     }
 
+    public boolean isUseMicrophone() {
+        return useMicrophone;
+    }
+
     /**
      * Load configuration values from system properties or a .env file.
      * Defaults are used when a property is not present or cannot be parsed.
@@ -87,6 +94,7 @@ public class Config {
         int timeout = parseInt(EnvUtils.get("SILENCE_TIMEOUT"), 30);
         boolean ttsEnabled = Boolean.parseBoolean(EnvUtils.get("TTS_ENABLED", "false"));
         String ttsVoice = EnvUtils.get("TTS_VOICE", "alloy");
+        boolean useMic = Boolean.parseBoolean(EnvUtils.get("USE_MICROPHONE", "false"));
         String topicsProp = EnvUtils.get("PREFERRED_TOPICS", "");
         List<String> topics = new ArrayList<>();
         if (topicsProp != null && !topicsProp.isBlank()) {
@@ -98,7 +106,7 @@ public class Config {
             }
         }
         return new Config(model, temperature, topP, maxTokens,
-                topics, style, timeout, ttsEnabled, ttsVoice);
+                topics, style, timeout, ttsEnabled, ttsVoice, useMic);
     }
 
     private static double parseDouble(String val, double def) {

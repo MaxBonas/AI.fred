@@ -35,6 +35,7 @@ public class SetupWizardTest {
                     "30",
                     "true",
                     "nova",
+                    "false",
                     "");
             System.setIn(new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8)));
             SetupWizard.run();
@@ -48,6 +49,7 @@ public class SetupWizardTest {
             assertEquals("30", System.getProperty("SILENCE_TIMEOUT"));
             assertEquals("true", System.getProperty("TTS_ENABLED"));
             assertEquals("nova", System.getProperty("TTS_VOICE"));
+            assertEquals("false", System.getProperty("USE_MICROPHONE"));
             assertTrue(Files.exists(env), ".env should be created");
             String content = Files.readString(env);
             String expected = String.join("\n",
@@ -61,6 +63,7 @@ public class SetupWizardTest {
                     "SILENCE_TIMEOUT=30",
                     "TTS_ENABLED=true",
                     "TTS_VOICE=nova",
+                    "USE_MICROPHONE=false",
                     "");
             assertEquals(expected, content);
         } finally {
@@ -75,6 +78,9 @@ public class SetupWizardTest {
             System.clearProperty("SILENCE_TIMEOUT");
             System.clearProperty("TTS_ENABLED");
             System.clearProperty("TTS_VOICE");
+            System.clearProperty("USE_MICROPHONE");
+            System.clearProperty("USE_MICROPHONE");
+            System.clearProperty("USE_MICROPHONE");
             Files.deleteIfExists(env);
             if (existed) {
                 Files.move(backup, env);
@@ -98,7 +104,7 @@ public class SetupWizardTest {
         try {
             String userInput = String.join("\n",
                     "new", "gpt-3.5-turbo", "0.5", "0.9", "100", "formal",
-                    "science", "10", "false", "alloy", "");
+                    "science", "10", "false", "alloy", "true", "");
             System.setIn(new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8)));
             SetupWizard.run();
             assertEquals("new", System.getProperty("OPENAI_API_KEY"));
@@ -117,6 +123,7 @@ public class SetupWizardTest {
             System.clearProperty("SILENCE_TIMEOUT");
             System.clearProperty("TTS_ENABLED");
             System.clearProperty("TTS_VOICE");
+            System.clearProperty("USE_MICROPHONE");
             Files.deleteIfExists(env);
             if (existed) {
                 Files.move(backup, env);
@@ -138,7 +145,7 @@ public class SetupWizardTest {
         try {
             String userInput = String.join("\n",
                     "baz", "bad-model", "0.7", "0.9", "100", "formal",
-                    "", "10", "false", "alloy", "");
+                    "", "10", "false", "alloy", "false", "");
             System.setIn(new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8)));
             SetupWizard.run();
             assertEquals(SetupWizard.SUPPORTED_MODELS.get(0), System.getProperty("OPENAI_MODEL"));

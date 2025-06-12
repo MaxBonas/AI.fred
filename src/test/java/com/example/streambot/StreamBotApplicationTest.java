@@ -92,6 +92,7 @@ public class StreamBotApplicationTest {
                     "30",
                     "true",
                     "nova",
+                    "false",
                     "exit",
                     "");
             System.setIn(new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8)));
@@ -109,6 +110,7 @@ public class StreamBotApplicationTest {
                     "SILENCE_TIMEOUT=30",
                     "TTS_ENABLED=true",
                     "TTS_VOICE=nova",
+                    "USE_MICROPHONE=false",
                     "");
             assertEquals(expected, content);
         } finally {
@@ -143,6 +145,7 @@ public class StreamBotApplicationTest {
                     "30",
                     "true",
                     "nova",
+                    "false",
                     "exit",
                     "");
             System.setIn(new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8)));
