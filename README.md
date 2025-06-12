@@ -1,6 +1,6 @@
 # StreamBot
 
-Aplicación Java basada en Maven que utiliza la API de OpenAI para generar respuestas y mostrarlas en la consola.
+Aplicación Java basada en Maven que utiliza la API de OpenAI para generar respuestas y mostrarlas en la consola. Opcionalmente puede reproducir la respuesta con voz sintética utilizando el servicio de Text-to-Speech de OpenAI.
 
 ## Requisitos previos
 
@@ -104,6 +104,8 @@ Las principales variables de configuración son:
 - `CONVERSATION_STYLE`: tono para las sugerencias de conversación.
 - `PREFERRED_TOPICS`: lista de temas preferidos separados por comas.
 - `SILENCE_TIMEOUT`: segundos de espera antes de proponer un nuevo tema.
+- `TTS_ENABLED`: si se establece en `true` reproduce las respuestas con voz sintética.
+- `TTS_VOICE`: voz a utilizar para la síntesis (`alloy`, `echo`, `fable`, `onyx`, `nova` o `shimmer`).
 
 Usa `env.example` como guía para crear tu propio `.env`:
 
@@ -117,6 +119,8 @@ OPENAI_MAX_TOKENS=
 CONVERSATION_STYLE=
 PREFERRED_TOPICS=
 SILENCE_TIMEOUT=
+TTS_ENABLED=
+TTS_VOICE=
 ```
 
 ## Licencia

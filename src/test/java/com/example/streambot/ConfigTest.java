@@ -18,6 +18,8 @@ public class ConfigTest {
         System.clearProperty("CONVERSATION_STYLE");
         System.clearProperty("PREFERRED_TOPICS");
         System.clearProperty("SILENCE_TIMEOUT");
+        System.clearProperty("TTS_ENABLED");
+        System.clearProperty("TTS_VOICE");
     }
 
     @Test
@@ -29,6 +31,8 @@ public class ConfigTest {
         System.setProperty("CONVERSATION_STYLE", "formal");
         System.setProperty("PREFERRED_TOPICS", "one, two ,three");
         System.setProperty("SILENCE_TIMEOUT", "15");
+        System.setProperty("TTS_ENABLED", "true");
+        System.setProperty("TTS_VOICE", "onyx");
 
         Config cfg = Config.load();
         assertEquals("gpt-test", cfg.getModel());
@@ -38,6 +42,8 @@ public class ConfigTest {
         assertEquals(List.of("one", "two", "three"), cfg.getTopics());
         assertEquals("formal", cfg.getConversationStyle());
         assertEquals(15, cfg.getSilenceTimeout());
+        assertTrue(cfg.isTtsEnabled());
+        assertEquals("onyx", cfg.getTtsVoice());
     }
 
     @Test
@@ -50,5 +56,7 @@ public class ConfigTest {
         assertTrue(cfg.getTopics().isEmpty());
         assertEquals("neutral", cfg.getConversationStyle());
         assertEquals(30, cfg.getSilenceTimeout());
+        assertFalse(cfg.isTtsEnabled());
+        assertEquals("alloy", cfg.getTtsVoice());
     }
 }

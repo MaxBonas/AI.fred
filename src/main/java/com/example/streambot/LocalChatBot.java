@@ -6,8 +6,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.example.streambot.SpeechService;
 
 /**
  * A simple console-based chatbot that interacts with the OpenAI API
@@ -17,6 +20,7 @@ public class LocalChatBot {
     private static final Logger logger = LoggerFactory.getLogger(LocalChatBot.class);
     private final OpenAIService aiService;
     private final Config config;
+    private final SpeechService speechService;
 
     public LocalChatBot() {
         this(Config.load());
@@ -42,6 +46,7 @@ public class LocalChatBot {
     public LocalChatBot(OpenAIService service, Config config) {
         this.aiService = service;
         this.config = config != null ? config : Config.load();
+        this.speechService = new SpeechService(this.config);
     }
 
     /**
@@ -59,6 +64,7 @@ public class LocalChatBot {
                 String response = aiService.ask(prompt);
                 logger.debug("Received suggestion: {}", response);
                 System.out.println("AI: " + response);
+                speechService.speak(response);
                 lastInput.set(now);
             }
         };
@@ -78,6 +84,7 @@ public class LocalChatBot {
                 String response = aiService.ask(input);
                 logger.debug("Received response: {}", response);
                 System.out.println("AI: " + response);
+                speechService.speak(response);
             }
         } finally {
             scheduler.shutdownNow();
