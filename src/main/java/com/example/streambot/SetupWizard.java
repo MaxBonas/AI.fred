@@ -60,6 +60,12 @@ public class SetupWizard {
             System.out.print("SILENCE_TIMEOUT: ");
             String timeout = scanner.nextLine().trim();
 
+            System.out.print("TTS_ENABLED: ");
+            String ttsEnabled = scanner.nextLine().trim();
+
+            System.out.print("TTS_VOICE: ");
+            String ttsVoice = scanner.nextLine().trim();
+
             try (PrintWriter out = new PrintWriter(new FileWriter(env))) {
                 out.println("OPENAI_API_KEY=" + key);
                 out.println("OPENAI_MODEL=" + model);
@@ -69,6 +75,8 @@ public class SetupWizard {
                 out.println("CONVERSATION_STYLE=" + style);
                 out.println("PREFERRED_TOPICS=" + topics);
                 out.println("SILENCE_TIMEOUT=" + timeout);
+                out.println("TTS_ENABLED=" + ttsEnabled);
+                out.println("TTS_VOICE=" + ttsVoice);
             }
 
             System.setProperty("OPENAI_API_KEY", key);
@@ -79,6 +87,8 @@ public class SetupWizard {
             System.setProperty("CONVERSATION_STYLE", style);
             System.setProperty("PREFERRED_TOPICS", topics);
             System.setProperty("SILENCE_TIMEOUT", timeout);
+            System.setProperty("TTS_ENABLED", ttsEnabled);
+            System.setProperty("TTS_VOICE", ttsVoice);
 
             System.out.println("Archivo .env creado.\n");
             logger.info(".env file created");
