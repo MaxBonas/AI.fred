@@ -112,6 +112,7 @@ Las principales variables de configuración son:
 - `SILENCE_TIMEOUT`: segundos de espera antes de proponer un nuevo tema.
 - `TTS_ENABLED`: si se establece en `true` reproduce las respuestas con voz sintética.
 - `TTS_VOICE`: voz a utilizar para la síntesis (`alloy`, `echo`, `fable`, `onyx`, `nova` o `shimmer`).
+- `USE_MICROPHONE`: establece `true` para tener en cuenta el micrófono y reiniciar el temporizador de silencio cuando se detecte sonido.
 
 Usa `env.example` como guía para crear tu propio `.env`:
 
@@ -127,6 +128,7 @@ PREFERRED_TOPICS=
 SILENCE_TIMEOUT=
 TTS_ENABLED=
 TTS_VOICE=
+USE_MICROPHONE=
 ```
 
 ## Licencia

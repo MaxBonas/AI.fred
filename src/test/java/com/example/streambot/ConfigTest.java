@@ -20,6 +20,7 @@ public class ConfigTest {
         System.clearProperty("SILENCE_TIMEOUT");
         System.clearProperty("TTS_ENABLED");
         System.clearProperty("TTS_VOICE");
+        System.clearProperty("USE_MICROPHONE");
     }
 
     @Test
@@ -33,6 +34,7 @@ public class ConfigTest {
         System.setProperty("SILENCE_TIMEOUT", "15");
         System.setProperty("TTS_ENABLED", "true");
         System.setProperty("TTS_VOICE", "onyx");
+        System.setProperty("USE_MICROPHONE", "true");
 
         Config cfg = Config.load();
         assertEquals("gpt-test", cfg.getModel());
@@ -44,6 +46,7 @@ public class ConfigTest {
         assertEquals(15, cfg.getSilenceTimeout());
         assertTrue(cfg.isTtsEnabled());
         assertEquals("onyx", cfg.getTtsVoice());
+        assertTrue(cfg.isUseMicrophone());
     }
 
     @Test
@@ -58,6 +61,7 @@ public class ConfigTest {
         assertEquals(30, cfg.getSilenceTimeout());
         assertFalse(cfg.isTtsEnabled());
         assertEquals("alloy", cfg.getTtsVoice());
+        assertFalse(cfg.isUseMicrophone());
     }
 
     @Test

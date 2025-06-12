@@ -80,6 +80,7 @@ The main configuration variables are:
 - `SILENCE_TIMEOUT`: seconds of silence before suggesting a new topic.
 - `TTS_ENABLED`: set to `true` to play replies with synthesized voice.
 - `TTS_VOICE`: voice to use for synthesis (`alloy`, `echo`, `fable`, `onyx`, `nova` or `shimmer`).
+- `USE_MICROPHONE`: set to `true` to reset the silence timer when sound is detected.
 
 Use `env.example` as a guide to create your own `.env`:
 ```text
@@ -94,6 +95,7 @@ PREFERRED_TOPICS=
 SILENCE_TIMEOUT=
 TTS_ENABLED=
 TTS_VOICE=
+USE_MICROPHONE=
 ```
 
 ## License
