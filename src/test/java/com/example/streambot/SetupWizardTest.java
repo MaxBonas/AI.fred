@@ -39,4 +39,27 @@ public class SetupWizardTest {
             }
         }
     }
+
+    @Test
+    public void runSkippedWhenKeyPresent(@TempDir Path tmp) throws Exception {
+        Path env = Path.of(".env");
+        Path backup = tmp.resolve("env.bak");
+        boolean existed = Files.exists(env);
+        if (existed) {
+            Files.move(env, backup);
+        }
+        System.setProperty("OPENAI_API_KEY", "foo");
+        try {
+            SetupWizard.run();
+            assertFalse(Files.exists(env), ".env should not be created");
+        } finally {
+            System.clearProperty("OPENAI_API_KEY");
+            Files.deleteIfExists(env);
+            if (existed) {
+                Files.move(backup, env);
+            } else {
+                Files.deleteIfExists(backup);
+            }
+        }
+    }
 }
