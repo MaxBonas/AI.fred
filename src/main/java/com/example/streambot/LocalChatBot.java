@@ -70,7 +70,7 @@ public class LocalChatBot {
         };
         scheduler.scheduleAtFixedRate(silenceCheck, timeoutMillis, timeoutMillis, TimeUnit.MILLISECONDS);
         try (Scanner scanner = new Scanner(System.in)) {
-            logger.info("Local ChatBot started. Type 'exit' to quit.");
+            logger.info("ChatBot iniciado. Escribe 'exit' para salir.");
             while (scanner.hasNextLine()) {
                 String input = scanner.nextLine().trim();
                 lastInput.set(System.currentTimeMillis());
