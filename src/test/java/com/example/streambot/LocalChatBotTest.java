@@ -65,7 +65,7 @@ public class LocalChatBotTest {
         }
 
         assertTrue(svc.closed, "service closed");
-        assertEquals(List.of("Suggest a casual conversation topic about science."), svc.received);
+        assertEquals(List.of("Sugiere un tema de conversación casual sobre science."), svc.received);
     }
 
 }

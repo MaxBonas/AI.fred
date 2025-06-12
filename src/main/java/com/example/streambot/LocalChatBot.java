@@ -96,13 +96,12 @@ public class LocalChatBot {
     private String buildSuggestionPrompt() {
         String style = config.getConversationStyle();
         List<String> topics = config.getTopics();
-        StringBuilder sb = new StringBuilder("Suggest a");
+        StringBuilder sb = new StringBuilder("Sugiere un tema de conversación");
         if (style != null && !style.isBlank() && !"neutral".equalsIgnoreCase(style)) {
             sb.append(' ').append(style);
         }
-        sb.append(" conversation topic");
         if (!topics.isEmpty()) {
-            sb.append(" about ").append(String.join(", ", topics));
+            sb.append(" sobre ").append(String.join(", ", topics));
         }
         sb.append('.');
         return sb.toString();
