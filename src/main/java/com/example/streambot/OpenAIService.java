@@ -12,13 +12,26 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Simple service that sends prompts to the OpenAI Chat Completions API.
  */
 public class OpenAIService {
+    private static final Logger logger = LoggerFactory.getLogger(OpenAIService.class);
     private final HttpClient client;
     private final String apiKey = EnvUtils.get("OPENAI_API_KEY");
     private final String model = EnvUtils.get("OPENAI_MODEL", "gpt-3.5-turbo");
+
+    {
+        if (apiKey == null || apiKey.isBlank()) {
+            logger.warn("OPENAI_API_KEY not configured");
+        } else {
+            logger.debug("OPENAI_API_KEY loaded");
+        }
+        logger.debug("Using model: {}", model);
+    }
 
     /** Default constructor using a new HttpClient. */
     public OpenAIService() {
@@ -41,6 +54,7 @@ public class OpenAIService {
 
     public String ask(String prompt) {
         if (apiKey == null || apiKey.isBlank()) {
+            logger.warn("Attempted API call without API key");
             return "";
         }
         try {
@@ -54,6 +68,8 @@ public class OpenAIService {
             );
             String payload = MAPPER.writeValueAsString(payloadMap);
 
+            logger.debug("Sending request to OpenAI: {}", payload);
+
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://api.openai.com/v1/chat/completions"))
                     .header("Authorization", "Bearer " + apiKey)
@@ -61,16 +77,18 @@ public class OpenAIService {
                     .POST(HttpRequest.BodyPublishers.ofString(payload, StandardCharsets.UTF_8))
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            logger.debug("Received response with status {}", response.statusCode());
             return parseContent(response.body());
         } catch (InterruptedException | IOException e) {
             Thread.currentThread().interrupt();
+            logger.error("Error communicating with OpenAI", e);
             return "";
         }
     }
 
     /** No resources to close but kept for API symmetry. */
     public void close() {
-        // nothing to close
+        logger.debug("OpenAIService closed");
     }
 
     private static String parseContent(String body) {

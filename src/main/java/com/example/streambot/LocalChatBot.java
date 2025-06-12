@@ -37,11 +37,14 @@ public class LocalChatBot {
                 if (input.isEmpty()) {
                     continue;
                 }
+                logger.debug("Sending prompt: {}", input);
                 String response = aiService.ask(input);
+                logger.debug("Received response: {}", response);
                 System.out.println("AI: " + response);
             }
         } finally {
             aiService.close();
+            logger.debug("ChatBot service closed");
         }
     }
 }

@@ -2,10 +2,14 @@ package com.example.streambot;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Utility class to manage environment variables and system properties.
  */
 public final class EnvUtils {
+    private static final Logger logger = LoggerFactory.getLogger(EnvUtils.class);
     private static final Dotenv DOTENV = Dotenv.configure().ignoreIfMissing().load();
 
     private EnvUtils() {
@@ -30,8 +34,10 @@ public final class EnvUtils {
             value = DOTENV.get(key);
         }
         if ((value == null || value.isBlank()) && def != null) {
+            logger.debug("{} not found; using default", key);
             return def;
         }
+        logger.debug("Resolved {} present? {}", key, value != null && !value.isBlank());
         return value;
     }
 }
