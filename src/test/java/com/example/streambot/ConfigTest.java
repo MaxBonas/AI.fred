@@ -59,4 +59,18 @@ public class ConfigTest {
         assertFalse(cfg.isTtsEnabled());
         assertEquals("alloy", cfg.getTtsVoice());
     }
+
+    @Test
+    public void temperatureOutOfRangeRevertsToDefault() {
+        System.setProperty("OPENAI_TEMPERATURE", "3.5");
+        Config cfg = Config.load();
+        assertEquals(0.7, cfg.getTemperature());
+    }
+
+    @Test
+    public void topPOutOfRangeRevertsToDefault() {
+        System.setProperty("OPENAI_TOP_P", "-0.1");
+        Config cfg = Config.load();
+        assertEquals(0.9, cfg.getTopP());
+    }
 }
