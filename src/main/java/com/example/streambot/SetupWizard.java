@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+// Access environment and system properties
+import com.example.streambot.EnvUtils;
+
 /**
  * Simple interactive wizard to create the .env file if it does not exist.
  */
@@ -14,6 +17,11 @@ public class SetupWizard {
      * Run the wizard if .env is missing.
      */
     public static void run() {
+        String existing = EnvUtils.get("OPENAI_API_KEY");
+        if (existing != null && !existing.isBlank()) {
+            return;
+        }
+
         File env = new File(".env");
         if (env.exists()) {
             return;
