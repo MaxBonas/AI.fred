@@ -11,3 +11,4 @@ dependency-reduced-pom.xml
 
 # general
 .DS_Store
+/.mvn/wrapper/maven-wrapper.jar
