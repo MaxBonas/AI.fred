@@ -20,6 +20,10 @@ public class StreamBotApplication {
         logger.info("Starting StreamBot");
         Map<String, String> cli = parseArgs(args);
         logger.debug("Parsed CLI arguments: {}", cli);
+        if (Boolean.parseBoolean(cli.getOrDefault("HELP", "false"))) {
+            printUsage();
+            return;
+        }
         cli.forEach(System::setProperty);
 
         EnvUtils.reload();
@@ -54,8 +58,24 @@ public class StreamBotApplication {
             } else if ("--setup".equals(args[i])) {
                 map.put("SETUP", "true");
                 logger.debug("Parsed setup flag");
+            } else if ("--help".equals(args[i])) {
+                map.put("HELP", "true");
+                logger.debug("Parsed help flag");
             }
         }
         return map;
+    }
+
+    private static void printUsage() {
+        String msg = String.join(System.lineSeparator(),
+                "Usage: java -jar streambot.jar [options]",
+                "  --api-key KEY       OpenAI API key",
+                "  --model MODEL       OpenAI model",
+                "  --tts-enabled VAL   enable text to speech",
+                "  --tts-voice VOICE   voice for synthesis",
+                "  --setup             run interactive setup",
+                "  --help              show this message",
+                "");
+        System.out.println(msg);
     }
 }

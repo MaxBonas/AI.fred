@@ -160,4 +160,22 @@ public class StreamBotApplicationTest {
             }
         }
     }
+
+    @Test
+    public void helpFlagPrintsUsage() throws Exception {
+        java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+        java.io.PrintStream origOut = System.out;
+        java.io.InputStream origIn = System.in;
+        try {
+            System.setOut(new java.io.PrintStream(out));
+            System.setIn(new ByteArrayInputStream(new byte[0]));
+            StreamBotApplication.main(new String[]{"--help"});
+        } finally {
+            System.setOut(origOut);
+            System.setIn(origIn);
+        }
+        String text = out.toString(java.nio.charset.StandardCharsets.UTF_8);
+        assertTrue(text.contains("--api-key"), "usage should mention api-key");
+        assertTrue(text.contains("--help"), "usage should mention help flag");
+    }
 }

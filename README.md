@@ -79,7 +79,7 @@ Al compilar con Maven se generar\u00e1 el archivo `target/streambot-1.0-SNAPSHOT
 ./mvnw package
 java -jar target/streambot-1.0-SNAPSHOT-shaded.jar
 ```
-Antes de ejecutar asegúrate de que las variables `OPENAI_API_KEY` y `OPENAI_MODEL` estén disponibles en tu entorno o definidas en `.env`. También puedes pasarlas al iniciar la aplicación con los argumentos `--api-key` y `--model`. De forma predeterminada se usa `gpt-3.5-turbo` como modelo. Además es posible habilitar la síntesis de voz con `--tts-enabled true` y seleccionar la voz mediante `--tts-voice`.
+Antes de ejecutar asegúrate de que las variables `OPENAI_API_KEY` y `OPENAI_MODEL` estén disponibles en tu entorno o definidas en `.env`. También puedes pasarlas al iniciar la aplicación con los argumentos `--api-key` y `--model`. De forma predeterminada se usa `gpt-3.5-turbo` como modelo. Además es posible habilitar la síntesis de voz con `--tts-enabled true` y seleccionar la voz mediante `--tts-voice`. Usa `--help` para listar todas las opciones.
 
 ## Ejecutar pruebas
 Para correr las pruebas unitarias con Maven utilice:
