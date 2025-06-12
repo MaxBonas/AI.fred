@@ -19,8 +19,8 @@ public class StreamBotApplication {
     static Map<String, String> parseArgs(String[] args) {
         Map<String, String> map = new HashMap<>();
         for (int i = 0; i < args.length; i++) {
-            if ("--model-path".equals(args[i]) && i + 1 < args.length) {
-                map.put("MISTRAL_MODEL_PATH", args[++i]);
+            if ("--api-key".equals(args[i]) && i + 1 < args.length) {
+                map.put("OPENAI_API_KEY", args[++i]);
             }
         }
         return map;

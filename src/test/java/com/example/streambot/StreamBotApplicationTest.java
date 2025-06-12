@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class StreamBotApplicationTest {
 
     @Test
-    public void parsesModelPathFlag() {
-        Map<String, String> result = StreamBotApplication.parseArgs(new String[]{"--model-path", "/x"});
-        assertEquals("/x", result.get("MISTRAL_MODEL_PATH"));
+    public void parsesApiKeyFlag() {
+        Map<String, String> result = StreamBotApplication.parseArgs(new String[]{"--api-key", "foo"});
+        assertEquals("foo", result.get("OPENAI_API_KEY"));
     }
 }
