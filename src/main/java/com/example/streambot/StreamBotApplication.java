@@ -27,7 +27,8 @@ public class StreamBotApplication {
             SetupWizard.run();
         }
 
-        LocalChatBot bot = new LocalChatBot();
+        Config config = Config.load();
+        LocalChatBot bot = new LocalChatBot(new OpenAIService(config));
         bot.start();
     }
 
