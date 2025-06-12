@@ -21,21 +21,19 @@ import org.slf4j.LoggerFactory;
 public class OpenAIService {
     private static final Logger logger = LoggerFactory.getLogger(OpenAIService.class);
     private final HttpClient client;
-    private final String apiKey = EnvUtils.get("OPENAI_API_KEY");
-    private final String model = EnvUtils.get("OPENAI_MODEL", "gpt-3.5-turbo");
-
-    {
-        if (apiKey == null || apiKey.isBlank()) {
-            logger.warn("OPENAI_API_KEY not configured");
-        } else {
-            logger.debug("OPENAI_API_KEY loaded");
-        }
-        logger.debug("Using model: {}", model);
-    }
+    private final String apiKey;
+    private final String model;
 
     /** Default constructor using a new HttpClient. */
     public OpenAIService() {
-        this(HttpClient.newHttpClient());
+        this(HttpClient.newHttpClient(), null);
+    }
+
+    /**
+     * Create a service using the given configuration.
+     */
+    public OpenAIService(Config config) {
+        this(HttpClient.newHttpClient(), config);
     }
 
     /**
@@ -43,7 +41,23 @@ public class OpenAIService {
      * Primarily used for tests.
      */
     OpenAIService(HttpClient client) {
+        this(client, null);
+    }
+
+    OpenAIService(HttpClient client, Config config) {
         this.client = client;
+        this.apiKey = EnvUtils.get("OPENAI_API_KEY");
+        if (config != null && config.getModel() != null && !config.getModel().isBlank()) {
+            this.model = config.getModel();
+        } else {
+            this.model = EnvUtils.get("OPENAI_MODEL", "gpt-3.5-turbo");
+        }
+        if (apiKey == null || apiKey.isBlank()) {
+            logger.warn("OPENAI_API_KEY not configured");
+        } else {
+            logger.debug("OPENAI_API_KEY loaded");
+        }
+        logger.debug("Using model: {}", model);
     }
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
