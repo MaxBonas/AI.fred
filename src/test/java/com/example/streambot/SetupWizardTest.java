@@ -29,8 +29,10 @@ public class SetupWizardTest {
             assertTrue(Files.exists(env), ".env should be created");
             String content = Files.readString(env);
             assertEquals("OPENAI_API_KEY=bar\n", content);
+            assertEquals("bar", System.getProperty("OPENAI_API_KEY"));
         } finally {
             System.setIn(originalIn);
+            System.clearProperty("OPENAI_API_KEY");
             Files.deleteIfExists(env);
             if (existed) {
                 Files.move(backup, env);

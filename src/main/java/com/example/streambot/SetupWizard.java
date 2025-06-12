@@ -35,6 +35,7 @@ public class SetupWizard {
             try (PrintWriter out = new PrintWriter(new FileWriter(env))) {
                 out.println("OPENAI_API_KEY=" + key);
             }
+            System.setProperty("OPENAI_API_KEY", key);
             System.out.println("Archivo .env creado.\n");
         } catch (IOException e) {
             System.err.println("Error al crear .env: " + e.getMessage());
