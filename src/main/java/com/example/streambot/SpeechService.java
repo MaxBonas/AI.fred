@@ -7,6 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SpeechService {
     private static final Logger logger = LoggerFactory.getLogger(SpeechService.class);
+    private static final ObjectMapper MAPPER = new ObjectMapper();
     private final HttpClient client;
     private final String apiKey;
     private final String voice;
@@ -62,6 +64,11 @@ public class SpeechService {
     }
 
     private static String toJsonString(String s) {
-        return '"' + s.replace("\\", "\\\\").replace("\"", "\\\"") + '"';
+        try {
+            return MAPPER.writeValueAsString(s);
+        } catch (Exception e) {
+            logger.error("Error serializing JSON", e);
+            return "\"\"";
+        }
     }
 }

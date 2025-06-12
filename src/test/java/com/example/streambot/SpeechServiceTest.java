@@ -100,6 +100,25 @@ public class SpeechServiceTest {
     }
 
     @Test
+    public void speakEncodesNewlines() throws Exception {
+        System.setProperty("OPENAI_API_KEY", "key");
+        System.setProperty("TTS_ENABLED", "true");
+        System.setProperty("TTS_VOICE", "nova");
+        Config cfg = Config.load();
+        DummyResponse resp = new DummyResponse(new byte[0]);
+        StubHttpClient client = new StubHttpClient(resp);
+        SpeechService svc = new SpeechService(client, cfg);
+
+        svc.speak("hello\nworld");
+
+        assertNotNull(client.body, "payload sent");
+        Map<?, ?> map = new com.fasterxml.jackson.databind.ObjectMapper().readValue(client.body, Map.class);
+        assertEquals("hello\nworld", map.get("input"));
+        assertEquals("tts-1", map.get("model"));
+        assertEquals("nova", map.get("voice"));
+    }
+
+    @Test
     public void speakHandlesErrors() {
         System.setProperty("OPENAI_API_KEY", "key");
         System.setProperty("TTS_ENABLED", "true");
