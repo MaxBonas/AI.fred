@@ -73,7 +73,7 @@ Al compilar con Maven se generar\u00e1 el archivo `target/streambot-1.0-SNAPSHOT
 mvn package
 java -jar target/streambot-1.0-SNAPSHOT-shaded.jar
 ```
-Antes de ejecutar asegúrate de que la variable `OPENAI_API_KEY` esté disponible en tu entorno o definida en `.env`. También puedes pasarla al iniciar la aplicación con el argumento `--api-key`.
+Antes de ejecutar asegúrate de que las variables `OPENAI_API_KEY` y `OPENAI_MODEL` estén disponibles en tu entorno o definidas en `.env`. También puedes pasarlas al iniciar la aplicación con los argumentos `--api-key` y `--model`. De forma predeterminada se usa `gpt-3.5-turbo` como modelo.
 
 ## Ejecutar pruebas
 Para correr las pruebas unitarias con Maven utilice:
@@ -92,11 +92,12 @@ java -jar target/streambot-1.0-SNAPSHOT-shaded.jar
 
 
 ## Configuración de la API de OpenAI
-Regístrate en [OpenAI](https://platform.openai.com/) y crea una nueva *API key*. Copia esa clave en el archivo `.env` como valor de `OPENAI_API_KEY`. Si `.env` no existe, al ejecutar la aplicación se iniciará `SetupWizard` para solicitarla automáticamente. La clave ingresada quedará también disponible como propiedad del sistema para usarla de inmediato. Otra opción es pasar la clave cada vez con el argumento `--api-key`. También puedes usar `env.example` como plantilla. El archivo debe contener lo siguiente:
+Regístrate en [OpenAI](https://platform.openai.com/) y crea una nueva *API key*. Copia esa clave en el archivo `.env` como valor de `OPENAI_API_KEY`. Puedes indicar el modelo con `OPENAI_MODEL` (por ejemplo `gpt-4`). Si `.env` no existe, al ejecutar la aplicación se iniciará `SetupWizard` para solicitar la clave automáticamente. La clave ingresada quedará también disponible como propiedad del sistema para usarla de inmediato. Otra opción es pasar estos valores con los argumentos `--api-key` y `--model`. También puedes usar `env.example` como plantilla. El archivo debe contener lo siguiente:
 
 ```
 # Example configuration for StreamBot
 OPENAI_API_KEY=
+OPENAI_MODEL=
 ```
 
 ## Licencia

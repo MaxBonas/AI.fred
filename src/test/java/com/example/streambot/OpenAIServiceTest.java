@@ -79,6 +79,7 @@ public class OpenAIServiceTest {
     @AfterEach
     public void clearKey() {
         System.clearProperty("OPENAI_API_KEY");
+        System.clearProperty("OPENAI_MODEL");
     }
 
     @Test
@@ -97,5 +98,17 @@ public class OpenAIServiceTest {
         OpenAIService svc = new OpenAIService(new StubHttpClient(new IOException("boom")));
         String reply = svc.ask("hi");
         assertEquals("", reply);
+    }
+
+    @Test
+    public void usesModelFromEnv() throws Exception {
+        System.setProperty("OPENAI_API_KEY", "key");
+        System.setProperty("OPENAI_MODEL", "gpt-test");
+        HttpResponse<String> resp = new SimpleResponse("{\"choices\":[{\"message\":{\"content\":\"ok\"}}]}");
+        OpenAIService svc = new OpenAIService(new StubHttpClient(resp));
+        svc.ask("hi");
+        var field = OpenAIService.class.getDeclaredField("model");
+        field.setAccessible(true);
+        assertEquals("gpt-test", field.get(svc));
     }
 }
