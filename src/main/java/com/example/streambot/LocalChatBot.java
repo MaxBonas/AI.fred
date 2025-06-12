@@ -13,7 +13,14 @@ public class LocalChatBot {
     private final OpenAIService aiService;
 
     public LocalChatBot() {
-        this(new OpenAIService());
+        this(Config.load());
+    }
+
+    /**
+     * Create a bot using the provided configuration.
+     */
+    public LocalChatBot(Config config) {
+        this(new OpenAIService(config));
     }
 
     /**
