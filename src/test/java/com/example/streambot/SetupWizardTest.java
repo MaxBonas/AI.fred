@@ -33,6 +33,8 @@ public class SetupWizardTest {
                     "casual",
                     "science,tech",
                     "30",
+                    "true",
+                    "nova",
                     "");
             System.setIn(new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8)));
             SetupWizard.run();
@@ -44,6 +46,8 @@ public class SetupWizardTest {
             assertEquals("casual", System.getProperty("CONVERSATION_STYLE"));
             assertEquals("science,tech", System.getProperty("PREFERRED_TOPICS"));
             assertEquals("30", System.getProperty("SILENCE_TIMEOUT"));
+            assertEquals("true", System.getProperty("TTS_ENABLED"));
+            assertEquals("nova", System.getProperty("TTS_VOICE"));
             assertTrue(Files.exists(env), ".env should be created");
             String content = Files.readString(env);
             String expected = String.join("\n",
@@ -55,6 +59,8 @@ public class SetupWizardTest {
                     "CONVERSATION_STYLE=casual",
                     "PREFERRED_TOPICS=science,tech",
                     "SILENCE_TIMEOUT=30",
+                    "TTS_ENABLED=true",
+                    "TTS_VOICE=nova",
                     "");
             assertEquals(expected, content);
         } finally {
@@ -67,6 +73,8 @@ public class SetupWizardTest {
             System.clearProperty("CONVERSATION_STYLE");
             System.clearProperty("PREFERRED_TOPICS");
             System.clearProperty("SILENCE_TIMEOUT");
+            System.clearProperty("TTS_ENABLED");
+            System.clearProperty("TTS_VOICE");
             Files.deleteIfExists(env);
             if (existed) {
                 Files.move(backup, env);
@@ -97,6 +105,8 @@ public class SetupWizardTest {
             System.clearProperty("CONVERSATION_STYLE");
             System.clearProperty("PREFERRED_TOPICS");
             System.clearProperty("SILENCE_TIMEOUT");
+            System.clearProperty("TTS_ENABLED");
+            System.clearProperty("TTS_VOICE");
             Files.deleteIfExists(env);
             if (existed) {
                 Files.move(backup, env);

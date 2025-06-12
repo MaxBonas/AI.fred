@@ -72,6 +72,8 @@ public class StreamBotApplicationTest {
                     "casual",
                     "science,tech",
                     "30",
+                    "true",
+                    "nova",
                     "exit",
                     "");
             System.setIn(new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8)));
@@ -87,6 +89,8 @@ public class StreamBotApplicationTest {
                     "CONVERSATION_STYLE=casual",
                     "PREFERRED_TOPICS=science,tech",
                     "SILENCE_TIMEOUT=30",
+                    "TTS_ENABLED=true",
+                    "TTS_VOICE=nova",
                     "");
             assertEquals(expected, content);
         } finally {
