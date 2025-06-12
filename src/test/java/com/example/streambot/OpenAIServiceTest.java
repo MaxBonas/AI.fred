@@ -18,6 +18,9 @@ import java.util.concurrent.Executor;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSession;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -97,5 +100,22 @@ public class OpenAIServiceTest {
         OpenAIService svc = new OpenAIService(new StubHttpClient(new IOException("boom")));
         String reply = svc.ask("hi");
         assertEquals("", reply);
+    }
+
+    @Test
+    public void askLogsErrorOnException() {
+        System.setProperty("OPENAI_API_KEY", "key");
+        ByteArrayOutputStream err = new ByteArrayOutputStream();
+        PrintStream originalErr = System.err;
+        System.setErr(new PrintStream(err));
+        try {
+            OpenAIService svc = new OpenAIService(new StubHttpClient(new IOException("boom")),
+                    LoggerFactory.getLogger("test"));
+            svc.ask("hi");
+        } finally {
+            System.setErr(originalErr);
+        }
+        String logs = err.toString();
+        assertTrue(logs.contains("boom"), "error should be logged");
     }
 }

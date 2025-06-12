@@ -9,6 +9,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,10 +21,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class OpenAIService {
     private final HttpClient client;
     private final String apiKey = EnvUtils.get("OPENAI_API_KEY");
+    private final Logger logger;
 
     /** Default constructor using a new HttpClient. */
     public OpenAIService() {
-        this(HttpClient.newHttpClient());
+        this(HttpClient.newHttpClient(), LoggerFactory.getLogger(OpenAIService.class));
     }
 
     /**
@@ -29,7 +33,16 @@ public class OpenAIService {
      * Primarily used for tests.
      */
     OpenAIService(HttpClient client) {
+        this(client, LoggerFactory.getLogger(OpenAIService.class));
+    }
+
+    /**
+     * Package-private constructor allowing a custom {@link HttpClient} and {@link Logger}.
+     * Used in tests to verify logging behavior.
+     */
+    OpenAIService(HttpClient client, Logger logger) {
         this.client = client;
+        this.logger = logger;
     }
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -62,6 +75,7 @@ public class OpenAIService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             return parseContent(response.body());
         } catch (InterruptedException | IOException e) {
+            logger.error("Error calling OpenAI API: {}", e.getMessage());
             Thread.currentThread().interrupt();
             return "";
         }
