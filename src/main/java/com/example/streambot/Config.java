@@ -3,10 +3,14 @@ package com.example.streambot;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Simple configuration holder for StreamBot.
  */
 public class Config {
+    private static final Logger logger = LoggerFactory.getLogger(Config.class);
     private final String model;
     private final double temperature;
     private final double topP;
@@ -75,7 +79,9 @@ public class Config {
         EnvUtils.reload();
         String model = EnvUtils.get("OPENAI_MODEL", "gpt-3.5-turbo");
         double temperature = parseDouble(EnvUtils.get("OPENAI_TEMPERATURE"), 0.7);
+        temperature = clamp("OPENAI_TEMPERATURE", temperature, 0.7, 0, 2);
         double topP = parseDouble(EnvUtils.get("OPENAI_TOP_P"), 0.9);
+        topP = clamp("OPENAI_TOP_P", topP, 0.9, 0, 1);
         int maxTokens = parseInt(EnvUtils.get("OPENAI_MAX_TOKENS"), 2048);
         String style = EnvUtils.get("CONVERSATION_STYLE", "neutral");
         int timeout = parseInt(EnvUtils.get("SILENCE_TIMEOUT"), 30);
@@ -115,5 +121,15 @@ public class Config {
         } catch (NumberFormatException ex) {
             return def;
         }
+    }
+
+    private static double clamp(String name, double val, double def,
+                                double min, double max) {
+        if (val < min || val > max) {
+            logger.warn("{}={} outside range {}-{}; using default {}",
+                    name, val, min, max, def);
+            return def;
+        }
+        return val;
     }
 }
