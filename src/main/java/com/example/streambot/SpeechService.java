@@ -44,8 +44,11 @@ public class SpeechService {
             return;
         }
         try {
-            String payload = String.format("{\"model\":\"tts-1\",\"input\":%s,\"voice\":\"%s\"}",
-                    toJsonString(text), voice);
+            java.util.Map<String, Object> map = java.util.Map.of(
+                    "model", "tts-1",
+                    "input", text,
+                    "voice", voice);
+            String payload = MAPPER.writeValueAsString(map);
             HttpRequest req = HttpRequest.newBuilder()
                     .uri(URI.create("https://api.openai.com/v1/audio/speech"))
                     .header("Authorization", "Bearer " + apiKey)
@@ -63,12 +66,4 @@ public class SpeechService {
         }
     }
 
-    private static String toJsonString(String s) {
-        try {
-            return MAPPER.writeValueAsString(s);
-        } catch (Exception e) {
-            logger.error("Error serializing JSON", e);
-            return "\"\"";
-        }
-    }
 }

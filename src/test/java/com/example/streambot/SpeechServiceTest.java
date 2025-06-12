@@ -94,9 +94,11 @@ public class SpeechServiceTest {
 
         assertTrue(javazoom.jl.player.Player.played, "playback should occur");
         assertNotNull(client.lastRequest, "request sent");
-        assertTrue(client.body.contains("\"model\":\"tts-1\""));
-        assertTrue(client.body.contains("\"input\":\"hi\""));
-        assertTrue(client.body.contains("\"voice\":\"nova\""));
+        Map<?, ?> payload = new com.fasterxml.jackson.databind.ObjectMapper()
+                .readValue(client.body, Map.class);
+        assertEquals("tts-1", payload.get("model"));
+        assertEquals("hi", payload.get("input"));
+        assertEquals("nova", payload.get("voice"));
     }
 
     @Test
