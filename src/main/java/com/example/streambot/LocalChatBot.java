@@ -24,7 +24,7 @@ public class LocalChatBot {
     }
 
     /**
-     * Start a simple REPL that sends user input to Mistral and prints the response.
+     * Start a simple REPL that sends user input to OpenAI and prints the response.
      */
     public void start() {
         try (Scanner scanner = new Scanner(System.in)) {
