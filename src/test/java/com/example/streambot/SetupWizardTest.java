@@ -26,10 +26,10 @@ public class SetupWizardTest {
         try {
             System.setIn(new ByteArrayInputStream("bar\n".getBytes(StandardCharsets.UTF_8)));
             SetupWizard.run();
+            assertEquals("bar", System.getProperty("OPENAI_API_KEY"));
             assertTrue(Files.exists(env), ".env should be created");
             String content = Files.readString(env);
             assertEquals("OPENAI_API_KEY=bar\n", content);
-            assertEquals("bar", System.getProperty("OPENAI_API_KEY"));
         } finally {
             System.setIn(originalIn);
             System.clearProperty("OPENAI_API_KEY");
