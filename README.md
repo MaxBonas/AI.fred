@@ -1,5 +1,7 @@
 # StreamBot
 
+[English version](README.en.md)
+
 Aplicación Java basada en Maven que utiliza la API de OpenAI para generar respuestas y mostrarlas en la consola. Opcionalmente puede reproducir la respuesta con voz sintética utilizando el servicio de Text-to-Speech de OpenAI.
 
 ## Requisitos previos
