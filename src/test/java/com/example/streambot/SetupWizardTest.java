@@ -30,6 +30,7 @@ public class SetupWizardTest {
                     "0.7",
                     "0.9",
                     "2048",
+                    "es",
                     "casual",
                     "science,tech",
                     "30",
@@ -45,6 +46,7 @@ public class SetupWizardTest {
             assertEquals("0.7", System.getProperty("OPENAI_TEMPERATURE"));
             assertEquals("0.9", System.getProperty("OPENAI_TOP_P"));
             assertEquals("2048", System.getProperty("OPENAI_MAX_TOKENS"));
+            assertEquals("es", System.getProperty("OPENAI_LANGUAGE"));
             assertEquals("casual", System.getProperty("CONVERSATION_STYLE"));
             assertEquals("science,tech", System.getProperty("PREFERRED_TOPICS"));
             assertEquals("30", System.getProperty("SILENCE_TIMEOUT"));
@@ -60,6 +62,7 @@ public class SetupWizardTest {
                     "OPENAI_TEMPERATURE=0.7",
                     "OPENAI_TOP_P=0.9",
                     "OPENAI_MAX_TOKENS=2048",
+                    "OPENAI_LANGUAGE=es",
                     "CONVERSATION_STYLE=casual",
                     "PREFERRED_TOPICS=science,tech",
                     "SILENCE_TIMEOUT=30",
@@ -76,6 +79,7 @@ public class SetupWizardTest {
             System.clearProperty("OPENAI_TEMPERATURE");
             System.clearProperty("OPENAI_TOP_P");
             System.clearProperty("OPENAI_MAX_TOKENS");
+            System.clearProperty("OPENAI_LANGUAGE");
             System.clearProperty("CONVERSATION_STYLE");
             System.clearProperty("PREFERRED_TOPICS");
             System.clearProperty("SILENCE_TIMEOUT");
@@ -106,7 +110,7 @@ public class SetupWizardTest {
         InputStream originalIn = System.in;
         try {
             String userInput = String.join("\n",
-                    "new", "gpt-3.5-turbo", "0.5", "0.9", "100", "formal",
+                    "new", "gpt-3.5-turbo", "0.5", "0.9", "100", "es", "formal",
                     "science", "10", "false", "alloy", "true", "USB Mic",
                     "");
             System.setIn(new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8)));
@@ -122,6 +126,7 @@ public class SetupWizardTest {
             System.clearProperty("OPENAI_TEMPERATURE");
             System.clearProperty("OPENAI_TOP_P");
             System.clearProperty("OPENAI_MAX_TOKENS");
+            System.clearProperty("OPENAI_LANGUAGE");
             System.clearProperty("CONVERSATION_STYLE");
             System.clearProperty("PREFERRED_TOPICS");
             System.clearProperty("SILENCE_TIMEOUT");
@@ -148,7 +153,7 @@ public class SetupWizardTest {
         InputStream originalIn = System.in;
         try {
             String userInput = String.join("\n",
-                    "baz", "bad-model", "0.7", "0.9", "100", "formal",
+                    "baz", "bad-model", "0.7", "0.9", "100", "es", "formal",
                     "", "10", "false", "alloy", "false", "Another Mic",
                     "");
             System.setIn(new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8)));
@@ -164,6 +169,7 @@ public class SetupWizardTest {
             System.clearProperty("OPENAI_TEMPERATURE");
             System.clearProperty("OPENAI_TOP_P");
             System.clearProperty("OPENAI_MAX_TOKENS");
+            System.clearProperty("OPENAI_LANGUAGE");
             System.clearProperty("CONVERSATION_STYLE");
             System.clearProperty("PREFERRED_TOPICS");
             System.clearProperty("SILENCE_TIMEOUT");

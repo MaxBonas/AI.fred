@@ -61,6 +61,9 @@ public class SetupWizard {
             System.out.print("OPENAI_MAX_TOKENS: ");
             String maxTokens = scanner.nextLine().trim();
 
+            System.out.print("OPENAI_LANGUAGE: ");
+            String language = scanner.nextLine().trim();
+
             System.out.print("CONVERSATION_STYLE: ");
             String style = scanner.nextLine().trim();
 
@@ -102,6 +105,7 @@ public class SetupWizard {
                 out.println("OPENAI_TEMPERATURE=" + temp);
                 out.println("OPENAI_TOP_P=" + topP);
                 out.println("OPENAI_MAX_TOKENS=" + maxTokens);
+                out.println("OPENAI_LANGUAGE=" + language);
                 out.println("CONVERSATION_STYLE=" + style);
                 out.println("PREFERRED_TOPICS=" + topics);
                 out.println("SILENCE_TIMEOUT=" + timeout);
@@ -116,6 +120,7 @@ public class SetupWizard {
             System.setProperty("OPENAI_TEMPERATURE", temp);
             System.setProperty("OPENAI_TOP_P", topP);
             System.setProperty("OPENAI_MAX_TOKENS", maxTokens);
+            System.setProperty("OPENAI_LANGUAGE", language);
             System.setProperty("CONVERSATION_STYLE", style);
             System.setProperty("PREFERRED_TOPICS", topics);
             System.setProperty("SILENCE_TIMEOUT", timeout);

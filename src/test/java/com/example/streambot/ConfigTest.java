@@ -15,6 +15,7 @@ public class ConfigTest {
         System.clearProperty("OPENAI_TEMPERATURE");
         System.clearProperty("OPENAI_TOP_P");
         System.clearProperty("OPENAI_MAX_TOKENS");
+        System.clearProperty("OPENAI_LANGUAGE");
         System.clearProperty("CONVERSATION_STYLE");
         System.clearProperty("PREFERRED_TOPICS");
         System.clearProperty("SILENCE_TIMEOUT");
@@ -30,6 +31,7 @@ public class ConfigTest {
         System.setProperty("OPENAI_TEMPERATURE", "0.5");
         System.setProperty("OPENAI_TOP_P", "0.8");
         System.setProperty("OPENAI_MAX_TOKENS", "1024");
+        System.setProperty("OPENAI_LANGUAGE", "en");
         System.setProperty("CONVERSATION_STYLE", "formal");
         System.setProperty("PREFERRED_TOPICS", "one, two ,three");
         System.setProperty("SILENCE_TIMEOUT", "15");
@@ -43,6 +45,7 @@ public class ConfigTest {
         assertEquals(0.5, cfg.getTemperature());
         assertEquals(0.8, cfg.getTopP());
         assertEquals(1024, cfg.getMaxTokens());
+        assertEquals("en", cfg.getLanguage());
         assertEquals(List.of("one", "two", "three"), cfg.getTopics());
         assertEquals("formal", cfg.getConversationStyle());
         assertEquals(15, cfg.getSilenceTimeout());
@@ -59,6 +62,7 @@ public class ConfigTest {
         assertEquals(0.7, cfg.getTemperature());
         assertEquals(0.9, cfg.getTopP());
         assertEquals(2048, cfg.getMaxTokens());
+        assertEquals("es", cfg.getLanguage());
         assertTrue(cfg.getTopics().isEmpty());
         assertEquals("neutral", cfg.getConversationStyle());
         assertEquals(30, cfg.getSilenceTimeout());
