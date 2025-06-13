@@ -26,6 +26,7 @@ public class OpenAIService {
     private final double temperature;
     private final double topP;
     private final int maxTokens;
+    private final String language;
 
     /** Default constructor using a new HttpClient and {@link Config#load()}. */
     public OpenAIService() {
@@ -59,6 +60,7 @@ public class OpenAIService {
         this.temperature = cfg.getTemperature();
         this.topP = cfg.getTopP();
         this.maxTokens = cfg.getMaxTokens();
+        this.language = cfg.getLanguage();
         if (apiKey == null || apiKey.isBlank()) {
             logger.warn("OPENAI_API_KEY no configurada");
         } else {
@@ -79,13 +81,17 @@ public class OpenAIService {
             return "";
         }
         try {
+            Map<String, Object> systemMsg = Map.of(
+                    "role", "system",
+                    "content", "Responde siempre en " + language
+            );
             Map<String, Object> message = Map.of(
                     "role", "user",
                     "content", prompt
             );
             Map<String, Object> payloadMap = Map.of(
                     "model", model,
-                    "messages", List.of(message),
+                    "messages", List.of(systemMsg, message),
                     "temperature", temperature,
                     "top_p", topP,
                     "max_tokens", maxTokens

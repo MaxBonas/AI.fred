@@ -107,6 +107,7 @@ Las principales variables de configuración son:
 - `OPENAI_TEMPERATURE`: grado de aleatoriedad (0–2).
 - `OPENAI_TOP_P`: umbral de muestreo *top p*.
 - `OPENAI_MAX_TOKENS`: límite de tokens por respuesta.
+- `OPENAI_LANGUAGE`: idioma de las respuestas (por defecto `es`).
 - `CONVERSATION_STYLE`: tono para las sugerencias de conversación.
 - `PREFERRED_TOPICS`: lista de temas preferidos separados por comas.
 - `SILENCE_TIMEOUT`: segundos de espera antes de proponer un nuevo tema.
@@ -127,7 +128,7 @@ OPENAI_TEMPERATURE=
 OPENAI_TOP_P=
 # Máximo de tokens por respuesta
 OPENAI_MAX_TOKENS=
-# Idioma para las respuestas (es, en, etc.)
+# Idioma para las respuestas (es, en, etc.). Valor por defecto "es"
 OPENAI_LANGUAGE=
 # Tono deseado para las sugerencias
 CONVERSATION_STYLE=

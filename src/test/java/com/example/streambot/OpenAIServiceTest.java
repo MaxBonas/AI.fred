@@ -89,6 +89,7 @@ public class OpenAIServiceTest {
     public void clearKey() {
         System.clearProperty("OPENAI_API_KEY");
         System.clearProperty("OPENAI_MODEL");
+        System.clearProperty("OPENAI_LANGUAGE");
     }
 
     @Test
@@ -149,6 +150,19 @@ public class OpenAIServiceTest {
         assertTrue(body.contains("\"temperature\":0.6"));
         assertTrue(body.contains("\"top_p\":0.8"));
         assertTrue(body.contains("\"max_tokens\":123"));
+    }
+
+    @Test
+    public void includesLanguageSystemMessage() throws Exception {
+        System.setProperty("OPENAI_API_KEY", "key");
+        System.setProperty("OPENAI_LANGUAGE", "fr");
+        HttpResponse<String> resp = new SimpleResponse("{\"choices\":[{\"message\":{\"content\":\"ok\"}}]}");
+        StubHttpClient client = new StubHttpClient(resp);
+        Config cfg = Config.load();
+        OpenAIService svc = new OpenAIService(client, cfg);
+        svc.ask("hi");
+        String body = client.body;
+        assertTrue(body.contains("Responde siempre en fr"));
     }
 
     private String invokeParse(String json) throws Exception {

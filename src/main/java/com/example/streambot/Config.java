@@ -15,6 +15,7 @@ public class Config {
     private final double temperature;
     private final double topP;
     private final int maxTokens;
+    private final String language;
     private final List<String> topics;
     private final String conversationStyle;
     private final int silenceTimeout;
@@ -26,11 +27,12 @@ public class Config {
     private Config(String model, double temperature, double topP, int maxTokens,
                     List<String> topics, String conversationStyle,
                     int silenceTimeout, boolean ttsEnabled, String ttsVoice,
-                    boolean useMicrophone, String microphoneName) {
+                    boolean useMicrophone, String microphoneName, String language) {
         this.model = model;
         this.temperature = temperature;
         this.topP = topP;
         this.maxTokens = maxTokens;
+        this.language = language;
         this.topics = List.copyOf(topics);
         this.conversationStyle = conversationStyle;
         this.silenceTimeout = silenceTimeout;
@@ -54,6 +56,10 @@ public class Config {
 
     public int getMaxTokens() {
         return maxTokens;
+    }
+
+    public String getLanguage() {
+        return language;
     }
 
     public List<String> getTopics() {
@@ -96,6 +102,7 @@ public class Config {
         double topP = parseDouble(EnvUtils.get("OPENAI_TOP_P"), 0.9);
         topP = clamp("OPENAI_TOP_P", topP, 0.9, 0, 1);
         int maxTokens = parseInt(EnvUtils.get("OPENAI_MAX_TOKENS"), 2048);
+        String language = EnvUtils.get("OPENAI_LANGUAGE", "es");
         String style = EnvUtils.get("CONVERSATION_STYLE", "neutral");
         int timeout = parseInt(EnvUtils.get("SILENCE_TIMEOUT"), 30);
         boolean ttsEnabled = Boolean.parseBoolean(EnvUtils.get("TTS_ENABLED", "false"));
@@ -113,7 +120,8 @@ public class Config {
             }
         }
         return new Config(model, temperature, topP, maxTokens,
-                topics, style, timeout, ttsEnabled, ttsVoice, useMic, micName);
+                topics, style, timeout, ttsEnabled, ttsVoice,
+                useMic, micName, language);
     }
 
     private static double parseDouble(String val, double def) {
