@@ -60,11 +60,11 @@ public class OpenAIService {
         this.topP = cfg.getTopP();
         this.maxTokens = cfg.getMaxTokens();
         if (apiKey == null || apiKey.isBlank()) {
-            logger.warn("OPENAI_API_KEY not configured");
+            logger.warn("OPENAI_API_KEY no configurada");
         } else {
-            logger.debug("OPENAI_API_KEY loaded");
+            logger.debug("OPENAI_API_KEY cargada");
         }
-        logger.debug("Using model: {}", model);
+        logger.debug("Usando modelo: {}", model);
     }
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -75,7 +75,7 @@ public class OpenAIService {
 
     public String ask(String prompt) {
         if (apiKey == null || apiKey.isBlank()) {
-            logger.warn("Attempted API call without API key");
+            logger.warn("Se intentó llamada a la API sin clave");
             return "";
         }
         try {
@@ -92,7 +92,7 @@ public class OpenAIService {
             );
             String payload = MAPPER.writeValueAsString(payloadMap);
 
-            logger.debug("Sending request to OpenAI: {}", payload);
+            logger.debug("Enviando solicitud a OpenAI: {}", payload);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://api.openai.com/v1/chat/completions"))
@@ -101,21 +101,21 @@ public class OpenAIService {
                     .POST(HttpRequest.BodyPublishers.ofString(payload, StandardCharsets.UTF_8))
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            logger.debug("Received response with status {}", response.statusCode());
+            logger.debug("Respuesta recibida con estado {}", response.statusCode());
             return parseContent(response.body());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            logger.error("Error communicating with OpenAI", e);
+            logger.error("Error al comunicarse con OpenAI", e);
             return "";
         } catch (IOException e) {
-            logger.error("Error communicating with OpenAI", e);
+            logger.error("Error al comunicarse con OpenAI", e);
             return "";
         }
     }
 
     /** No resources to close but kept for API symmetry. */
     public void close() {
-        logger.debug("OpenAIService closed");
+        logger.debug("Servicio de OpenAI cerrado");
     }
 
     private static String parseContent(String body) {

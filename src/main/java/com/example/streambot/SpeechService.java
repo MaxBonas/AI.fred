@@ -40,7 +40,7 @@ public class SpeechService {
      */
     public void speak(String text) {
         if (!enabled) {
-            logger.debug("TTS disabled or API key missing");
+            logger.debug("TTS deshabilitado o falta la clave API");
             return;
         }
         try {
@@ -62,7 +62,7 @@ public class SpeechService {
                 player.play();
             }
         } catch (Exception e) {
-            logger.error("Error performing TTS", e);
+            logger.error("Error al realizar TTS", e);
         }
     }
 

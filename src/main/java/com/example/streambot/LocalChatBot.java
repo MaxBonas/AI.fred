@@ -67,9 +67,9 @@ public class LocalChatBot {
             long now = System.currentTimeMillis();
             if (now - lastInput.get() >= timeoutMillis) {
                 String prompt = buildSuggestionPrompt();
-                logger.debug("Silence detected. Sending prompt: {}", prompt);
+                logger.debug("Silencio detectado. Enviando indicación: {}", prompt);
                 String response = aiService.ask(prompt);
-                logger.debug("Received suggestion: {}", response);
+                logger.debug("Sugerencia recibida: {}", response);
                 System.out.println("AI: " + response);
                 speechService.speak(response);
                 lastInput.set(now);
@@ -91,9 +91,9 @@ public class LocalChatBot {
                 if (input.isEmpty()) {
                     continue;
                 }
-                logger.debug("Sending prompt: {}", input);
+                logger.debug("Enviando indicación: {}", input);
                 String response = aiService.ask(input);
-                logger.debug("Received response: {}", response);
+                logger.debug("Respuesta recibida: {}", response);
                 System.out.println("AI: " + response);
                 speechService.speak(response);
             }
@@ -103,7 +103,7 @@ public class LocalChatBot {
             }
             scheduler.shutdownNow();
             aiService.close();
-            logger.debug("ChatBot service closed");
+            logger.debug("Servicio de ChatBot cerrado");
         }
     }
 

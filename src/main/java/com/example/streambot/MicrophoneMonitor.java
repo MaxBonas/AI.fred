@@ -76,9 +76,9 @@ public class MicrophoneMonitor implements Runnable {
                 }
             }
         } catch (LineUnavailableException e) {
-            logger.warn("Microphone unavailable", e);
+            logger.warn("Micrófono no disponible", e);
         } catch (Exception e) {
-            logger.warn("Error reading microphone", e);
+            logger.warn("Error al leer el micrófono", e);
         } finally {
             if (line != null) {
                 line.close();
