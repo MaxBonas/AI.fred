@@ -34,10 +34,10 @@ public final class EnvUtils {
             value = DOTENV.get(key);
         }
         if ((value == null || value.isBlank()) && def != null) {
-            logger.debug("{} not found; using default", key);
+            logger.debug("{} no encontrado; usando valor por defecto", key);
             return def;
         }
-        logger.debug("Resolved {} present? {}", key, value != null && !value.isBlank());
+        logger.debug("Resuelto {}, presente? {}", key, value != null && !value.isBlank());
         return value;
     }
 

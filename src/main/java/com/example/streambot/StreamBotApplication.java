@@ -17,9 +17,9 @@ public class StreamBotApplication {
     private static final Logger logger = LoggerFactory.getLogger(StreamBotApplication.class);
 
     public static void main(String[] args) {
-        logger.info("Starting StreamBot");
+        logger.info("Iniciando StreamBot");
         Map<String, String> cli = parseArgs(args);
-        logger.debug("Parsed CLI arguments: {}", cli);
+        logger.debug("Argumentos de CLI parseados: {}", cli);
         if (Boolean.parseBoolean(cli.getOrDefault("HELP", "false"))) {
             printUsage();
             return;
@@ -30,7 +30,7 @@ public class StreamBotApplication {
         boolean forceSetup = Boolean.parseBoolean(cli.getOrDefault("SETUP", "false"));
         boolean keyMissing = EnvUtils.get("OPENAI_API_KEY") == null || EnvUtils.get("OPENAI_API_KEY").isBlank();
         if (forceSetup || keyMissing) {
-            logger.info("Running setup wizard.");
+            logger.info("Ejecutando asistente de configuración.");
             SetupWizard.run();
         }
 
@@ -45,22 +45,22 @@ public class StreamBotApplication {
         for (int i = 0; i < args.length; i++) {
             if ("--api-key".equals(args[i]) && i + 1 < args.length) {
                 map.put("OPENAI_API_KEY", args[++i]);
-                logger.debug("Parsed api key from CLI");
+                    logger.debug("Clave API obtenida de CLI");
             } else if ("--model".equals(args[i]) && i + 1 < args.length) {
                 map.put("OPENAI_MODEL", args[++i]);
-                logger.debug("Parsed model from CLI: {}", map.get("OPENAI_MODEL"));
+                    logger.debug("Modelo obtenido de CLI: {}", map.get("OPENAI_MODEL"));
             } else if ("--tts-enabled".equals(args[i]) && i + 1 < args.length) {
                 map.put("TTS_ENABLED", args[++i]);
-                logger.debug("Parsed TTS_ENABLED from CLI: {}", map.get("TTS_ENABLED"));
+                    logger.debug("TTS_ENABLED obtenido de CLI: {}", map.get("TTS_ENABLED"));
             } else if ("--tts-voice".equals(args[i]) && i + 1 < args.length) {
                 map.put("TTS_VOICE", args[++i]);
-                logger.debug("Parsed TTS_VOICE from CLI: {}", map.get("TTS_VOICE"));
+                    logger.debug("TTS_VOICE obtenido de CLI: {}", map.get("TTS_VOICE"));
             } else if ("--setup".equals(args[i])) {
                 map.put("SETUP", "true");
-                logger.debug("Parsed setup flag");
+                    logger.debug("Bandera de configuración detectada");
             } else if ("--help".equals(args[i])) {
                 map.put("HELP", "true");
-                logger.debug("Parsed help flag");
+                    logger.debug("Bandera de ayuda detectada");
             }
         }
         return map;
@@ -68,13 +68,13 @@ public class StreamBotApplication {
 
     private static void printUsage() {
         String msg = String.join(System.lineSeparator(),
-                "Usage: java -jar streambot.jar [options]",
-                "  --api-key KEY       OpenAI API key",
-                "  --model MODEL       OpenAI model",
-                "  --tts-enabled VAL   enable text to speech",
-                "  --tts-voice VOICE   voice for synthesis",
-                "  --setup             run interactive setup",
-                "  --help              show this message",
+                "Uso: java -jar streambot.jar [opciones]",
+                "  --api-key CLAVE       clave API de OpenAI",
+                "  --model MODELO       modelo de OpenAI",
+                "  --tts-enabled VAL   habilitar texto a voz",
+                "  --tts-voice VOZ   voz para la síntesis",
+                "  --setup             ejecutar configuración interactiva",
+                "  --help              mostrar este mensaje",
                 "");
         System.out.println(msg);
     }

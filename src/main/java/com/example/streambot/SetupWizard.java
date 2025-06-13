@@ -38,7 +38,7 @@ public class SetupWizard {
         File env = new File(".env");
 
         try (Scanner scanner = new Scanner(System.in)) {
-            logger.info("Starting setup wizard");
+            logger.info("Iniciando asistente de configuración");
             System.out.println("Configuraci\u00f3n inicial de StreamBot:");
             System.out.print("OPENAI_API_KEY: ");
             String key = scanner.nextLine().trim();
@@ -48,7 +48,7 @@ public class SetupWizard {
             if (!SUPPORTED_MODELS.contains(model)) {
                 String def = SUPPORTED_MODELS.get(0);
                 System.out.println("Modelo no válido, se usará " + def);
-                logger.warn("Unsupported model '{}', defaulting to {}", model, def);
+                logger.warn("Modelo no soportado '{}', se utilizará {}", model, def);
                 model = def;
             }
 
@@ -127,7 +127,7 @@ public class SetupWizard {
             EnvUtils.reload();
 
             System.out.println("Archivo .env creado o actualizado.\n");
-            logger.info(".env file created or updated");
+            logger.info("Archivo .env creado o actualizado");
         } catch (IOException e) {
             logger.error("Error al crear .env", e);
             System.err.println("Error al crear .env: " + e.getMessage());

@@ -141,7 +141,7 @@ public class Config {
     private static double clamp(String name, double val, double def,
                                 double min, double max) {
         if (val < min || val > max) {
-            logger.warn("{}={} outside range {}-{}; using default {}",
+            logger.warn("{}={} fuera del rango {}-{}; se usa el valor por defecto {}",
                     name, val, min, max, def);
             return def;
         }
