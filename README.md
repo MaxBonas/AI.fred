@@ -118,18 +118,30 @@ Las principales variables de configuración son:
 Usa `env.example` como guía para crear tu propio `.env`:
 
 ```
-# Example configuration for StreamBot
+# Configuración de ejemplo para StreamBot
 OPENAI_API_KEY=
 OPENAI_MODEL=
+# Temperatura entre 0 y 2
 OPENAI_TEMPERATURE=
+# top_p para muestreo nucleus
 OPENAI_TOP_P=
+# Máximo de tokens por respuesta
 OPENAI_MAX_TOKENS=
+# Idioma para las respuestas (es, en, etc.)
+OPENAI_LANGUAGE=
+# Tono deseado para las sugerencias
 CONVERSATION_STYLE=
+# Temas separados por comas
 PREFERRED_TOPICS=
+# Segundos de silencio antes de sugerir un tema
 SILENCE_TIMEOUT=
+# Habilitar reproducción de texto a voz
 TTS_ENABLED=
+# Nombre de la voz para TTS (alloy, echo, fable, onyx, nova o shimmer)
 TTS_VOICE=
+# Monitorear actividad del micrófono para reiniciar el temporizador
 USE_MICROPHONE=
+# Nombre del dispositivo de micrófono (opcional)
 MICROPHONE_NAME=
 ```
 
