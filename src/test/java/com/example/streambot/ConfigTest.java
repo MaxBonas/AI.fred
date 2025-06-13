@@ -21,6 +21,7 @@ public class ConfigTest {
         System.clearProperty("TTS_ENABLED");
         System.clearProperty("TTS_VOICE");
         System.clearProperty("USE_MICROPHONE");
+        System.clearProperty("MICROPHONE_NAME");
     }
 
     @Test
@@ -35,6 +36,7 @@ public class ConfigTest {
         System.setProperty("TTS_ENABLED", "true");
         System.setProperty("TTS_VOICE", "onyx");
         System.setProperty("USE_MICROPHONE", "true");
+        System.setProperty("MICROPHONE_NAME", "Test Mic");
 
         Config cfg = Config.load();
         assertEquals("gpt-test", cfg.getModel());
@@ -47,6 +49,7 @@ public class ConfigTest {
         assertTrue(cfg.isTtsEnabled());
         assertEquals("onyx", cfg.getTtsVoice());
         assertTrue(cfg.isUseMicrophone());
+        assertEquals("Test Mic", cfg.getMicrophoneName());
     }
 
     @Test
@@ -62,6 +65,7 @@ public class ConfigTest {
         assertFalse(cfg.isTtsEnabled());
         assertEquals("alloy", cfg.getTtsVoice());
         assertFalse(cfg.isUseMicrophone());
+        assertEquals("", cfg.getMicrophoneName());
     }
 
     @Test

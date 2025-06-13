@@ -111,6 +111,7 @@ public class StreamBotApplicationTest {
                     "TTS_ENABLED=true",
                     "TTS_VOICE=nova",
                     "USE_MICROPHONE=false",
+                    "MICROPHONE_NAME=exit",
                     "");
             assertEquals(expected, content);
         } finally {

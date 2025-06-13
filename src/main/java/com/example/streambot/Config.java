@@ -21,11 +21,12 @@ public class Config {
     private final boolean ttsEnabled;
     private final String ttsVoice;
     private final boolean useMicrophone;
+    private final String microphoneName;
 
     private Config(String model, double temperature, double topP, int maxTokens,
                     List<String> topics, String conversationStyle,
                     int silenceTimeout, boolean ttsEnabled, String ttsVoice,
-                    boolean useMicrophone) {
+                    boolean useMicrophone, String microphoneName) {
         this.model = model;
         this.temperature = temperature;
         this.topP = topP;
@@ -36,6 +37,7 @@ public class Config {
         this.ttsEnabled = ttsEnabled;
         this.ttsVoice = ttsVoice;
         this.useMicrophone = useMicrophone;
+        this.microphoneName = microphoneName;
     }
 
     public String getModel() {
@@ -78,6 +80,10 @@ public class Config {
         return useMicrophone;
     }
 
+    public String getMicrophoneName() {
+        return microphoneName;
+    }
+
     /**
      * Load configuration values from system properties or a .env file.
      * Defaults are used when a property is not present or cannot be parsed.
@@ -95,6 +101,7 @@ public class Config {
         boolean ttsEnabled = Boolean.parseBoolean(EnvUtils.get("TTS_ENABLED", "false"));
         String ttsVoice = EnvUtils.get("TTS_VOICE", "alloy");
         boolean useMic = Boolean.parseBoolean(EnvUtils.get("USE_MICROPHONE", "false"));
+        String micName = EnvUtils.get("MICROPHONE_NAME", "");
         String topicsProp = EnvUtils.get("PREFERRED_TOPICS", "");
         List<String> topics = new ArrayList<>();
         if (topicsProp != null && !topicsProp.isBlank()) {
@@ -106,7 +113,7 @@ public class Config {
             }
         }
         return new Config(model, temperature, topP, maxTokens,
-                topics, style, timeout, ttsEnabled, ttsVoice, useMic);
+                topics, style, timeout, ttsEnabled, ttsVoice, useMic, micName);
     }
 
     private static double parseDouble(String val, double def) {

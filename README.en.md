@@ -81,6 +81,7 @@ The main configuration variables are:
 - `TTS_ENABLED`: set to `true` to play replies with synthesized voice.
 - `TTS_VOICE`: voice to use for synthesis (`alloy`, `echo`, `fable`, `onyx`, `nova` or `shimmer`).
 - `USE_MICROPHONE`: set to `true` to reset the silence timer when sound is detected.
+- `MICROPHONE_NAME`: name of the microphone device to monitor (optional).
 
 Use `env.example` as a guide to create your own `.env`:
 ```text
@@ -96,6 +97,7 @@ SILENCE_TIMEOUT=
 TTS_ENABLED=
 TTS_VOICE=
 USE_MICROPHONE=
+MICROPHONE_NAME=
 ```
 
 ## License
