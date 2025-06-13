@@ -25,7 +25,7 @@ public class LocalChatBot {
     
     /** Factory method for creating microphone monitors. */
     protected MicrophoneMonitor createMonitor(Runnable callback) {
-        return new MicrophoneMonitor(callback);
+        return new MicrophoneMonitor(callback, config.getMicrophoneName());
     }
 
     public LocalChatBot() {

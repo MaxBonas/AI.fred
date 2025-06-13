@@ -5,6 +5,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
+import javax.sound.sampled.Mixer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +17,16 @@ public class MicrophoneMonitor implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(MicrophoneMonitor.class);
     private final Runnable onActivity;
     private final Thread thread;
+    private final String deviceName;
     private volatile boolean running;
 
     public MicrophoneMonitor(Runnable onActivity) {
+        this(onActivity, null);
+    }
+
+    public MicrophoneMonitor(Runnable onActivity, String deviceName) {
         this.onActivity = onActivity != null ? onActivity : () -> {};
+        this.deviceName = deviceName;
         this.thread = new Thread(this, "mic-monitor");
     }
 
@@ -43,7 +50,22 @@ public class MicrophoneMonitor implements Runnable {
     public void run() {
         AudioFormat fmt = new AudioFormat(16000f, 16, 1, true, false);
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, fmt);
-        try (TargetDataLine line = (TargetDataLine) AudioSystem.getLine(info)) {
+        TargetDataLine line = null;
+        try {
+            if (deviceName != null && !deviceName.isBlank()) {
+                for (Mixer.Info mi : AudioSystem.getMixerInfo()) {
+                    if (deviceName.equals(mi.getName())) {
+                        Mixer m = AudioSystem.getMixer(mi);
+                        if (m.isLineSupported(info)) {
+                            line = (TargetDataLine) m.getLine(info);
+                        }
+                        break;
+                    }
+                }
+            }
+            if (line == null) {
+                line = (TargetDataLine) AudioSystem.getLine(info);
+            }
             line.open(fmt);
             line.start();
             byte[] buf = new byte[1024];
@@ -57,6 +79,10 @@ public class MicrophoneMonitor implements Runnable {
             logger.warn("Microphone unavailable", e);
         } catch (Exception e) {
             logger.warn("Error reading microphone", e);
+        } finally {
+            if (line != null) {
+                line.close();
+            }
         }
     }
 

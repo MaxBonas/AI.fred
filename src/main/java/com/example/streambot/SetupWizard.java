@@ -6,6 +6,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.List;
+import java.util.ArrayList;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.Mixer;
+import javax.sound.sampled.TargetDataLine;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,6 +79,23 @@ public class SetupWizard {
             System.out.print("USE_MICROPHONE: ");
             String useMic = scanner.nextLine().trim();
 
+            List<String> micNames = new ArrayList<>();
+            DataLine.Info dinfo = new DataLine.Info(TargetDataLine.class, null);
+            for (Mixer.Info mi : AudioSystem.getMixerInfo()) {
+                Mixer m = AudioSystem.getMixer(mi);
+                if (m.isLineSupported(dinfo)) {
+                    micNames.add(mi.getName());
+                }
+            }
+            if (!micNames.isEmpty()) {
+                System.out.println("Micrófonos disponibles:");
+                for (String name : micNames) {
+                    System.out.println("- " + name);
+                }
+            }
+            System.out.print("MICROPHONE_NAME: ");
+            String micName = scanner.nextLine().trim();
+
             try (PrintWriter out = new PrintWriter(new FileWriter(env))) {
                 out.println("OPENAI_API_KEY=" + key);
                 out.println("OPENAI_MODEL=" + model);
@@ -85,6 +108,7 @@ public class SetupWizard {
                 out.println("TTS_ENABLED=" + ttsEnabled);
                 out.println("TTS_VOICE=" + ttsVoice);
                 out.println("USE_MICROPHONE=" + useMic);
+                out.println("MICROPHONE_NAME=" + micName);
             }
 
             System.setProperty("OPENAI_API_KEY", key);
@@ -98,6 +122,7 @@ public class SetupWizard {
             System.setProperty("TTS_ENABLED", ttsEnabled);
             System.setProperty("TTS_VOICE", ttsVoice);
             System.setProperty("USE_MICROPHONE", useMic);
+            System.setProperty("MICROPHONE_NAME", micName);
 
             EnvUtils.reload();
 

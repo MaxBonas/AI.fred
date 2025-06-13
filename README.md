@@ -113,6 +113,7 @@ Las principales variables de configuración son:
 - `TTS_ENABLED`: si se establece en `true` reproduce las respuestas con voz sintética.
 - `TTS_VOICE`: voz a utilizar para la síntesis (`alloy`, `echo`, `fable`, `onyx`, `nova` o `shimmer`).
 - `USE_MICROPHONE`: establece `true` para tener en cuenta el micrófono y reiniciar el temporizador de silencio cuando se detecte sonido.
+- `MICROPHONE_NAME`: nombre del dispositivo de micrófono a utilizar (opcional).
 
 Usa `env.example` como guía para crear tu propio `.env`:
 
@@ -129,6 +130,7 @@ SILENCE_TIMEOUT=
 TTS_ENABLED=
 TTS_VOICE=
 USE_MICROPHONE=
+MICROPHONE_NAME=
 ```
 
 ## Licencia
