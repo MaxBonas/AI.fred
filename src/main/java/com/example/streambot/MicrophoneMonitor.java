@@ -19,6 +19,7 @@ public class MicrophoneMonitor implements Runnable {
     private final Thread thread;
     private final String deviceName;
     private volatile boolean running;
+    private volatile boolean started;
 
     public MicrophoneMonitor(Runnable onActivity) {
         this(onActivity, null);
@@ -31,8 +32,12 @@ public class MicrophoneMonitor implements Runnable {
     }
 
     /** Start capturing audio in a background thread. */
-    public void start() {
+    public synchronized void start() {
+        if (started || thread.isAlive()) {
+            return;
+        }
         running = true;
+        started = true;
         thread.start();
     }
 
