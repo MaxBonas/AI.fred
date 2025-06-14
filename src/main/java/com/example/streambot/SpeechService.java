@@ -56,6 +56,11 @@ public class SpeechService {
                     .POST(HttpRequest.BodyPublishers.ofString(payload, StandardCharsets.UTF_8))
                     .build();
             HttpResponse<byte[]> resp = client.send(req, HttpResponse.BodyHandlers.ofByteArray());
+            int status = resp.statusCode();
+            if (status != 200) {
+                logger.error("Solicitud TTS falló con código {}", status);
+                return;
+            }
             byte[] audio = resp.body();
             try (ByteArrayInputStream bis = new ByteArrayInputStream(audio)) {
                 Player player = new Player(bis);
