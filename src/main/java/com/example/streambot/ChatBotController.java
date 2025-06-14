@@ -22,6 +22,8 @@ public class ChatBotController {
     private final Config config;
     private final AtomicLong lastInput = new AtomicLong(System.currentTimeMillis());
     private final Function<Runnable, MicrophoneMonitor> monitorFactory;
+    /** Indicates if push-to-talk recording is active. */
+    public volatile boolean pushToTalkActive;
     private ScheduledExecutorService scheduler;
     private MicrophoneMonitor monitor;
 
@@ -39,7 +41,7 @@ public class ChatBotController {
         scheduler = Executors.newSingleThreadScheduledExecutor();
         Runnable silenceCheck = () -> {
             long now = System.currentTimeMillis();
-            if (now - lastInput.get() >= timeoutMillis) {
+            if (!pushToTalkActive && now - lastInput.get() >= timeoutMillis) {
                 String prompt = buildSuggestionPrompt();
                 logger.debug("Silencio detectado. Enviando indicación: {}", prompt);
                 String response = aiService.ask(prompt);

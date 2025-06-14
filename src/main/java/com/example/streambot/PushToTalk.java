@@ -14,7 +14,6 @@ public class PushToTalk implements NativeKeyListener {
     private static final Logger logger = LoggerFactory.getLogger(PushToTalk.class);
     private final ChatBotController controller;
     private AudioRecorder recorder;
-    private boolean pushToTalkActive;
 
     public PushToTalk(ChatBotController controller) {
         this.controller = controller;
@@ -22,20 +21,20 @@ public class PushToTalk implements NativeKeyListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent e) {
-        if (e.getKeyCode() == NativeKeyEvent.VC_F12 && !pushToTalkActive) {
+        if (e.getKeyCode() == NativeKeyEvent.VC_F12 && !controller.pushToTalkActive) {
             logger.debug("F12 pressed - starting recorder");
             recorder = new AudioRecorder();
             recorder.start();
-            pushToTalkActive = true;
+            controller.pushToTalkActive = true;
         }
     }
 
     @Override
     public void nativeKeyReleased(NativeKeyEvent e) {
-        if (e.getKeyCode() == NativeKeyEvent.VC_F12 && pushToTalkActive) {
+        if (e.getKeyCode() == NativeKeyEvent.VC_F12 && controller.pushToTalkActive) {
             logger.debug("F12 released - stopping recorder");
             byte[] audio = recorder != null ? recorder.stop() : new byte[0];
-            pushToTalkActive = false;
+            controller.pushToTalkActive = false;
             String transcript = SpeechToText.transcribe(audio);
             if (controller != null) {
                 controller.onUserSpeech(transcript);

@@ -125,4 +125,35 @@ public class LocalChatBotTest {
         assertTrue(svc.received.isEmpty(), "no prompt sent");
     }
 
+    @Test
+    public void pushToTalkActivePreventsSuggestion() throws Exception {
+        System.setProperty("SILENCE_TIMEOUT", "1");
+        Config cfg = Config.load();
+        DummyOpenAIService svc = new DummyOpenAIService();
+        LocalChatBot bot = new LocalChatBot(svc, cfg);
+
+        // simulate push-to-talk being held
+        bot.getController().pushToTalkActive = true;
+
+        PipedOutputStream pos = new PipedOutputStream();
+        PipedInputStream pis = new PipedInputStream(pos);
+        InputStream orig = System.in;
+        System.setIn(pis);
+        Thread t = new Thread(bot::start);
+        t.start();
+
+        try {
+            TimeUnit.MILLISECONDS.sleep(1200);
+            pos.write("exit\n".getBytes(StandardCharsets.UTF_8));
+            pos.flush();
+            t.join(2000);
+        } finally {
+            System.setIn(orig);
+            System.clearProperty("SILENCE_TIMEOUT");
+        }
+
+        assertTrue(svc.closed, "service closed");
+        assertTrue(svc.received.isEmpty(), "no prompt sent");
+    }
+
 }
