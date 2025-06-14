@@ -6,6 +6,8 @@ import java.util.Map;
 import com.github.kwhat.jnativehook.GlobalScreen;
 
 import com.example.streambot.PushToTalk;
+import com.example.streambot.ChatBotController;
+import com.example.streambot.MicrophoneMonitor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,17 +41,18 @@ public class StreamBotApplication {
         }
 
         Config config = Config.load();
-        LocalChatBot bot = new LocalChatBot(config);
-
+        ChatBotController controller = new ChatBotController(null, config,
+                cb -> new MicrophoneMonitor(cb, config.getMicrophoneName()));
         PushToTalk ptt = null;
         try {
             GlobalScreen.registerNativeHook();
-            ptt = new PushToTalk(bot.getController());
+            ptt = new PushToTalk(controller);
             GlobalScreen.addNativeKeyListener(ptt);
         } catch (Throwable e) {
             logger.warn("No se pudo registrar el hook global", e);
         }
 
+        LocalChatBot bot = new LocalChatBot(controller, config);
         bot.start();
 
         if (ptt != null) {

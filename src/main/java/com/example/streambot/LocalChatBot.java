@@ -49,6 +49,21 @@ public class LocalChatBot {
         this.controller = new ChatBotController(service, this.config, this::createMonitor);
     }
 
+    /**
+     * Create a bot using an already constructed controller.
+     */
+    public LocalChatBot(ChatBotController controller, Config config) {
+        this.config = config != null ? config : Config.load();
+        this.controller = controller != null
+                ? controller
+                : new ChatBotController(null, this.config, this::createMonitor);
+    }
+
+    /** Convenience constructor using the supplied controller. */
+    public LocalChatBot(ChatBotController controller) {
+        this(controller, Config.load());
+    }
+
     /** Access the underlying controller. */
     public ChatBotController getController() {
         return controller;
