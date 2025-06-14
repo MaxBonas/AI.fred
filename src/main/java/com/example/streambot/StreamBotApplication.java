@@ -44,7 +44,7 @@ public class StreamBotApplication {
         PushToTalk ptt = null;
         try {
             GlobalScreen.registerNativeHook();
-            ptt = new PushToTalk();
+            ptt = new PushToTalk(bot.getController());
             GlobalScreen.addNativeKeyListener(ptt);
         } catch (Throwable e) {
             logger.warn("No se pudo registrar el hook global", e);
