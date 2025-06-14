@@ -8,6 +8,8 @@ StreamBot is a Java application built with Maven that uses the OpenAI API to gen
 
 - Java 17 (JDK 17)
 - Maven (optional, you can use the included `./mvnw` wrapper)
+- The push-to-talk feature relies on the `jnativehook` library, which Maven
+  downloads automatically.
 
 Install JDK 17 first and then proceed with Maven if you prefer not to use the wrapper.
 
@@ -63,6 +65,7 @@ When compiling with Maven the file `target/streambot-1.0-SNAPSHOT-shaded.jar` wi
 ./mvnw package
 java -jar target/streambot-1.0-SNAPSHOT-shaded.jar
 ```
+Hold down **F12** while speaking. Recording stops when you release the key.
 Before running make sure the variables `OPENAI_API_KEY` and `OPENAI_MODEL` are present in your environment or defined in `.env`. They can also be provided as arguments `--api-key` and `--model`. By default the model `gpt-3.5-turbo` is used. You can enable speech synthesis with `--tts-enabled true` and choose the voice using `--tts-voice`. Use `--help` to list all options.
 
 ## Configuration

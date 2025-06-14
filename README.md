@@ -8,6 +8,8 @@ Aplicación Java basada en Maven que utiliza la API de OpenAI para generar respu
 
 - Java 17 (JDK 17)
 - Maven (opcional, se puede usar el wrapper `./mvnw` incluido)
+- La función de "pulsar para hablar" utiliza la biblioteca `jnativehook`,
+  que se descarga automáticamente con Maven.
 
 Instale primero JDK 17 y luego proceda con la instalaci\u00f3n de Maven.
 
@@ -95,6 +97,9 @@ Ejecuta el bot y muestra las respuestas en la consola:
 ```bash
 java -jar target/streambot-1.0-SNAPSHOT-shaded.jar
 ```
+
+Mantén pulsada la tecla **F12** para hablar. El audio se grabará
+mientras permanezca presionada y se enviará al soltarla.
 
 
 ## Configuración de la API de OpenAI
