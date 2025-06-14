@@ -87,7 +87,6 @@ public class SetupWizardTest {
             System.clearProperty("TTS_VOICE");
             System.clearProperty("USE_MICROPHONE");
             System.clearProperty("MICROPHONE_NAME");
-            System.clearProperty("MICROPHONE_NAME");
             Files.deleteIfExists(env);
             if (existed) {
                 Files.move(backup, env);
