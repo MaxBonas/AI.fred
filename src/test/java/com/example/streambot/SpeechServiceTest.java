@@ -24,8 +24,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SpeechServiceTest {
     private static class DummyResponse implements HttpResponse<byte[]> {
         private final byte[] body;
-        DummyResponse(byte[] body) { this.body = body; }
-        @Override public int statusCode() { return 200; }
+        private final int status;
+        DummyResponse(byte[] body) { this(body, 200); }
+        DummyResponse(byte[] body, int status) {
+            this.body = body;
+            this.status = status;
+        }
+        @Override public int statusCode() { return status; }
         @Override public HttpRequest request() { return null; }
         @Override public Optional<HttpResponse<byte[]>> previousResponse() { return Optional.empty(); }
         @Override public HttpHeaders headers() { return HttpHeaders.of(Map.of(), (a,b) -> true); }
@@ -130,5 +135,20 @@ public class SpeechServiceTest {
 
         assertDoesNotThrow(() -> svc.speak("hello"));
         assertFalse(javazoom.jl.player.Player.played, "play should not be called");
+    }
+
+    @Test
+    public void speakSkipsPlaybackOnBadStatus() throws Exception {
+        System.setProperty("OPENAI_API_KEY", "key");
+        System.setProperty("TTS_ENABLED", "true");
+        System.setProperty("TTS_VOICE", "nova");
+        Config cfg = Config.load();
+        DummyResponse resp = new DummyResponse(new byte[] {1, 2, 3}, 500);
+        StubHttpClient client = new StubHttpClient(resp);
+        SpeechService svc = new SpeechService(client, cfg);
+
+        svc.speak("fail");
+
+        assertFalse(javazoom.jl.player.Player.played, "playback should be skipped");
     }
 }
