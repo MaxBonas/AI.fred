@@ -3,6 +3,10 @@ package com.example.streambot;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.github.kwhat.jnativehook.GlobalScreen;
+
+import com.example.streambot.PushToTalk;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +40,26 @@ public class StreamBotApplication {
 
         Config config = Config.load();
         LocalChatBot bot = new LocalChatBot(config);
+
+        PushToTalk ptt = null;
+        try {
+            GlobalScreen.registerNativeHook();
+            ptt = new PushToTalk();
+            GlobalScreen.addNativeKeyListener(ptt);
+        } catch (Throwable e) {
+            logger.warn("No se pudo registrar el hook global", e);
+        }
+
         bot.start();
+
+        if (ptt != null) {
+            try {
+                GlobalScreen.removeNativeKeyListener(ptt);
+                GlobalScreen.unregisterNativeHook();
+            } catch (Exception e) {
+                logger.warn("Error al desregistrar el hook global", e);
+            }
+        }
     }
 
     // Package-private for tests
