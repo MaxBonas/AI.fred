@@ -68,6 +68,15 @@ java -jar target/streambot-1.0-SNAPSHOT-shaded.jar
 Hold down **F12** while speaking. Recording stops when you release the key. The key can be changed with `--push-key` or the `PUSH_KEY` variable.
 Before running make sure the variables `OPENAI_API_KEY` and `OPENAI_MODEL` are present in your environment or defined in `.env`. They can also be provided as arguments `--api-key` and `--model`. By default the model `gpt-3.5-turbo` is used. You can enable speech synthesis with `--tts-enabled true`, choose the voice using `--tts-voice`, and set the push-to-talk key with `--push-key`. Use `--help` to list all options.
 
+## Running tests
+To execute the unit tests with Maven run:
+
+```bash
+./mvnw test
+```
+Note that the Maven *wrapper* downloads its dependencies on first run and requires Internet access. If the download is blocked, use a configured Maven installation instead.
+
+
 ## Configuration
 Sign up at [OpenAI](https://platform.openai.com/) and create a new *API key*. Copy it to the `.env` file as the value for `OPENAI_API_KEY`. You can indicate the model with `OPENAI_MODEL`. Supported models are `gpt-3.5-turbo`, `gpt-3.5-turbo-16k`, `gpt-4` and `gpt-4-32k`. If `.env` does not exist, running the application will launch `SetupWizard`, an interactive assistant that requests the values and generates the file automatically. You can also provide these values using `--api-key` and `--model`. Speech can be enabled with `--tts-enabled`, the voice chosen with `--tts-voice`, and the push-to-talk key set with `--push-key`. Use `--setup` if you want to run the wizard again and overwrite the current configuration. The file `env.example` can be used as a template.
 Use `--lang en` or set `SETUP_LANG=en` to show the wizard prompts in English.

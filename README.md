@@ -89,6 +89,9 @@ Para correr las pruebas unitarias con Maven utilice:
 ```bash
 ./mvnw test
 ```
+Ten en cuenta que el *wrapper* de Maven descarga sus dependencias la primera
+vez que se ejecuta y requiere acceso a Internet. Si la descarga es bloqueada,
+usa una instalación de Maven ya configurada.
 
 ### Uso básico
 
