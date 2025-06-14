@@ -13,16 +13,18 @@ import com.example.streambot.ChatBotController;
 public class PushToTalk implements NativeKeyListener {
     private static final Logger logger = LoggerFactory.getLogger(PushToTalk.class);
     private final ChatBotController controller;
+    private final int pushKeyCode;
     private AudioRecorder recorder;
 
-    public PushToTalk(ChatBotController controller) {
+    public PushToTalk(ChatBotController controller, int pushKeyCode) {
         this.controller = controller;
+        this.pushKeyCode = pushKeyCode;
     }
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent e) {
-        if (e.getKeyCode() == NativeKeyEvent.VC_F12 && !controller.pushToTalkActive) {
-            logger.debug("F12 pressed - starting recorder");
+        if (e.getKeyCode() == pushKeyCode && !controller.pushToTalkActive) {
+            logger.debug("push key pressed - starting recorder");
             recorder = new AudioRecorder();
             recorder.start();
             controller.pushToTalkActive = true;
@@ -31,8 +33,8 @@ public class PushToTalk implements NativeKeyListener {
 
     @Override
     public void nativeKeyReleased(NativeKeyEvent e) {
-        if (e.getKeyCode() == NativeKeyEvent.VC_F12 && controller.pushToTalkActive) {
-            logger.debug("F12 released - stopping recorder");
+        if (e.getKeyCode() == pushKeyCode && controller.pushToTalkActive) {
+            logger.debug("push key released - stopping recorder");
             byte[] audio = recorder != null ? recorder.stop() : new byte[0];
             controller.pushToTalkActive = false;
             String transcript = SpeechToText.transcribe(audio);

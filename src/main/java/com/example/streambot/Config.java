@@ -2,6 +2,9 @@ package com.example.streambot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.reflect.Field;
+
+import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +26,13 @@ public class Config {
     private final String ttsVoice;
     private final boolean useMicrophone;
     private final String microphoneName;
+    private final int pushKeyCode;
 
     private Config(String model, double temperature, double topP, int maxTokens,
                     List<String> topics, String conversationStyle,
                     int silenceTimeout, boolean ttsEnabled, String ttsVoice,
-                    boolean useMicrophone, String microphoneName, String language) {
+                    boolean useMicrophone, String microphoneName,
+                    String language, int pushKeyCode) {
         this.model = model;
         this.temperature = temperature;
         this.topP = topP;
@@ -40,6 +45,7 @@ public class Config {
         this.ttsVoice = ttsVoice;
         this.useMicrophone = useMicrophone;
         this.microphoneName = microphoneName;
+        this.pushKeyCode = pushKeyCode;
     }
 
     public String getModel() {
@@ -90,6 +96,10 @@ public class Config {
         return microphoneName;
     }
 
+    public int getPushKeyCode() {
+        return pushKeyCode;
+    }
+
     /**
      * Load configuration values from system properties or a .env file.
      * Defaults are used when a property is not present or cannot be parsed.
@@ -109,6 +119,7 @@ public class Config {
         String ttsVoice = EnvUtils.get("TTS_VOICE", "alloy");
         boolean useMic = Boolean.parseBoolean(EnvUtils.get("USE_MICROPHONE", "false"));
         String micName = EnvUtils.get("MICROPHONE_NAME", "");
+        String pushKey = EnvUtils.get("PUSH_KEY", "F12");
         String topicsProp = EnvUtils.get("PREFERRED_TOPICS", "");
         List<String> topics = new ArrayList<>();
         if (topicsProp != null && !topicsProp.isBlank()) {
@@ -119,9 +130,10 @@ public class Config {
                 }
             }
         }
+        int keyCode = parseKeyCode(pushKey);
         return new Config(model, temperature, topP, maxTokens,
                 topics, style, timeout, ttsEnabled, ttsVoice,
-                useMic, micName, language);
+                useMic, micName, language, keyCode);
     }
 
     private static double parseDouble(String val, double def) {
@@ -154,5 +166,22 @@ public class Config {
             return def;
         }
         return val;
+    }
+
+    private static int parseKeyCode(String name) {
+        if (name == null || name.isBlank()) {
+            return NativeKeyEvent.VC_F12;
+        }
+        String key = name.toUpperCase();
+        if (!key.startsWith("VC_")) {
+            key = "VC_" + key;
+        }
+        try {
+            Field f = NativeKeyEvent.class.getField(key);
+            return f.getInt(null);
+        } catch (Exception ex) {
+            logger.warn("Tecla {} no reconocida; se usa F12", name);
+            return NativeKeyEvent.VC_F12;
+        }
     }
 }

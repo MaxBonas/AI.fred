@@ -46,7 +46,7 @@ public class StreamBotApplication {
         PushToTalk ptt = null;
         try {
             GlobalScreen.registerNativeHook();
-            ptt = new PushToTalk(controller);
+            ptt = new PushToTalk(controller, config.getPushKeyCode());
             GlobalScreen.addNativeKeyListener(ptt);
         } catch (Throwable e) {
             logger.warn("No se pudo registrar el hook global", e);
@@ -81,6 +81,9 @@ public class StreamBotApplication {
             } else if ("--tts-voice".equals(args[i]) && i + 1 < args.length) {
                 map.put("TTS_VOICE", args[++i]);
                     logger.debug("TTS_VOICE obtenido de CLI: {}", map.get("TTS_VOICE"));
+            } else if ("--push-key".equals(args[i]) && i + 1 < args.length) {
+                map.put("PUSH_KEY", args[++i]);
+                    logger.debug("PUSH_KEY obtenido de CLI: {}", map.get("PUSH_KEY"));
             } else if ("--setup".equals(args[i])) {
                 map.put("SETUP", "true");
                     logger.debug("Bandera de configuración detectada");
@@ -99,6 +102,7 @@ public class StreamBotApplication {
                 "  --model MODELO       modelo de OpenAI",
                 "  --tts-enabled VAL   habilitar texto a voz",
                 "  --tts-voice VOZ   voz para la síntesis",
+                "  --push-key TECLA   tecla para hablar",
                 "  --setup             ejecutar configuración interactiva",
                 "  --help              mostrar este mensaje",
                 "");

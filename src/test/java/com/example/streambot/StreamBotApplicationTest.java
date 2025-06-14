@@ -40,6 +40,12 @@ public class StreamBotApplicationTest {
     }
 
     @Test
+    public void parsesPushKeyFlag() {
+        Map<String, String> result = StreamBotApplication.parseArgs(new String[]{"--push-key", "F9"});
+        assertEquals("F9", result.get("PUSH_KEY"));
+    }
+
+    @Test
     public void parsesSetupFlag() {
         Map<String, String> result = StreamBotApplication.parseArgs(new String[]{"--setup"});
         assertEquals("true", result.get("SETUP"));
@@ -184,5 +190,6 @@ public class StreamBotApplicationTest {
         String text = out.toString(java.nio.charset.StandardCharsets.UTF_8);
         assertTrue(text.contains("--api-key"), "usage should mention api-key");
         assertTrue(text.contains("--help"), "usage should mention help flag");
+        assertTrue(text.contains("--push-key"), "usage should mention push key option");
     }
 }
