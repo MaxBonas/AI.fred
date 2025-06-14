@@ -52,6 +52,12 @@ public class StreamBotApplicationTest {
     }
 
     @Test
+    public void parsesLangFlag() {
+        Map<String, String> result = StreamBotApplication.parseArgs(new String[]{"--lang", "en"});
+        assertEquals("en", result.get("SETUP_LANG"));
+    }
+
+    @Test
     public void mainSkipsWizardIfApiKeyProvided(@TempDir Path tmp) throws Exception {
         Path env = Path.of(".env");
         Path backup = tmp.resolve("env.bak");

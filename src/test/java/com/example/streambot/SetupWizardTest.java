@@ -184,4 +184,47 @@ public class SetupWizardTest {
             }
         }
     }
+
+    @Test
+    public void runRespectsLanguageProperty(@TempDir Path tmp) throws Exception {
+        Path env = Path.of(".env");
+        Path backup = tmp.resolve("env.bak");
+        boolean existed = Files.exists(env);
+        if (existed) {
+            Files.move(env, backup);
+        }
+        InputStream originalIn = System.in;
+        try {
+            String userInput = String.join("\n",
+                    "foo", "gpt-3.5-turbo", "0.5", "0.9", "100", "en", "formal",
+                    "", "10", "false", "alloy", "false", "USB", "");
+            System.setIn(new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8)));
+            System.setProperty("SETUP_LANG", "en");
+            SetupWizard.run();
+            assertEquals("en", System.getProperty("OPENAI_LANGUAGE"));
+            assertTrue(Files.exists(env), ".env should exist");
+        } finally {
+            System.setIn(originalIn);
+            System.clearProperty("OPENAI_API_KEY");
+            System.clearProperty("OPENAI_MODEL");
+            System.clearProperty("OPENAI_TEMPERATURE");
+            System.clearProperty("OPENAI_TOP_P");
+            System.clearProperty("OPENAI_MAX_TOKENS");
+            System.clearProperty("OPENAI_LANGUAGE");
+            System.clearProperty("CONVERSATION_STYLE");
+            System.clearProperty("PREFERRED_TOPICS");
+            System.clearProperty("SILENCE_TIMEOUT");
+            System.clearProperty("TTS_ENABLED");
+            System.clearProperty("TTS_VOICE");
+            System.clearProperty("USE_MICROPHONE");
+            System.clearProperty("MICROPHONE_NAME");
+            System.clearProperty("SETUP_LANG");
+            Files.deleteIfExists(env);
+            if (existed) {
+                Files.move(backup, env);
+            } else {
+                Files.deleteIfExists(backup);
+            }
+        }
+    }
 }

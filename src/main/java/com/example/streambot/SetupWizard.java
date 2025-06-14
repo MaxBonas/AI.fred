@@ -38,8 +38,10 @@ public class SetupWizard {
         File env = new File(".env");
 
         try (Scanner scanner = new Scanner(System.in)) {
-            logger.info("Iniciando asistente de configuración");
-            System.out.println("Configuraci\u00f3n inicial de StreamBot:");
+            String lang = EnvUtils.get("SETUP_LANG", "es").toLowerCase();
+            boolean en = lang.startsWith("en");
+            logger.info(en ? "Starting setup wizard" : "Iniciando asistente de configuración");
+            System.out.println(en ? "Initial StreamBot setup:" : "Configuración inicial de StreamBot:");
             System.out.print("OPENAI_API_KEY: ");
             String key = scanner.nextLine().trim();
 
@@ -47,7 +49,7 @@ public class SetupWizard {
             String model = scanner.nextLine().trim();
             if (!SUPPORTED_MODELS.contains(model)) {
                 String def = SUPPORTED_MODELS.get(0);
-                System.out.println("Modelo no válido, se usará " + def);
+                System.out.println(en ? "Invalid model, using " + def : "Modelo no válido, se usará " + def);
                 logger.warn("Modelo no soportado '{}', se utilizará {}", model, def);
                 model = def;
             }
@@ -91,7 +93,7 @@ public class SetupWizard {
                 }
             }
             if (!micNames.isEmpty()) {
-                System.out.println("Micrófonos disponibles:");
+                System.out.println(en ? "Available microphones:" : "Micrófonos disponibles:");
                 for (String name : micNames) {
                     System.out.println("- " + name);
                 }
@@ -131,7 +133,7 @@ public class SetupWizard {
 
             EnvUtils.reload();
 
-            System.out.println("Archivo .env creado o actualizado.\n");
+            System.out.println(en ? ".env file created or updated.\n" : "Archivo .env creado o actualizado.\n");
             logger.info("Archivo .env creado o actualizado");
         } catch (IOException e) {
             logger.error("Error al crear .env", e);

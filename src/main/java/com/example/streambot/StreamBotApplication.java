@@ -84,6 +84,9 @@ public class StreamBotApplication {
             } else if ("--push-key".equals(args[i]) && i + 1 < args.length) {
                 map.put("PUSH_KEY", args[++i]);
                     logger.debug("PUSH_KEY obtenido de CLI: {}", map.get("PUSH_KEY"));
+            } else if ("--lang".equals(args[i]) && i + 1 < args.length) {
+                map.put("SETUP_LANG", args[++i]);
+                    logger.debug("SETUP_LANG obtenido de CLI: {}", map.get("SETUP_LANG"));
             } else if ("--setup".equals(args[i])) {
                 map.put("SETUP", "true");
                     logger.debug("Bandera de configuración detectada");
@@ -103,6 +106,7 @@ public class StreamBotApplication {
                 "  --tts-enabled VAL   habilitar texto a voz",
                 "  --tts-voice VOZ   voz para la síntesis",
                 "  --push-key TECLA   tecla para hablar",
+                "  --lang CODIGO        idioma del asistente (es o en)",
                 "  --setup             ejecutar configuración interactiva",
                 "  --help              mostrar este mensaje",
                 "");

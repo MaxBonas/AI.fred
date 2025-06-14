@@ -70,6 +70,7 @@ Before running make sure the variables `OPENAI_API_KEY` and `OPENAI_MODEL` are p
 
 ## Configuration
 Sign up at [OpenAI](https://platform.openai.com/) and create a new *API key*. Copy it to the `.env` file as the value for `OPENAI_API_KEY`. You can indicate the model with `OPENAI_MODEL`. Supported models are `gpt-3.5-turbo`, `gpt-3.5-turbo-16k`, `gpt-4` and `gpt-4-32k`. If `.env` does not exist, running the application will launch `SetupWizard`, an interactive assistant that requests the values and generates the file automatically. You can also provide these values using `--api-key` and `--model`. Speech can be enabled with `--tts-enabled`, the voice chosen with `--tts-voice`, and the push-to-talk key set with `--push-key`. Use `--setup` if you want to run the wizard again and overwrite the current configuration. The file `env.example` can be used as a template.
+Use `--lang en` or set `SETUP_LANG=en` to show the wizard prompts in English.
 
 The main configuration variables are:
 
