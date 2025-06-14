@@ -107,7 +107,12 @@ public class OpenAIService {
                     .POST(HttpRequest.BodyPublishers.ofString(payload, StandardCharsets.UTF_8))
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            logger.debug("Respuesta recibida con estado {}", response.statusCode());
+            int code = response.statusCode();
+            logger.debug("Respuesta recibida con estado {}", code);
+            if (code != 200) {
+                logger.error("Error en la llamada a OpenAI: {}", code);
+                return "";
+            }
             return parseContent(response.body());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
