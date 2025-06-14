@@ -28,10 +28,15 @@ public class OpenAIServiceTest {
 
     private static class SimpleResponse implements HttpResponse<String> {
         private final String body;
+        private final int status;
         SimpleResponse(String body) {
-            this.body = body;
+            this(body, 200);
         }
-        @Override public int statusCode() { return 200; }
+        SimpleResponse(String body, int status) {
+            this.body = body;
+            this.status = status;
+        }
+        @Override public int statusCode() { return status; }
         @Override public HttpRequest request() { return null; }
         @Override public Optional<HttpResponse<String>> previousResponse() { return Optional.empty(); }
         @Override public HttpHeaders headers() { return HttpHeaders.of(Map.of(), (a,b) -> true); }
@@ -108,6 +113,16 @@ public class OpenAIServiceTest {
         System.setProperty("OPENAI_API_KEY", "key");
         Config cfg = Config.load();
         OpenAIService svc = new OpenAIService(new StubHttpClient(new IOException("boom")), cfg);
+        String reply = svc.ask("hi");
+        assertEquals("", reply);
+    }
+
+    @Test
+    public void askReturnsEmptyOnNon200Status() {
+        System.setProperty("OPENAI_API_KEY", "key");
+        HttpResponse<String> resp = new SimpleResponse("{}", 500);
+        Config cfg = Config.load();
+        OpenAIService svc = new OpenAIService(new StubHttpClient(resp), cfg);
         String reply = svc.ask("hi");
         assertEquals("", reply);
     }
