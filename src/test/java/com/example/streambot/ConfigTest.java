@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,6 +24,7 @@ public class ConfigTest {
         System.clearProperty("TTS_VOICE");
         System.clearProperty("USE_MICROPHONE");
         System.clearProperty("MICROPHONE_NAME");
+        System.clearProperty("PUSH_KEY");
     }
 
     @Test
@@ -39,6 +41,7 @@ public class ConfigTest {
         System.setProperty("TTS_VOICE", "onyx");
         System.setProperty("USE_MICROPHONE", "true");
         System.setProperty("MICROPHONE_NAME", "Test Mic");
+        System.setProperty("PUSH_KEY", "F11");
 
         Config cfg = Config.load();
         assertEquals("gpt-test", cfg.getModel());
@@ -53,6 +56,7 @@ public class ConfigTest {
         assertEquals("onyx", cfg.getTtsVoice());
         assertTrue(cfg.isUseMicrophone());
         assertEquals("Test Mic", cfg.getMicrophoneName());
+        assertEquals(NativeKeyEvent.VC_F11, cfg.getPushKeyCode());
     }
 
     @Test
@@ -70,6 +74,7 @@ public class ConfigTest {
         assertEquals("alloy", cfg.getTtsVoice());
         assertFalse(cfg.isUseMicrophone());
         assertEquals("", cfg.getMicrophoneName());
+        assertEquals(NativeKeyEvent.VC_F12, cfg.getPushKeyCode());
     }
 
     @Test
