@@ -29,9 +29,17 @@ public class ChatBotController {
 
     public ChatBotController(OpenAIService service, Config config,
                              Function<Runnable, MicrophoneMonitor> monitorFactory) {
+        this(service, config, monitorFactory, null);
+    }
+
+    ChatBotController(OpenAIService service, Config config,
+                      Function<Runnable, MicrophoneMonitor> monitorFactory,
+                      SpeechService speechService) {
         this.aiService = service != null ? service : new OpenAIService(config);
         this.config = config != null ? config : Config.load();
-        this.speechService = new SpeechService(this.config);
+        this.speechService = speechService != null
+                ? speechService
+                : new SpeechService(this.config);
         this.monitorFactory = monitorFactory;
     }
 
